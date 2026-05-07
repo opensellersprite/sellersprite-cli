@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c \"from sellersprite_cli.cli import app; print\\('CLI import OK'\\)\")",
+      "Bash(python -c \"from sellersprite_cli import SellerSprite, ApiError, McpError; print\\('SDK import OK'\\)\")",
+      "Bash(python -c \"from sellersprite_cli.generators import CLIENT_NAMES, generate; print\\('Generators import OK, clients:', sorted\\(CLIENT_NAMES\\)\\)\")",
+      "Bash(python -c ' *)",
+      "Bash(pip install *)",
+      "Bash(python -c \"from sellersprite_cli.cli import app; print\\('CLI OK'\\)\")",
+      "Bash(python -c \"from sellersprite_cli import SellerSprite; print\\('SDK OK'\\)\")",
+      "Bash(python -c \"from sellersprite_cli.generators import CLIENT_NAMES; print\\('Generators OK:', len\\(CLIENT_NAMES\\), 'clients'\\)\")",
+      "Bash(sellersprite --help)",
+      "Bash(python -c \"import sys; print\\([p for p in sys.path if 'sellersprite' in p.lower\\(\\) or 'site' in p]\\)\")",
+      "Bash(python *)",
+      "Bash(pip show *)",
+      "Bash(.venv/Scripts/pip install *)",
+      "Bash(uv pip *)",
+      "Bash(ls .venv/Scripts/sellersprite*)",
+      "Bash(ls .venv/Scripts/ss.exe)",
+      "Bash(export SELLERSPRITE_KEY=\"f4e0ef8729734747aac3c53429ebeaf8\")",
+      "Bash(sellersprite keyword *)",
+      "Bash(sellersprite trend *)",
+      "Bash(sellersprite traffic *)",
+      "Bash(twine upload *)",
+      "Bash(PYTHONIOENCODING=utf-8 python *)",
+      "Bash(printenv)"
+    ]
+  }
+}
