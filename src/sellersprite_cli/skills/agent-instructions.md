@@ -56,13 +56,13 @@ ss = SellerSprite()
 result = ss.product_node(keyword="earbuds")
 ```
 
-## MCP 工具清单 (36个)
+## MCP 工具清单 (38个)
 
 ASIN分析: asin_detail, asin_prediction, asin_coupon_trend, asin_detail_with_coupon_trend, keepa_info
 商品竞品: product_research, competitor_lookup, product_node
-关键词: keyword_miner, keyword_research, keyword_order, bsr_prediction
+关键词: keyword_miner, keyword_research, keyword_research_trends, keyword_order, bsr_prediction
 流量: traffic_keyword, traffic_keyword_stat, traffic_source, traffic_listing_stat, traffic_listing, traffic_extend
 市场: market_research, market_research_statistics, market_price_distribution, market_brand_concentration, market_product_concentration, market_seller_concentration, market_rating_distribution, market_ratings_count_distribution, market_listing_date_distribution, market_listing_trend_distribution, market_seller_country_distribution, market_seller_type_concentration, market_ebc_distribution, market_product_demand_trend
-ABA/趋势: aba_research_weekly, aba_research_monthly, google_trend, review
+ABA/趋势: aba_research_weekly, aba_research_monthly, aba_research_trend, google_trend, review
 
 支持站点(共9个): US(美国), JP(日本), UK(英国), DE(德国), FR(法国), IT(意大利), ES(西班牙), CA(加拿大), IN(印度)
