@@ -2,6 +2,7 @@
 
 import json
 import os
+import platform
 import sys
 from pathlib import Path
 from typing import Annotated, Optional
@@ -592,6 +593,55 @@ def list_tools():
         console.print(table)
         console.print()
     console.print(f"[bold]共 {len(TOOLS)} 个工具[/bold]")
+
+
+# ── Config command ────────────────────────────────────────────
+
+@app.command("config")
+def config_key(
+    key: Annotated[Optional[str], typer.Option("--key", "-k", help="API 密钥")] = None,
+):
+    """配置 API 密钥（保存到 .env 文件）"""
+    from rich.prompt import Prompt
+
+    if not key:
+        key = Prompt.ask("请输入你的 SellerSprite API 密钥", password=True)
+
+    key = key.strip().strip("\"'")
+    if not key:
+        console.print("[red]密钥不能为空[/red]")
+        raise typer.Exit(1)
+
+    env_file = Path.cwd() / ".env"
+    lines = []
+    replaced = False
+
+    if env_file.exists():
+        for line in env_file.read_text(encoding="utf-8").splitlines():
+            if line.strip().startswith("SELLERSPRITE_KEY="):
+                lines.append(f"SELLERSPRITE_KEY={key}")
+                replaced = True
+            else:
+                lines.append(line)
+
+    if not replaced:
+        lines.append(f"SELLERSPRITE_KEY={key}")
+
+    env_file.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+    console.print(f"[green]密钥已保存到 {env_file}[/green]")
+
+    # Show OS-specific hints
+    sys_name = platform.system()
+    console.print("\n[bold]你也可以通过环境变量临时设置：[/bold]")
+    if sys_name == "Windows":
+        console.print(f"  [cyan]CMD:[/cyan]    set SELLERSPRITE_KEY={key}")
+        console.print(f"  [cyan]PowerShell:[/cyan] $env:SELLERSPRITE_KEY = \"{key}\"")
+    elif sys_name == "Darwin":
+        console.print(f"  [cyan]zsh/bash:[/cyan] export SELLERSPRITE_KEY=\"{key}\"")
+    else:
+        console.print(f"  [cyan]bash:[/cyan] export SELLERSPRITE_KEY=\"{key}\"")
+    console.print("\n[dim]提示：.env 文件中的密钥会自动被 sellersprite 读取，无需每次 export[/dim]")
 
 
 # ── Init command ──────────────────────────────────────────────

@@ -11,20 +11,31 @@ pip install sellersprite-cli
 ## 配置密钥
 
 ```bash
+sellersprite config --key 你的API密钥
+```
+
+或交互式输入（密钥不会回显）：
+
+```bash
+sellersprite config
+```
+
+密钥在 [卖家精灵开放平台](https://open.sellersprite.com) 获取。
+
+以上命令会自动将密钥保存到当前目录的 `.env` 文件中， sellersprite 会自动读取。
+
+你也可以手动设置环境变量：
+
+```bash
 # Linux / macOS
 export SELLERSPRITE_KEY="你的API密钥"
+
+# Windows CMD
+set SELLERSPRITE_KEY=你的密钥
 
 # Windows PowerShell
 $env:SELLERSPRITE_KEY = "你的API密钥"
 ```
-
-或在项目根目录创建 `.env` 文件：
-
-```
-SELLERSPRITE_KEY=你的API密钥
-```
-
-密钥在 [卖家精灵开放平台](https://open.sellersprite.com) 获取。
 
 ## CLI 使用
 

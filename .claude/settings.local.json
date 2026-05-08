@@ -23,7 +23,10 @@
       "Bash(sellersprite traffic *)",
       "Bash(twine upload *)",
       "Bash(PYTHONIOENCODING=utf-8 python *)",
-      "Bash(printenv)"
+       "Bash(printenv)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "WebFetch(domain:www.sorftime.com)"
     ]
   }
 }
