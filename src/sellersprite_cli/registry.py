@@ -30,7 +30,7 @@ TOOLS: dict[str, ToolMeta] = {
     "keyword_miner": ToolMeta("keyword_miner", "keyword", "关键词深度挖掘", [], {"keywordList"}, "request"),
     "keyword_research": ToolMeta("keyword_research", "keyword", "关键词市场选品", [], {"keywordList"}, "request"),
     "keyword_research_trends": ToolMeta("keyword_research_trends", "keyword", "关键词趋势分析", ["keyword"], set(), "flat"),
-    "keyword_order": ToolMeta("keyword_order", "keyword", "关键词反查（转化）", [], {"asins"}, "request"),
+    "keyword_order": ToolMeta("keyword_order", "keyword", "关键词反查（转化）", ["asins", "reverseType", "date"], {"asins"}, "request"),
     "bsr_prediction": ToolMeta("bsr_prediction", "keyword", "BSR 销量预测", ["bsr", "category_id"], set(), "bsr"),
 
     # ── 流量 (6) ──

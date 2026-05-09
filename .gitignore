@@ -38,3 +38,4 @@ ENV/
 # mypy
 .mypy_cache/
 
+/.claude

@@ -322,13 +322,17 @@ def keyword_research(
 @keyword_app.command("order")
 def keyword_order(
     asins: Annotated[Optional[str], typer.Option("--asins", help="ASIN 列表 (逗号分隔)")] = None,
+    reverse_type: Annotated[str, typer.Option("--reverse-type", help="反查模式: W=周 M=月")] = "M",
+    date: Annotated[Optional[str], typer.Option("--date", help="周(yyyyMMdd) 或 月(YYYYMM)")] = None,
     marketplace: MpOpt = "US",
     key: KeyOpt = None,
 ):
     """关键词反查（转化分析）"""
-    kwargs = {}
+    kwargs = {"reverseType": reverse_type}
     if asins:
         kwargs["asins"] = [a.strip() for a in asins.split(",")]
+    if date:
+        kwargs["date"] = date
     _print_result(_call_tool("keyword_order", key, marketplace, **kwargs))
 
 
