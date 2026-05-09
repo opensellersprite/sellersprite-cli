@@ -9,12 +9,15 @@ import json
 import logging
 import os
 import time
+from importlib.metadata import version as _version
 
 import requests
 
 from .errors import ApiError, McpError
 
 logger = logging.getLogger(__name__)
+
+__version__ = _version("sellersprite-cli")
 
 
 class SellerSprite:
@@ -42,6 +45,7 @@ class SellerSprite:
             "Content-Type": "application/json",
             "Accept": "application/json, text/event-stream",
             "secret-key": self.secret_key,
+            "x-cli-version": __version__,
         })
         self._id = 0
 

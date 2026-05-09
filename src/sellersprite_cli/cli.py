@@ -50,14 +50,14 @@ def _resolve_key(explicit: str | None = None) -> str:
     return key
 
 
-def _get_sdk(key: str | None = None, marketplace: str = "US"):
+def _get_mcp(key: str | None = None, marketplace: str = "US"):
     from .mcp_client import SellerSprite
     return SellerSprite(secret_key=_resolve_key(key), marketplace=marketplace)
 
 
 def _call_tool(tool_name: str, key: str | None, marketplace: str, **kwargs):
     """Generic tool caller — routes to the right MCP client method."""
-    ss = _get_sdk(key, marketplace)
+    ss = _get_mcp(key, marketplace)
     method = getattr(ss, tool_name)
     cleaned = {k: v for k, v in kwargs.items() if v is not None}
     return method(**cleaned)
@@ -149,7 +149,7 @@ def _run_tui():
     meta = TOOLS[tool_name]
 
     # Step 3: Collect required params
-    kwargs = {"marketplace": _state["marketplace"]}
+    kwargs = {}
     console.print(f"\n[bold]执行: {meta.label}[/bold] [dim]({tool_name})[/dim]")
 
     for param in meta.required:
