@@ -142,3 +142,12 @@
 ## 输出格式
 
 使用 Markdown 表格、评分卡和结构化列表呈现。关键结论用加粗标注，风险用警告标识。
+---
+
+## 参考文档
+
+本 Skill 涉及的 API 详细参数说明：
+
+- [`market_research`](../../reference/market_research.md)
+- [`market_research_statistics`](../../reference/market_research_statistics.md)
+- [`product_node`](../../reference/product_node.md)

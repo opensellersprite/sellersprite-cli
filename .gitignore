@@ -39,3 +39,6 @@ ENV/
 .mypy_cache/
 
 /.claude
+/tests/
+/CLAUDE.md
+/output/

@@ -169,3 +169,16 @@
 ## 输出格式
 
 使用 Markdown 表格呈现，优先级用高/中/低标注。竞价建议精确到小数点后两位。行动建议用复选框格式便于执行。
+---
+
+## 参考文档
+
+本 Skill 涉及的 API 详细参数说明：
+
+- [`asin_detail`](../../reference/asin_detail.md)
+- [`keyword_miner`](../../reference/keyword_miner.md)
+- [`keyword_order`](../../reference/keyword_order.md)
+- [`traffic_extend`](../../reference/traffic_extend.md)
+- [`traffic_keyword`](../../reference/traffic_keyword.md)
+- [`traffic_keyword_stat`](../../reference/traffic_keyword_stat.md)
+- [`traffic_source`](../../reference/traffic_source.md)

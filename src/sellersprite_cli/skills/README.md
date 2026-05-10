@@ -44,48 +44,48 @@
 
 | Skill | 核心工具 | 一句话逻辑 |
 |-------|---------|-----------|
-| [新品快速爆发](new-product-burst/new-product-burst.md) | `product_research` | 上架<=2月、销量>=300、Review<=100 |
-| [隐形爆款](new-product-burst/hidden-bestseller.md) | `product_research` | 上架<=3月、销量>=500、Review<=50 |
+| [新品快速爆发](tactical/new-product-burst.md) | `product_research` | 上架<=2月、销量>=300、Review<=100 |
+| [隐形爆款](tactical/hidden-bestseller.md) | `product_research` | 上架<=3月、销量>=500、Review<=50 |
 
 ### 关键词趋势型
 
 | Skill | 核心工具 | 一句话逻辑 |
 |-------|---------|-----------|
-| [ABA高增长趋势词](keyword-trend/aba-high-growth-trend.md) | `keyword_research` | 近3月持续增长+点击不集中 |
-| [流量分散关键词](keyword-trend/low-monopoly-keyword.md) | `keyword_miner` | 搜索>=5000+集中度<50% |
-| [标题密度漏洞](keyword-trend/title-density-gap.md) | `keyword_miner` | 标题密度<=5的长尾词 |
+| [ABA高增长趋势词](tactical/aba-high-growth-trend.md) | `keyword_research` | 近3月持续增长+点击不集中 |
+| [流量分散关键词](tactical/low-monopoly-keyword.md) | `keyword_miner` | 搜索>=5000+集中度<50% |
+| [标题密度漏洞](tactical/title-density-gap.md) | `keyword_miner` | 标题密度<=5的长尾词 |
 
 ### 产品缺陷型
 
 | Skill | 核心工具 | 一句话逻辑 |
 |-------|---------|-----------|
-| [热销低评分产品](product-defect/hot-low-rating.md) | `product_research` | 月销>=1000+评分<=4.2 |
-| [评论语义分析](product-defect/review-sentiment.md) | `review` | 差评NLP聚类 -> 改良指南 |
+| [热销低评分产品](tactical/hot-low-rating.md) | `product_research` | 月销>=1000+评分<=4.2 |
+| [评论语义分析](tactical/review-sentiment.md) | `review` | 差评NLP聚类 -> 改良指南 |
 
 ### 类目结构型
 
 | Skill | 核心工具 | 一句话逻辑 |
 |-------|---------|-----------|
-| [低品牌垄断类目](category-structure/low-brand-monopoly.md) | `market_research` | 品牌集中度<45% |
-| [高新品占比市场](category-structure/high-new-product-ratio.md) | `market_research` | 新品占比>5%+新品仍出单 |
-| [高毛利轻小品](category-structure/high-margin-lightweight.md) | `product_research` | FBA<=$4+毛利>=50% |
+| [低品牌垄断类目](tactical/low-brand-monopoly.md) | `market_research` | 品牌集中度<45% |
+| [高新品占比市场](tactical/high-new-product-ratio.md) | `market_research` | 新品占比>5%+新品仍出单 |
+| [高毛利轻小品](tactical/high-margin-lightweight.md) | `product_research` | FBA<=$4+毛利>=50% |
 
 ### 流量防伪型
 
 | Skill | 核心工具 | 一句话逻辑 |
 |-------|---------|-----------|
-| [自然流量反查](traffic-audit/natural-traffic-audit.md) | `traffic_source` | 自然流量占比>60% |
-| [变体拆解模型](traffic-audit/variant-gap-analysis.md) | `asin_detail` | 找未被覆盖的变体缺口 |
+| [自然流量反查](tactical/natural-traffic-audit.md) | `traffic_source` | 自然流量占比>60% |
+| [变体拆解模型](tactical/variant-gap-analysis.md) | `asin_detail` | 找未被覆盖的变体缺口 |
 
 ### 机会捕捉型
 
 | Skill | 核心工具 | 一句话逻辑 |
 |-------|---------|-----------|
-| [本土溢价降维](edge-opportunity/local-premium-disruption.md) | `product_research` | 美国卖家+高价+高销 |
-| [FBM拦截](edge-opportunity/fbm-intercept.md) | `product_research` | FBM发货+月销>=300 |
-| [低质量Listing高销量](edge-opportunity/poor-listing-winner.md) | `product_research` | LQS<=60+月销>=400 |
-| [高客单长尾](edge-opportunity/high-ticket-long-tail.md) | `keyword_miner` | 均价>=$80+搜索量适中 |
-| [季节前置爆破](edge-opportunity/seasonal-prepositioning.md) | `keyword_miner` | 历史同期环比增长>100% |
+| [本土溢价降维](tactical/local-premium-disruption.md) | `product_research` | 美国卖家+高价+高销 |
+| [FBM拦截](tactical/fbm-intercept.md) | `product_research` | FBM发货+月销>=300 |
+| [低质量Listing高销量](tactical/poor-listing-winner.md) | `product_research` | LQS<=60+月销>=400 |
+| [高客单长尾](tactical/high-ticket-long-tail.md) | `keyword_miner` | 均价>=$80+搜索量适中 |
+| [季节前置爆破](tactical/seasonal-prepositioning.md) | `keyword_miner` | 历史同期环比增长>100% |
 
 ---
 

@@ -102,3 +102,11 @@
 ## 输出格式
 
 使用 Markdown 表格和结构化列表呈现数据，关键指标用加粗标注。评分和趋势用直观的符号表示。
+---
+
+## 参考文档
+
+本 Skill 涉及的 API 详细参数说明：
+
+- [`product_node`](../../reference/product_node.md)
+- [`product_research`](../../reference/product_research.md)

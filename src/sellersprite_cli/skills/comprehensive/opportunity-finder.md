@@ -162,3 +162,16 @@
 ## 输出格式
 
 使用 Markdown 表格、星级评分呈现。时间敏感型机会用紧急标识，长期机会用推荐标识。
+---
+
+## 参考文档
+
+本 Skill 涉及的 API 详细参数说明：
+
+- [`aba_research_monthly`](../../reference/aba_research_monthly.md)
+- [`aba_research_trend`](../../reference/aba_research_trend.md)
+- [`aba_research_weekly`](../../reference/aba_research_weekly.md)
+- [`google_trend`](../../reference/google_trend.md)
+- [`keyword_research`](../../reference/keyword_research.md)
+- [`keyword_research_trends`](../../reference/keyword_research_trends.md)
+- [`market_research`](../../reference/market_research.md)

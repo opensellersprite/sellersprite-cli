@@ -145,3 +145,12 @@
 ## 输出格式
 
 使用 Markdown 表格和结构化列表呈现。痛点按严重程度排序，改进建议按优先级标注。
+---
+
+## 参考文档
+
+本 Skill 涉及的 API 详细参数说明：
+
+- [`asin_detail`](../../reference/asin_detail.md)
+- [`keepa_info`](../../reference/keepa_info.md)
+- [`review`](../../reference/review.md)

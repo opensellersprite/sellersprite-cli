@@ -60,7 +60,40 @@ def _call_tool(tool_name: str, key: str | None, marketplace: str, **kwargs):
     ss = _get_mcp(key, marketplace)
     method = getattr(ss, tool_name)
     cleaned = {k: v for k, v in kwargs.items() if v is not None}
+    # 组装 order 排序对象
+    order_field = cleaned.pop("order_field", None)
+    order_desc = cleaned.pop("order_desc", None)
+    if order_field is not None or order_desc is not None:
+        order = {}
+        if order_field is not None:
+            order["field"] = order_field
+        if order_desc is not None:
+            order["desc"] = order_desc
+        cleaned["order"] = order
+    # 列表查询默认分页参数（仅对支持分页的工具）
+    meta = TOOLS.get(tool_name)
+    if meta and meta.paginated:
+        size_max = _SIZE_MAX.get(tool_name, 100)
+        if "page" not in cleaned:
+            cleaned["page"] = 1
+        if "size" not in cleaned:
+            cleaned["size"] = _SIZE_DEFAULTS.get(tool_name, 50)
+        else:
+            # 用户显式传入 size，做边界校验
+            cleaned["size"] = min(max(1, cleaned["size"]), size_max)
     return method(**cleaned)
+
+
+def _parse_extra(extra: list[str] | None) -> dict:
+    """Parse key=value arguments into a dict with auto-coerced values."""
+    result = {}
+    if not extra:
+        return result
+    for item in extra:
+        if "=" in item:
+            k, v = item.split("=", 1)
+            result[k.strip()] = _coerce_arg(k.strip(), v.strip())
+    return result
 
 
 def _coerce_arg(key: str, value: str):
@@ -198,6 +231,10 @@ KeyOpt = Annotated[Optional[str], typer.Option("--key", "-k", help="API 密钥")
 MpOpt = Annotated[str, typer.Option("--marketplace", "-m", help="站点")]
 AsinArg = Annotated[str, typer.Argument(help="ASIN 编号")]
 SizeOpt = Annotated[Optional[int], typer.Option("--size", help="返回条数")]
+PageOpt = Annotated[Optional[int], typer.Option("--page", help="页码")]
+OrderFieldOpt = Annotated[Optional[str], typer.Option("--order-field", help="排序字段")]
+OrderDescOpt = Annotated[Optional[bool], typer.Option("--order-desc", help="是否降序 true/false")]
+ExtraArg = Annotated[Optional[list[str]], typer.Argument(help="额外参数 key=value ...")]
 
 
 # ── ASIN commands ─────────────────────────────────────────────
@@ -243,29 +280,59 @@ def product_search(
     max_units: Annotated[Optional[int], typer.Option("--max-units", help="最高月销")] = None,
     min_rating: Annotated[Optional[float], typer.Option("--min-rating", help="最低评分")] = None,
     max_rating: Annotated[Optional[float], typer.Option("--max-rating", help="最高评分")] = None,
-    page: Annotated[Optional[int], typer.Option("--page", help="页码")] = None,
+    page: PageOpt = None,
     size: SizeOpt = None,
+    order_field: OrderFieldOpt = None,
+    order_desc: OrderDescOpt = None,
+    extra: ExtraArg = None,
     marketplace: MpOpt = "US",
     key: KeyOpt = None,
 ):
     """高级商品筛选"""
-    _print_result(_call_tool("product_research", key, marketplace,
-                             keyword=keyword, priceMin=min_price, priceMax=max_price,
-                             unitsMin=min_units, unitsMax=max_units,
-                             ratingMin=min_rating, ratingMax=max_rating,
-                             page=page, size=size))
+    kwargs = _parse_extra(extra)
+    if keyword:
+        kwargs["keyword"] = keyword
+    if min_price is not None:
+        kwargs["priceMin"] = min_price
+    if max_price is not None:
+        kwargs["priceMax"] = max_price
+    if min_units is not None:
+        kwargs["unitsMin"] = min_units
+    if max_units is not None:
+        kwargs["unitsMax"] = max_units
+    if min_rating is not None:
+        kwargs["ratingMin"] = min_rating
+    if max_rating is not None:
+        kwargs["ratingMax"] = max_rating
+    if page is not None:
+        kwargs["page"] = page
+    if size is not None:
+        kwargs["size"] = size
+    if order_field is not None:
+        kwargs["order_field"] = order_field
+    if order_desc is not None:
+        kwargs["order_desc"] = order_desc
+    _print_result(_call_tool("product_research", key, marketplace, **kwargs))
 
 
 @product_app.command("competitor")
 def product_competitor(
     asins: Annotated[Optional[str], typer.Option("--asins", help="ASIN 列表 (逗号分隔)")] = None,
+    page: PageOpt = None,
+    size: SizeOpt = None,
+    order_field: OrderFieldOpt = None,
+    order_desc: OrderDescOpt = None,
     marketplace: MpOpt = "US",
     key: KeyOpt = None,
 ):
     """竞品查询"""
-    kwargs = {}
+    kwargs = {"order_field": order_field, "order_desc": order_desc}
     if asins:
         kwargs["asins"] = [a.strip() for a in asins.split(",")]
+    if page is not None:
+        kwargs["page"] = page
+    if size is not None:
+        kwargs["size"] = size
     _print_result(_call_tool("competitor_lookup", key, marketplace, **kwargs))
 
 
@@ -285,18 +352,28 @@ def product_node(
 def keyword_mine(
     keyword: Annotated[Optional[str], typer.Option("--keyword", help="关键词")] = None,
     keyword_list: Annotated[Optional[str], typer.Option("--keyword-list", help="关键词列表 (逗号分隔)")] = None,
+    page: PageOpt = None,
     size: SizeOpt = None,
+    order_field: OrderFieldOpt = None,
+    order_desc: OrderDescOpt = None,
+    extra: ExtraArg = None,
     marketplace: MpOpt = "US",
     key: KeyOpt = None,
 ):
     """关键词深度挖掘"""
-    kwargs = {}
+    kwargs = _parse_extra(extra)
     if keyword:
         kwargs["keyword"] = keyword
     if keyword_list:
         kwargs["keywordList"] = [k.strip() for k in keyword_list.split(",")]
-    if size:
+    if page is not None:
+        kwargs["page"] = page
+    if size is not None:
         kwargs["size"] = size
+    if order_field is not None:
+        kwargs["order_field"] = order_field
+    if order_desc is not None:
+        kwargs["order_desc"] = order_desc
     _print_result(_call_tool("keyword_miner", key, marketplace, **kwargs))
 
 
@@ -304,35 +381,47 @@ def keyword_mine(
 def keyword_research(
     keyword: Annotated[Optional[str], typer.Option("--keyword", help="关键词")] = None,
     keyword_list: Annotated[Optional[str], typer.Option("--keyword-list", help="关键词列表 (逗号分隔)")] = None,
+    page: PageOpt = None,
     size: SizeOpt = None,
+    order_field: OrderFieldOpt = None,
+    order_desc: OrderDescOpt = None,
     marketplace: MpOpt = "US",
     key: KeyOpt = None,
 ):
     """关键词市场选品分析"""
-    kwargs = {}
+    kwargs = {"order_field": order_field, "order_desc": order_desc}
     if keyword:
         kwargs["keywords"] = keyword
     if keyword_list:
         kwargs["keywordList"] = [k.strip() for k in keyword_list.split(",")]
-    if size:
+    if page is not None:
+        kwargs["page"] = page
+    if size is not None:
         kwargs["size"] = size
     _print_result(_call_tool("keyword_research", key, marketplace, **kwargs))
 
 
 @keyword_app.command("order")
 def keyword_order(
+    date: Annotated[str, typer.Option("--date", help="日期: W模式=yyyyMMdd(当周周六), M模式=yyyyMM")],
     asins: Annotated[Optional[str], typer.Option("--asins", help="ASIN 列表 (逗号分隔)")] = None,
     reverse_type: Annotated[str, typer.Option("--reverse-type", help="反查模式: W=周 M=月")] = "M",
-    date: Annotated[Optional[str], typer.Option("--date", help="周(yyyyMMdd) 或 月(YYYYMM)")] = None,
+    page: PageOpt = None,
+    size: SizeOpt = None,
+    order_field: OrderFieldOpt = None,
+    order_desc: OrderDescOpt = None,
     marketplace: MpOpt = "US",
     key: KeyOpt = None,
 ):
     """关键词反查（转化分析）"""
-    kwargs = {"reverseType": reverse_type}
+    kwargs = {"reverseType": reverse_type, "date": date,
+              "order_field": order_field, "order_desc": order_desc}
     if asins:
         kwargs["asins"] = [a.strip() for a in asins.split(",")]
-    if date:
-        kwargs["date"] = date
+    if page is not None:
+        kwargs["page"] = page
+    if size is not None:
+        kwargs["size"] = size
     _print_result(_call_tool("keyword_order", key, marketplace, **kwargs))
 
 
@@ -366,11 +455,20 @@ def keyword_trends(
 @traffic_app.command("keyword")
 def traffic_keyword(
     asin: AsinArg,
+    page: PageOpt = None,
+    size: SizeOpt = None,
+    order_field: OrderFieldOpt = None,
+    order_desc: OrderDescOpt = None,
     marketplace: MpOpt = "US",
     key: KeyOpt = None,
 ):
     """流量关键词明细"""
-    _print_result(_call_tool("traffic_keyword", key, marketplace, asin=asin))
+    kwargs = {"asin": asin, "order_field": order_field, "order_desc": order_desc}
+    if page is not None:
+        kwargs["page"] = page
+    if size is not None:
+        kwargs["size"] = size
+    _print_result(_call_tool("traffic_keyword", key, marketplace, **kwargs))
 
 
 @traffic_app.command("keyword-stat")
@@ -386,14 +484,19 @@ def traffic_keyword_stat(
 
 @traffic_app.command("source")
 def traffic_source(
-    asin: Annotated[Optional[str], typer.Option("--asin", help="ASIN")] = None,
+    asin: Annotated[Optional[str], typer.Option("--asin", help="ASIN 或关键词")] = None,
+    month: Annotated[Optional[str], typer.Option("--month", help="查询月份 yyyyMM")] = None,
+    order_field: OrderFieldOpt = None,
+    order_desc: OrderDescOpt = None,
     marketplace: MpOpt = "US",
     key: KeyOpt = None,
 ):
     """流量来源分析"""
-    kwargs = {}
+    kwargs = {"order_field": order_field, "order_desc": order_desc}
     if asin:
-        kwargs["asin"] = asin
+        kwargs["q"] = asin
+    if month:
+        kwargs["month"] = month
     _print_result(_call_tool("traffic_source", key, marketplace, **kwargs))
 
 
@@ -411,24 +514,52 @@ def traffic_listing_stat(
 def traffic_listing(
     asin_list: Annotated[str, typer.Option("--asin-list", help="ASIN 列表 (逗号分隔)")],
     relations: Annotated[str, typer.Option("--relations", help="关联类型 (逗号分隔)")],
+    page: PageOpt = None,
+    size: SizeOpt = None,
+    order_field: OrderFieldOpt = None,
+    order_desc: OrderDescOpt = None,
     marketplace: MpOpt = "US",
     key: KeyOpt = None,
 ):
     """关联商品查询"""
-    _print_result(_call_tool("traffic_listing", key, marketplace,
-                             asin_list=[a.strip() for a in asin_list.split(",")],
-                             relations=[r.strip() for r in relations.split(",")]))
+    kwargs = {
+        "asin_list": [a.strip() for a in asin_list.split(",")],
+        "relations": [r.strip() for r in relations.split(",")],
+        "order_field": order_field,
+        "order_desc": order_desc,
+    }
+    if page is not None:
+        kwargs["page"] = page
+    if size is not None:
+        kwargs["size"] = size
+    _print_result(_call_tool("traffic_listing", key, marketplace, **kwargs))
 
 
 @traffic_app.command("extend")
 def traffic_extend(
     asin_list: Annotated[str, typer.Option("--asin-list", help="ASIN 列表 (逗号分隔)")],
+    query_type: Annotated[int, typer.Option("--query-type", help="查询方式: 0=所有变体 1=畅销变体 2=当前变体")] = 2,
+    page: PageOpt = None,
+    size: SizeOpt = None,
+    order_field: OrderFieldOpt = None,
+    order_desc: OrderDescOpt = None,
+    extra: ExtraArg = None,
     marketplace: MpOpt = "US",
     key: KeyOpt = None,
 ):
     """关键词拓展"""
-    _print_result(_call_tool("traffic_extend", key, marketplace,
-                             asin_list=[a.strip() for a in asin_list.split(",")]))
+    kwargs = _parse_extra(extra)
+    kwargs["asin_list"] = [a.strip() for a in asin_list.split(",")]
+    kwargs["query_type"] = query_type
+    if page is not None:
+        kwargs["page"] = page
+    if size is not None:
+        kwargs["size"] = size
+    if order_field is not None:
+        kwargs["order_field"] = order_field
+    if order_desc is not None:
+        kwargs["order_desc"] = order_desc
+    _print_result(_call_tool("traffic_extend", key, marketplace, **kwargs))
 
 
 # ── Market commands ───────────────────────────────────────────
@@ -436,11 +567,27 @@ def traffic_extend(
 @market_app.command("research")
 def market_research(
     keyword: Annotated[Optional[str], typer.Option("--keyword", help="关键词")] = None,
+    page: PageOpt = None,
+    size: SizeOpt = None,
+    order_field: OrderFieldOpt = None,
+    order_desc: OrderDescOpt = None,
+    extra: ExtraArg = None,
     marketplace: MpOpt = "US",
     key: KeyOpt = None,
 ):
     """类目市场分析"""
-    _print_result(_call_tool("market_research", key, marketplace, keyword=keyword))
+    kwargs = _parse_extra(extra)
+    if keyword:
+        kwargs["keyword"] = keyword
+    if page is not None:
+        kwargs["page"] = page
+    if size is not None:
+        kwargs["size"] = size
+    if order_field is not None:
+        kwargs["order_field"] = order_field
+    if order_desc is not None:
+        kwargs["order_desc"] = order_desc
+    _print_result(_call_tool("market_research", key, marketplace, **kwargs))
 
 
 def _make_market_command(tool_name: str, label: str):
@@ -481,26 +628,42 @@ for _tool, (_cmd_name, _label) in _NODE_COMMANDS.items():
 @trend_app.command("aba-weekly")
 def trend_aba_weekly(
     keyword_list: Annotated[Optional[str], typer.Option("--keyword-list", help="关键词列表 (逗号分隔)")] = None,
+    page: PageOpt = None,
+    size: SizeOpt = None,
+    order_field: OrderFieldOpt = None,
+    order_desc: OrderDescOpt = None,
     marketplace: MpOpt = "US",
     key: KeyOpt = None,
 ):
     """ABA 周度趋势"""
-    kwargs = {}
+    kwargs = {"order_field": order_field, "order_desc": order_desc}
     if keyword_list:
         kwargs["keywordList"] = [k.strip() for k in keyword_list.split(",")]
+    if page is not None:
+        kwargs["page"] = page
+    if size is not None:
+        kwargs["size"] = size
     _print_result(_call_tool("aba_research_weekly", key, marketplace, **kwargs))
 
 
 @trend_app.command("aba-monthly")
 def trend_aba_monthly(
     keyword_list: Annotated[Optional[str], typer.Option("--keyword-list", help="关键词列表 (逗号分隔)")] = None,
+    page: PageOpt = None,
+    size: SizeOpt = None,
+    order_field: OrderFieldOpt = None,
+    order_desc: OrderDescOpt = None,
     marketplace: MpOpt = "US",
     key: KeyOpt = None,
 ):
     """ABA 月度趋势"""
-    kwargs = {}
+    kwargs = {"order_field": order_field, "order_desc": order_desc}
     if keyword_list:
         kwargs["keywordList"] = [k.strip() for k in keyword_list.split(",")]
+    if page is not None:
+        kwargs["page"] = page
+    if size is not None:
+        kwargs["size"] = size
     _print_result(_call_tool("aba_research_monthly", key, marketplace, **kwargs))
 
 
@@ -525,21 +688,39 @@ def trend_google(
     key: KeyOpt = None,
 ):
     """Google 搜索趋势"""
-    _print_result(_call_tool("google_trend", key, marketplace, keyword=keyword))
+    kwargs = {}
+    if keyword:
+        kwargs["keyword"] = keyword
+    _print_result(_call_tool("google_trend", key, marketplace, **kwargs))
 
 
 @trend_app.command("review")
 def trend_review(
     asin: AsinArg,
     category_id: Annotated[str, typer.Argument(help="类目 ID")],
+    page: PageOpt = None,
+    size: SizeOpt = None,
     marketplace: MpOpt = "US",
     key: KeyOpt = None,
 ):
     """买家评论查询"""
-    _print_result(_call_tool("review", key, marketplace, asin=asin, categoryId=category_id))
+    kwargs = {"asin": asin, "categoryId": category_id}
+    if page is not None:
+        kwargs["page"] = page
+    if size is not None:
+        kwargs["size"] = size
+    _print_result(_call_tool("review", key, marketplace, **kwargs))
 
 
-# ── List command ──────────────────────────────────────────────
+# 工具特定的 size 默认值和上限（来自 API 文档）
+_SIZE_DEFAULTS = {
+    "keyword_research": 15,
+    "review": 20,
+}
+_SIZE_MAX = {
+    "keyword_research": 15,
+    "review": 50,
+}
 
 # Mapping: tool_name -> CLI command path
 _TOOL_COMMANDS = {
@@ -733,3 +914,102 @@ def _skill_show(name: str):
             return
     console.print(f"[red]未找到 Skill: {name}[/red]")
     console.print("使用 [bold]sellersprite skill list[/bold] 查看所有可用 Skills")
+
+
+# ── Docs command ──────────────────────────────────────────────
+
+_DOCS_DIR = Path(__file__).parent / "reference"
+
+
+def _parse_md_table(content: str, section_markers: tuple[str, ...] = ("## 参数", "### 请求参数")) -> list[list[str]] | None:
+    """Extract markdown table rows from a parameter section."""
+    lines = content.splitlines()
+    in_section = False
+    table_lines: list[str] = []
+
+    for line in lines:
+        stripped = line.strip()
+        if not in_section:
+            if any(stripped.startswith(m) for m in section_markers):
+                in_section = True
+            continue
+        # In section: collect table lines until blank line or new section
+        if stripped.startswith("#"):
+            break
+        if stripped.startswith("|"):
+            table_lines.append(stripped)
+        elif table_lines and not stripped:
+            # Allow one blank line inside table, but stop after consecutive blanks
+            pass
+
+    if len(table_lines) < 3:
+        return None
+
+    # Skip header separator line (contains ---)
+    rows: list[list[str]] = []
+    for line in table_lines:
+        if "---" in line.replace(" ", ""):
+            continue
+        cells = [cell.strip().strip("`") for cell in line.split("|")[1:-1]]
+        if cells and any(cells):
+            rows.append(cells)
+
+    return rows if len(rows) >= 2 else None
+
+
+@app.command("docs")
+def docs_cmd(
+    tool: Annotated[str, typer.Argument(help="工具名称，例如 product_research, traffic_keyword")],
+):
+    """查看接口参数文档"""
+    meta = TOOLS.get(tool)
+    if not meta:
+        console.print(f"[red]未知工具: {tool}[/red]")
+        console.print(f"可用工具: {', '.join(TOOLS.keys())}")
+        raise typer.Exit(1)
+
+    # Try individual doc first
+    doc_file = _DOCS_DIR / f"{tool}.md"
+    content = None
+    if doc_file.exists():
+        content = doc_file.read_text(encoding="utf-8")
+    else:
+        # Fallback to mcp-api-source.md
+        mcp_file = Path(__file__).parent.parent.parent / "docs" / "mcp-api-source.md"
+        if mcp_file.exists():
+            full = mcp_file.read_text(encoding="utf-8")
+            # Find the section for this tool
+            pattern = f"## \\d+\\. .*\\(`{tool}`\\)"
+            import re
+            match = re.search(pattern, full)
+            if match:
+                start = match.start()
+                end = full.find("\n## ", start + 1)
+                if end == -1:
+                    end = len(full)
+                content = full[start:end]
+
+    if not content:
+        console.print(f"[red]未找到 {tool} 的文档[/red]")
+        raise typer.Exit(1)
+
+    rows = _parse_md_table(content)
+    if not rows:
+        console.print(f"[yellow]{tool} 文档中未找到参数表格[/yellow]")
+        raise typer.Exit(1)
+
+    # Build table
+    table = Table(title=f"{meta.label} — {tool}", show_header=True, header_style="bold cyan")
+    headers = rows[0]
+    for h in headers:
+        table.add_column(h)
+    for row in rows[1:]:
+        # Truncate very long descriptions
+        cells = [c[:80] + "..." if len(c) > 80 else c for c in row]
+        # Pad short rows
+        while len(cells) < len(headers):
+            cells.append("")
+        table.add_row(*cells[:len(headers)])
+
+    console.print(table)
+    console.print(f"\n[dim]提示: 支持 extra key=value 传参的命令可用这些字段[/dim]")

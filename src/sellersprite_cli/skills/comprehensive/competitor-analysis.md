@@ -148,3 +148,18 @@
 ## 输出格式
 
 使用 Markdown 表格、评分卡、SWOT矩阵呈现。关键发现用加粗标注。
+---
+
+## 参考文档
+
+本 Skill 涉及的 API 详细参数说明：
+
+- [`asin_coupon_trend`](../../reference/asin_coupon_trend.md)
+- [`asin_detail`](../../reference/asin_detail.md)
+- [`asin_prediction`](../../reference/asin_prediction.md)
+- [`keepa_info`](../../reference/keepa_info.md)
+- [`review`](../../reference/review.md)
+- [`traffic_keyword`](../../reference/traffic_keyword.md)
+- [`traffic_keyword_stat`](../../reference/traffic_keyword_stat.md)
+- [`traffic_listing`](../../reference/traffic_listing.md)
+- [`traffic_source`](../../reference/traffic_source.md)

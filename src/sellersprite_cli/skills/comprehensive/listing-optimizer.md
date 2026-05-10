@@ -167,3 +167,16 @@
 ## 输出格式
 
 使用 Markdown 表格呈现，优先级用 P0/P1/P2 标注。核心建议用加粗标注。
+---
+
+## 参考文档
+
+本 Skill 涉及的 API 详细参数说明：
+
+- [`asin_detail`](../../reference/asin_detail.md)
+- [`competitor_lookup`](../../reference/competitor_lookup.md)
+- [`keyword_order`](../../reference/keyword_order.md)
+- [`review`](../../reference/review.md)
+- [`traffic_extend`](../../reference/traffic_extend.md)
+- [`traffic_keyword`](../../reference/traffic_keyword.md)
+- [`traffic_keyword_stat`](../../reference/traffic_keyword_stat.md)

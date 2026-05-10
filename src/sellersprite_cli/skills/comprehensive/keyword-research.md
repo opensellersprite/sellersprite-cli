@@ -138,3 +138,16 @@
 ## 输出格式
 
 使用 Markdown 表格、星级评分和趋势文字描述呈现。机会评级使用星号直观表示。
+---
+
+## 参考文档
+
+本 Skill 涉及的 API 详细参数说明：
+
+- [`aba_research_monthly`](../../reference/aba_research_monthly.md)
+- [`aba_research_trend`](../../reference/aba_research_trend.md)
+- [`aba_research_weekly`](../../reference/aba_research_weekly.md)
+- [`google_trend`](../../reference/google_trend.md)
+- [`keyword_miner`](../../reference/keyword_miner.md)
+- [`keyword_research`](../../reference/keyword_research.md)
+- [`keyword_research_trends`](../../reference/keyword_research_trends.md)

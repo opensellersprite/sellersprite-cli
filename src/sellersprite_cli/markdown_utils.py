@@ -58,10 +58,5 @@ def get_skills_by_category() -> dict[str, list[SkillCard]]:
 
 CATEGORY_NAMES: dict[str, str] = {
     "comprehensive": "综合分析",
-    "category-structure": "类目结构",
-    "edge-opportunity": "机会捕捉",
-    "keyword-trend": "关键词趋势",
-    "new-product-burst": "新品爆发",
-    "product-defect": "产品缺陷",
-    "traffic-audit": "流量防伪",
+    "tactical": "战术选品",
 }

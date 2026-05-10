@@ -148,3 +148,12 @@
 ## 输出格式
 
 使用 Markdown 表格呈现，关键定价建议用加粗标注。策略对比用表格形式展示优劣势。
+---
+
+## 参考文档
+
+本 Skill 涉及的 API 详细参数说明：
+
+- [`competitor_lookup`](../../reference/competitor_lookup.md)
+- [`market_price_distribution`](../../reference/market_price_distribution.md)
+- [`product_research`](../../reference/product_research.md)

@@ -49,48 +49,48 @@ AI: [执行 4-5 步工作流，生成完整市场分析报告]
 
 | 技能名称 | 难度 | 核心工具 | 一句话逻辑 | 文件 |
 |----------|------|----------|-----------|------|
-| **新品快速爆发** | ⭐ | `product_research` | 上架 ≤2月、销量 ≥300、Review ≤100 | `new-product-burst/new-product-burst.md` |
-| **隐形爆款** | ⭐ | `product_research` | 上架 ≤3月、销量 ≥500、Review ≤50 | `new-product-burst/hidden-bestseller.md` |
+| **新品快速爆发** | ⭐ | `product_research` | 上架 ≤2月、销量 ≥300、Review ≤100 | `tactical/new-product-burst.md` |
+| **隐形爆款** | ⭐ | `product_research` | 上架 ≤3月、销量 ≥500、Review ≤50 | `tactical/hidden-bestseller.md` |
 
 ### 2.2 关键词趋势型（3）
 
 | 技能名称 | 难度 | 核心工具 | 一句话逻辑 | 文件 |
 |----------|------|----------|-----------|------|
-| **ABA 高增长趋势词** | ⭐⭐ | `keyword_research` | 近3月持续增长 + 点击不集中 | `keyword-trend/aba-high-growth-trend.md` |
-| **流量分散关键词** | ⭐⭐ | `keyword_miner` | 搜索 ≥5000 + 集中度 <50% | `keyword-trend/low-monopoly-keyword.md` |
-| **标题密度漏洞** | ⭐⭐⭐ | `keyword_miner` | 标题密度 ≤5 的长尾词 | `keyword-trend/title-density-gap.md` |
+| **ABA 高增长趋势词** | ⭐⭐ | `keyword_research` | 近3月持续增长 + 点击不集中 | `tactical/aba-high-growth-trend.md` |
+| **流量分散关键词** | ⭐⭐ | `keyword_miner` | 搜索 ≥5000 + 集中度 <50% | `tactical/low-monopoly-keyword.md` |
+| **标题密度漏洞** | ⭐⭐⭐ | `keyword_miner` | 标题密度 ≤5 的长尾词 | `tactical/title-density-gap.md` |
 
 ### 2.3 产品缺陷型（2）
 
 | 技能名称 | 难度 | 核心工具 | 一句话逻辑 | 文件 |
 |----------|------|----------|-----------|------|
-| **热销低评分产品** | ⭐⭐ | `product_research` | 月销 ≥1000 + 评分 ≤4.2 | `product-defect/hot-low-rating.md` |
-| **评论语义分析** | ⭐⭐⭐ | `review` | 差评 NLP 聚类 → 改良指南 | `product-defect/review-sentiment.md` |
+| **热销低评分产品** | ⭐⭐ | `product_research` | 月销 ≥1000 + 评分 ≤4.2 | `tactical/hot-low-rating.md` |
+| **评论语义分析** | ⭐⭐⭐ | `review` | 差评 NLP 聚类 → 改良指南 | `tactical/review-sentiment.md` |
 
 ### 2.4 类目结构型（3）
 
 | 技能名称 | 难度 | 核心工具 | 一句话逻辑 | 文件 |
 |----------|------|----------|-----------|------|
-| **低品牌垄断类目** | ⭐⭐ | `market_research` | 品牌集中度 <45% | `category-structure/low-brand-monopoly.md` |
-| **高新品占比市场** | ⭐⭐ | `market_research` | 新品占比 >5% + 新品仍出单 | `category-structure/high-new-product-ratio.md` |
-| **高毛利轻小品** | ⭐⭐ | `product_research` | FBA ≤$4 + 毛利 ≥50% | `category-structure/high-margin-lightweight.md` |
+| **低品牌垄断类目** | ⭐⭐ | `market_research` | 品牌集中度 <45% | `tactical/low-brand-monopoly.md` |
+| **高新品占比市场** | ⭐⭐ | `market_research` | 新品占比 >5% + 新品仍出单 | `tactical/high-new-product-ratio.md` |
+| **高毛利轻小品** | ⭐⭐ | `product_research` | FBA ≤$4 + 毛利 ≥50% | `tactical/high-margin-lightweight.md` |
 
 ### 2.5 流量防伪型（2）
 
 | 技能名称 | 难度 | 核心工具 | 一句话逻辑 | 文件 |
 |----------|------|----------|-----------|------|
-| **自然流量反查** | ⭐⭐⭐ | `traffic_source` | 自然流量占比 >60% | `traffic-audit/natural-traffic-audit.md` |
-| **变体拆解模型** | ⭐⭐⭐ | `asin_detail` | 找未被覆盖的变体缺口 | `traffic-audit/variant-gap-analysis.md` |
+| **自然流量反查** | ⭐⭐⭐ | `traffic_source` | 自然流量占比 >60% | `tactical/natural-traffic-audit.md` |
+| **变体拆解模型** | ⭐⭐⭐ | `asin_detail` | 找未被覆盖的变体缺口 | `tactical/variant-gap-analysis.md` |
 
 ### 2.6 机会捕捉型（5）
 
 | 技能名称 | 难度 | 核心工具 | 一句话逻辑 | 文件 |
 |----------|------|----------|-----------|------|
-| **本土溢价降维** | ⭐⭐ | `product_research` | 美国卖家 + 高价 + 高销 | `edge-opportunity/local-premium-disruption.md` |
-| **FBM 拦截** | ⭐ | `product_research` | FBM 发货 + 月销 ≥300 | `edge-opportunity/fbm-intercept.md` |
-| **低质量 Listing 高销量** | ⭐⭐ | `product_research` | LQS ≤60 + 月销 ≥400 | `edge-opportunity/poor-listing-winner.md` |
-| **高客单长尾** | ⭐⭐⭐ | `keyword_miner` | 均价 ≥$80 + 搜索量适中 | `edge-opportunity/high-ticket-long-tail.md` |
-| **季节前置爆破** | ⭐⭐⭐⭐ | `keyword_miner` | 历史同期环比增长 >100% | `edge-opportunity/seasonal-prepositioning.md` |
+| **本土溢价降维** | ⭐⭐ | `product_research` | 美国卖家 + 高价 + 高销 | `tactical/local-premium-disruption.md` |
+| **FBM 拦截** | ⭐ | `product_research` | FBM 发货 + 月销 ≥300 | `tactical/fbm-intercept.md` |
+| **低质量 Listing 高销量** | ⭐⭐ | `product_research` | LQS ≤60 + 月销 ≥400 | `tactical/poor-listing-winner.md` |
+| **高客单长尾** | ⭐⭐⭐ | `keyword_miner` | 均价 ≥$80 + 搜索量适中 | `tactical/high-ticket-long-tail.md` |
+| **季节前置爆破** | ⭐⭐⭐⭐ | `keyword_miner` | 历史同期环比增长 >100% | `tactical/seasonal-prepositioning.md` |
 
 ### 战术选品使用方式
 
@@ -149,12 +149,7 @@ skills/
     review-insights.md
     pricing-strategy.md
     ad-optimizer.md
-  new-product-burst/                # 新品爆发型（2）
-  keyword-trend/                    # 关键词趋势型（3）
-  product-defect/                   # 产品缺陷型（2）
-  category-structure/               # 类目结构型（3）
-  traffic-audit/                    # 流量防伪型（2）
-  edge-opportunity/                 # 机会捕捉型（5）
+  tactical/                         # 战术选品 Skills（17个）
 ```
 
 ---

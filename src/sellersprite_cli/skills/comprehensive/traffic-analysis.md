@@ -166,3 +166,16 @@
 ## 输出格式
 
 使用 Markdown 表格和结构化列表呈现。流量健康度用颜色文字标注（健康/警告/危险）。关键优化建议用加粗标注。
+---
+
+## 参考文档
+
+本 Skill 涉及的 API 详细参数说明：
+
+- [`keyword_order`](../../reference/keyword_order.md)
+- [`traffic_extend`](../../reference/traffic_extend.md)
+- [`traffic_keyword`](../../reference/traffic_keyword.md)
+- [`traffic_keyword_stat`](../../reference/traffic_keyword_stat.md)
+- [`traffic_listing`](../../reference/traffic_listing.md)
+- [`traffic_listing_stat`](../../reference/traffic_listing_stat.md)
+- [`traffic_source`](../../reference/traffic_source.md)
