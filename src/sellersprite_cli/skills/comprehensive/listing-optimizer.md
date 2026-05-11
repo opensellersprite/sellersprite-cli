@@ -76,7 +76,7 @@
 参数:
 - marketplace: 用户指定站点
 - asin: 目标ASIN
-- categoryId: 类目ID（从第1步 asin_detail 获取）
+- categoryId: 可选；如需提升类目相关性，可先调用 `asin_prediction` 取 `asinDetail.categoryId`（asin_detail 响应中无此字段）
 - size: 30
 
 获取: 近期买家评价，分析好评卖点、差评痛点。

@@ -18,7 +18,7 @@
 
 用法：对话中引用 skill 卡片，让 AI 按卡片参数执行。
 
-### 综合分析 Skills (`.claude/commands/`)
+### 综合分析 Skills (`skills/comprehensive/`)
 
 10个场景化分析命令，通过 `/命令` 调用：
 - `/product-research` - 智能选品助手

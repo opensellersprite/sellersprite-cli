@@ -108,7 +108,7 @@ AI: [识别到"新品快速爆发"技能，按卡片参数执行筛选]
 | 参数 | 默认值 | 说明 |
 |------|--------|------|
 | `marketplace` | `US` | 目标站点：US/JP/UK/DE/FR/IT/ES/CA/IN |
-| `matchType` | `3` | 关键词匹配：1=模糊 2=宽泛 3=精准 |
+| `matchType` | `2` | 关键词匹配：1=词组 2=模糊 3=精准（默认 2） |
 | `size` | `50` | 每页返回条数（默认 50，最大 100） |
 
 ---
@@ -136,8 +136,8 @@ AI: [识别到"新品快速爆发"技能，按卡片参数执行筛选]
 ```
 skills/
   SKILL.md                          # 本文件：技能总览元数据
-  README.md                         # 工具索引（38 个工具清单）
-  agent-instructions.md             # Agent 行为指令
+  README.md                         # Skill 索引（27 个 Skill 的详细列表）
+  agent-instructions.md             # 项目概述 + 38 个 MCP 工具清单，作为 AI 客户端的 CLAUDE.md/AGENTS.md 写入
   comprehensive/                    # 综合分析 Skills（10 个）
     product-research.md
     market-analysis.md
@@ -149,7 +149,14 @@ skills/
     review-insights.md
     pricing-strategy.md
     ad-optimizer.md
-  tactical/                         # 战术选品 Skills（17个）
+  tactical/                         # 战术选品 Skills（17 个）
+    new-product-burst.md / hidden-bestseller.md
+    aba-high-growth-trend.md / low-monopoly-keyword.md / title-density-gap.md
+    hot-low-rating.md / review-sentiment.md
+    low-brand-monopoly.md / high-new-product-ratio.md / high-margin-lightweight.md
+    natural-traffic-audit.md / variant-gap-analysis.md
+    local-premium-disruption.md / fbm-intercept.md / poor-listing-winner.md
+    high-ticket-long-tail.md / seasonal-prepositioning.md
 ```
 
 ---
@@ -164,4 +171,4 @@ mcp__sellersprite__<tool_name>
 
 例如：`mcp__sellersprite__asin_detail`、`mcp__sellersprite__product_research`
 
-完整工具清单见 `README.md`。
+完整工具清单见 `agent-instructions.md`。

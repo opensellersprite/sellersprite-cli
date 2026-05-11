@@ -24,7 +24,7 @@
 |--------|------|------|------|
 | `asinList` | array | 是 | asin列表 |
 | `marketplace` | string | 是 | Amazon 站点代码（枚举值）：US, JP, UK, DE, FR, IT, ES, CA, IN |
-| `order` | object |  | 排序 |
+| `order` | object |  | 排序（见[表2.3 流量词列表排序字段](./api_appendix.md#流量词列表排序字段表23)） |
 | `page` | integer |  | 页码 |
 | `relations` | array | 是 | 关联类型 |
 | `size` | integer |  | 每页条数 |
@@ -34,7 +34,7 @@
 ## 基本信息
 
 - **MCP Code**: `traffic_listing`
-- **Method**: POST
+- **Method**: `POST`
 - **URL**: `https://api.sellersprite.com/v1/traffic/listing`
 
 ## 响应参数

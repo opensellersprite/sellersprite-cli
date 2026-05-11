@@ -32,7 +32,7 @@
 ## 响应参数
 
 | 字段 | 类型 | 说明 |
-|------|------|------|------|
+|------|------|------|
 | nodeIdPath | String | 类目路径 |
 | countries[].code | String | 国家代码 |
 | countries[].label | String | 国家名称 |

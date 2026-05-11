@@ -1,5 +1,6 @@
 """CLI entry point — Typer app with domain-grouped subcommands and interactive TUI."""
 
+import difflib
 import json
 import os
 import platform
@@ -17,7 +18,7 @@ from rich.table import Table
 
 from .registry import TOOLS, DOMAINS, DOMAIN_TOOLS, to_camel, ALL_LIST_PARAMS
 from .markdown_utils import load_skills, get_skills_by_category, CATEGORY_NAMES, load_skills_index
-from .generators import CLIENT_NAMES, generate
+from .generators import CLIENT_ALIASES, CLIENT_NAMES, generate
 
 app = typer.Typer(
     name="sellersprite",
@@ -850,9 +851,27 @@ def init_client(
         console.print(f"可用客户端: {', '.join(sorted(CLIENT_NAMES))}")
         raise typer.Exit(1)
 
+    # Resolve known aliases (e.g. "claude" → "claude-code") with a notice.
+    resolved = []
+    for c in clients:
+        canonical = CLIENT_ALIASES.get(c)
+        if canonical:
+            console.print(f"[yellow]提示: '{c}' 已解析为 '{canonical}'[/yellow]")
+            resolved.append(canonical)
+        else:
+            resolved.append(c)
+    clients = resolved
+
     unknown = [c for c in clients if c not in CLIENT_NAMES]
     if unknown:
-        console.print(f"[red]未知客户端: {', '.join(unknown)}[/red]")
+        for u in unknown:
+            suggestions = difflib.get_close_matches(
+                u, sorted(CLIENT_NAMES), n=3, cutoff=0.4
+            )
+            console.print(f"[red]未知客户端: {u}[/red]")
+            if suggestions:
+                console.print(f"[yellow]  你是不是想用: {', '.join(suggestions)}?[/yellow]")
+        console.print(f"可用客户端: {', '.join(sorted(CLIENT_NAMES))}")
         raise typer.Exit(1)
 
     project_dir = Path(project).resolve() if project else Path.cwd()

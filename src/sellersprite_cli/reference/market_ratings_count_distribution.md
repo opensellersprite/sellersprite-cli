@@ -34,7 +34,7 @@
 ## 响应参数
 
 | 字段 | 类型 | 说明 |
-|------|------|------|------|
+|------|------|------|
 | nodeIdPath | String | 类目路径 |
 | distribution[].range | String | 评分数区间 |
 | distribution[].count | Integer | 商品数 |

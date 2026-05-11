@@ -34,7 +34,7 @@ Amazon ASIN 流量关键词结构【概览统计】工具。
 
 | 参数名 | 类型 | 必填 | 说明 |
 |--------|------|------|------|
-| `marketplace` | string | 是 | Amazon 站点 |
+| `marketplace` | string | 是 | Amazon 站点代码（枚举值）：US, JP, UK, DE, FR, IT, ES, CA, IN |
 | `asin` | string | 是 | ASIN |
 | `month` | string |  | 查询月份, 格式: yyyyMM，不传默认近30天 |
 

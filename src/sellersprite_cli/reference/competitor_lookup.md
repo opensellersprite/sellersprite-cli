@@ -28,7 +28,7 @@
 | `month` | string |  | 查询月份, 格式: yyyyMM |
 | `nodeIdPath` | string |  | 产品所属的类目节点 ID, 例如： 2619525011:3741271， 通常通过查询【产品类目信息】获取，或由用户直接指定类目路径 |
 | `nodeIdPathEqual` | boolean |  | 类目节点查询方式 |
-| `order` | object |  | 排序 |
+| `order` | object |  | 排序（见[表1.6 选产品排序字段](./api_appendix.md#选产品排序字段表16)） |
 | `page` | integer |  | 页码 |
 | `sellerName` | string |  | seller name |
 | `size` | integer |  | 每页条数 |

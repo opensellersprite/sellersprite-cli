@@ -90,7 +90,7 @@
     - 页面浏览量、退货率、搜索购买比
     - 需求规模与转化效率
 
-### 第5步: 生成市场分析报告
+### 第4步: 生成市场分析报告
 
 综合所有数据，输出完整的市场分析报告:
 
@@ -148,6 +148,17 @@
 
 本 Skill 涉及的 API 详细参数说明：
 
+- [`market_brand_concentration`](../../reference/market_brand_concentration.md)
+- [`market_ebc_distribution`](../../reference/market_ebc_distribution.md)
+- [`market_listing_date_distribution`](../../reference/market_listing_date_distribution.md)
+- [`market_price_distribution`](../../reference/market_price_distribution.md)
+- [`market_product_concentration`](../../reference/market_product_concentration.md)
+- [`market_product_demand_trend`](../../reference/market_product_demand_trend.md)
+- [`market_rating_distribution`](../../reference/market_rating_distribution.md)
+- [`market_ratings_count_distribution`](../../reference/market_ratings_count_distribution.md)
 - [`market_research`](../../reference/market_research.md)
 - [`market_research_statistics`](../../reference/market_research_statistics.md)
+- [`market_seller_concentration`](../../reference/market_seller_concentration.md)
+- [`market_seller_country_distribution`](../../reference/market_seller_country_distribution.md)
+- [`market_seller_type_concentration`](../../reference/market_seller_type_concentration.md)
 - [`product_node`](../../reference/product_node.md)

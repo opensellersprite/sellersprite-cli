@@ -36,7 +36,7 @@
 ## 响应参数
 
 | 字段 | 类型 | 说明 |
-|------|------|------|------|
+|------|------|------|
 | nodeIdPath | String | 类目路径 |
 | distribution[].rating | Float | 评分值 |
 | distribution[].count | Integer | 商品数 |

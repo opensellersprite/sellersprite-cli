@@ -46,8 +46,8 @@
 - minRating: 最低评分值
 - minProfit: 毛利率下限
 - maxWeights: 重量上限
-- matchType: 匹配方式
-- order: 按 total_units 降序排列
+- matchType: 匹配方式（integer，1=词组匹配，2=模糊匹配，3=精准匹配，默认 2）
+- order: 按 `units`（月销量）降序排列
 - size: 20
 - page: 1
 
@@ -108,5 +108,9 @@
 
 本 Skill 涉及的 API 详细参数说明：
 
+- [`asin_detail`](../../reference/asin_detail.md)
+- [`asin_prediction`](../../reference/asin_prediction.md)
+- [`google_trend`](../../reference/google_trend.md)
+- [`market_research_statistics`](../../reference/market_research_statistics.md)
 - [`product_node`](../../reference/product_node.md)
 - [`product_research`](../../reference/product_research.md)

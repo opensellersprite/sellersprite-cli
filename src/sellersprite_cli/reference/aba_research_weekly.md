@@ -59,7 +59,7 @@
 | `minSearches` | integer |  | 最小搜索量 |
 | `minTitleDensity` | integer |  | 最小标题密度 |
 | `minWordCount` | integer |  | 最小单词数 |
-| `order` | object |  | 排序 |
+| `order` | object |  | 排序（见[表2.4 ABA选品排序字段](./api_appendix.md#aba-选品排序字段表24)） |
 | `page` | integer |  | 页码 |
 | `rankGrowthRate` | number |  | 搜索增长率 |
 | `rankGrowthValue` | integer |  | 搜索增长量 |
@@ -69,7 +69,7 @@
 ## 基本信息
 
 - **MCP Code**: `aba_research_weekly`
-- **Method**: POST
+- **Method**: `POST`
 - **URL**: `https://api.sellersprite.com/v1/aba/research/weekly`
 
 ## 响应参数

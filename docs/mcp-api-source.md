@@ -88,7 +88,7 @@
 | 10 | variation | String | | N: 含变体, Y: 不含变体 |
 | 11 | page | Integer | | 页码，默认 1 |
 | 12 | size | Integer | | 每页条数，默认 50，最大 100 |
-| 13 | order.field | String | | 排序字段，默认 total_units |
+| 13 | order.field | String | | 排序字段，默认 total_units（表1.6 选产品排序字段） |
 | 14 | order.desc | boolean | | true=desc, false=asc；默认 true |
 
 ### 响应参数
@@ -161,7 +161,7 @@ curl -X POST 'https://api.sellersprite.com/v1/product/competitor-lookup' \
 | minRevenue/maxRevenue | Float | | 月销售额区间 |
 | minRevenueCr/maxRevenueCr | Float | | 销售额增长率区间 |
 | minUnitsCr/maxUnitsCr | Float | | 销量增长率区间 |
-| weightUnit | String | | 重量单位，默认g |
+| weightUnit | String | | 重量单位，默认g（表2.7 商品重量单位） |
 | minWeights/maxWeights | Float | | 重量区间 |
 | minVariations/maxVariations | Integer | | 变体数区间 |
 | filterSub | String | | Y=筛选子类目（需指定类目） |
@@ -173,13 +173,13 @@ curl -X POST 'https://api.sellersprite.com/v1/product/competitor-lookup' \
 | dimensionType | String | | 尺寸类型集合 |
 | minFba/maxFba | Float | | FBA运费区间 |
 | minLqs/maxLqs | Float | | Listing质量分区间 |
-| sellerNation | String | | 卖家所属地，逗号分隔 |
+| sellerNation | String | | 卖家所属地，逗号分隔（表1.5 卖家所属地） |
 | badgeBS/badgeAC/badgeNR | String | | Best Seller/Amazon's Choice/New Release 标识 (Y) |
 | fulfillment | String | | AMZ/FBA/FBM |
 | variation | String | | N=含变体, Y=不含变体 |
 | page | Integer | | 默认1，总条数限制2000 |
 | size | Integer | | 默认50，最大100 |
-| order.field | String | | 默认 total_units |
+| order.field | String | | 排序字段，默认 total_units（表1.6 选产品排序字段） |
 | order.desc | boolean | | 默认 true |
 
 ### 响应参数
@@ -284,7 +284,7 @@ curl -X GET 'https://api.sellersprite.com/v1/asin/US/B0DRVKZHK9' \
 | includeKeywords/excludeKeywords | List | | 包含/排除词 |
 | page | Integer | | 默认1 |
 | size | Integer | | 默认50，最大100 |
-| order.field | String | | 排序字段 |
+| order.field | String | | 排序字段（表1.8 关键词选品排序字段） |
 | order.desc | boolean | | 默认 true |
 
 ### 响应参数
@@ -491,7 +491,7 @@ curl -X GET 'https://api.sellersprite.com/v1/sales/prediction/bsr?marketplace=US
 | conversionKeywordTypes | List | | 流量转化类型 |
 | page | Integer | | 默认1 |
 | size | Integer | | 默认50，最大100，最多查2000条 |
-| order.field | String | | 默认 rankPosition |
+| order.field | String | | 排序字段，默认 rankPosition（表2.3 流量词列表排序字段） |
 | order.desc | Boolean | | 默认 false |
 
 ### 响应参数
@@ -602,7 +602,7 @@ curl -X GET 'https://api.sellersprite.com/v1/keepa/US/B0DYL2DHVV' \
 | min/maxSearchMonthCr | Float | | 月搜索量同比增长率 |
 | min/maxSearchNearlyCv | Integer | | 近3月增长值 |
 | min/maxSearchNearlyCr | Float | | 近3月增长率 |
-| marketPeriod | String | | 市场周期 |
+| marketPeriod | String | | 市场周期（表1.7 市场周期） |
 | min/maxAvgPrice | Float | | 均价范围 |
 | min/maxRatings | Integer | | 评分数范围 |
 | min/maxRating | Float | | 评分值范围 |
@@ -613,7 +613,7 @@ curl -X GET 'https://api.sellersprite.com/v1/keepa/US/B0DYL2DHVV' \
 | min/maxWordCount | Integer | | 单词个数 |
 | page | Integer | | 默认1 |
 | size | Integer | | 最大15 |
-| order.field/order.desc | - | | 排序 |
+| order.field/order.desc | - | | 排序（表2.4 ABA选品排序字段） |
 
 ### 响应参数
 
@@ -774,7 +774,7 @@ curl -X GET 'https://api.sellersprite.com/v1/traffic/listing-stat/US/B07Z82895W'
 |------|------|------|------|
 | marketplace | String | ✓ | 市场 |
 | asinList | List | ✓ | ASIN 列表 |
-| relations | List | | 关联类型 |
+| relations | List | | 关联类型（表2.2 关联流量关联类型） |
 | trafficSourceTypes | List | | 流量来源类型 |
 | page | Integer | | 默认1 |
 | size | Integer | | 默认50，最大100 |
@@ -857,7 +857,7 @@ curl -X POST 'https://api.sellersprite.com/v1/traffic/source' \
 | minCvShareRate/maxCvShareRate | Float | | 转化共享率区间 |
 | page | Integer | | 默认1 |
 | size | Integer | | 默认50，最大100 |
-| order.field/order.desc | - | | 排序 |
+| order.field/order.desc | - | | 排序（表2.4 ABA选品排序字段） |
 
 ### 响应参数
 
@@ -901,7 +901,7 @@ curl -X POST 'https://api.sellersprite.com/v1/aba/research/weekly' \
 | minSearches/maxSearches | Integer | | 月搜索量区间 |
 | page | Integer | | 默认1 |
 | size | Integer | | 默认50，最大100 |
-| order.field/order.desc | - | | 排序 |
+| order.field/order.desc | - | | 排序（表2.4 ABA选品排序字段） |
 
 ### 响应参数
 
@@ -1040,7 +1040,7 @@ curl -X GET 'https://api.sellersprite.com/v1/review/US/B07Z82895W?size=1' \
 | fulfillment | String | | AMZ/FBA/FBM |
 | page | Integer | | 默认1 |
 | size | Integer | | 默认50，最大100 |
-| order.field/order.desc | - | | 排序 |
+| order.field/order.desc | - | | 排序（表1.6 选产品排序字段） |
 
 ### 响应参数
 

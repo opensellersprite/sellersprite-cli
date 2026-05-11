@@ -19,8 +19,8 @@
 
 | 参数名 | 类型 | 必填 | 说明 |
 |--------|------|------|------|
-| `marketplace` | string | 是 | Amazon 站点 |
-| `asin` | string | 是 |  |
+| `marketplace` | string | 是 | Amazon 站点代码（枚举值）：US, JP, UK, DE, FR, IT, ES, CA, IN |
+| `asin` | string | 是 | Amazon 商品编号（ASIN） |
 
 ## 基本信息
 

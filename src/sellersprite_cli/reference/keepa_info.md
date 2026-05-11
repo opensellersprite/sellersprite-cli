@@ -37,8 +37,8 @@
 
 | 参数名 | 类型 | 必填 | 说明 |
 |--------|------|------|------|
-| `marketplace` | string | 是 | Amazon 站点 |
-| `asin` | string | 是 |  |
+| `marketplace` | string | 是 | Amazon 站点代码（枚举值）：US, JP, UK, DE, FR, IT, ES, CA, IN |
+| `asin` | string | 是 | Amazon 商品编号（ASIN） |
 | `dailyLatest` | boolean |  | 是否仅获取每日最新数据 |
 | `endTimestamp` | integer |  | 趋势结束时间戳 |
 | `startTimestamp` | integer |  | 趋势起始时间戳 |

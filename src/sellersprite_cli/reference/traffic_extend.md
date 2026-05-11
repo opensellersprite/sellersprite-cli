@@ -62,7 +62,7 @@
 | `minTitleDensity` | integer |  | 最小标题密度 |
 | `minTrafficPercentage` | number |  | 最小流量占比 |
 | `minWordCount` | integer |  | 最小单词个数 |
-| `order` | object |  | 排序 |
+| `order` | object |  | 排序（见[表1.8 关键词选品排序字段](./api_appendix.md#关键词选品排序字段表18)） |
 | `page` | integer |  | 页码 |
 | `queryType` | integer | 是 | 查询方式, 默认: 2 可选值(必须严格使用下列数字值之一):  0: 所有变体  1: 畅销变体  2: 当前变体   禁止使用未列出的值。  |
 | `size` | integer |  | 每页条数 |
@@ -70,7 +70,7 @@
 ## 基本信息
 
 - **MCP Code**: `traffic_extend`
-- **Method**: POST
+- **Method**: `POST`
 - **URL**: `https://api.sellersprite.com/v1/traffic/extend`
 
 ## 响应参数

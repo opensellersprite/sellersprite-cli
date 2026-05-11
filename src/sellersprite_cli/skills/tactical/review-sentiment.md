@@ -36,8 +36,8 @@
 | 参数 | 含义 | 建议值 | 调节指南 |
 |------|------|--------|----------|
 | `asin` | 目标商品 ASIN | 必填 | 建议选择评分 ≤ 4.0 的竞品 |
-| `categoryId` | 类目 ID | 必填 | 从 asin_detail 或 asin_prediction 获取 |
-| `size` | 返回评论数 | 50 | 提高到 100 可获得更全面的分析 |
+| `categoryId` | 类目 ID | 可选 | 提供后可提升类目相关性；从 asin_prediction 的 `asinDetail.categoryId` 获取（asin_detail 响应中无该字段） |
+| `size` | 返回评论数 | 50 | 接口上限 50；如需更多评论请翻页（`page=2,3...`） |
 | `page` | 分页 | 1 | 如需更多数据可翻页获取 |
 
 ## 分析框架

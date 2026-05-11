@@ -36,7 +36,7 @@
 ## 基本信息
 
 - **MCP Code**: `google_trend`
-- **Method**: POST
+- **Method**: `POST`
 - **URL**: `https://api.sellersprite.com/v1/google/trend`
 
 ## 响应参数

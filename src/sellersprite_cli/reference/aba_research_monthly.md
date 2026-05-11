@@ -55,7 +55,7 @@
 | `minSearches` | integer |  | 最小搜索量 |
 | `minTitleDensity` | integer |  | 最小标题密度 |
 | `minWordCount` | integer |  | 最小单词数 |
-| `order` | object |  | 排序 |
+| `order` | object |  | 排序（见[表2.4 ABA选品排序字段](./api_appendix.md#aba-选品排序字段表24)） |
 | `page` | integer |  | 页码 |
 | `searchModel` | integer |  | 查询方式, 默认: 2 可选值(必须严格使用下列数字值之一): 1: 热门市场 2: 异动市场 3: 持续增长市场 4: 快速飙升市场 5: 潜力市场 6: 长尾市场  禁止使用未列出的值。  |
 | `size` | integer |  | 每页条数 |
@@ -63,7 +63,7 @@
 ## 基本信息
 
 - **MCP Code**: `aba_research_monthly`
-- **Method**: POST
+- **Method**: `POST`
 - **URL**: `https://api.sellersprite.com/v1/aba/research/monthly`
 
 ## 响应参数

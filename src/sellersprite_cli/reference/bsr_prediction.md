@@ -15,8 +15,8 @@
 
 | 参数名 | 类型 | 必填 | 说明 |
 |--------|------|------|------|
-| `marketplace` | string | 是 | Amazon 站点 |
-| `bsr` | integer | 是 |  |
+| `marketplace` | string | 是 | Amazon 站点代码（枚举值）：US, JP, UK, DE, FR, IT, ES, CA, IN |
+| `bsr` | integer | 是 | Amazon 大类 BSR 排名 |
 | `categoryId` | string | 是 | 一级类目节点，查产品类目返回 |
 
 ## 基本信息

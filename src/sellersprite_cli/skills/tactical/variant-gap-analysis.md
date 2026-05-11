@@ -34,7 +34,7 @@
 
 ## 分析方法
 
-1. 看 `variations` 字段：列出所有子变体 ASIN
+1. 看 `variationList[]` 字段（数组，每项含 `asin` 和 `attribute`）：列出所有子变体 ASIN
 2. **并行调用** `mcp__sellersprite__asin_prediction`（该工具仅支持单个 ASIN 查询，不支持批量，需将所有子变体 ASIN 的调用同时发起），获取各变体月销差异
 3. 销量悬殊极大的变体 = 某些规格是"被迫选择"
 4. 缺失的变体组合 = 未被满足的需求

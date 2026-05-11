@@ -56,19 +56,7 @@
 
 获取: Google Shopping 搜索热度趋势，判断是否为季节性、上升期或衰退期。
 
-综合所有数据，输出关键词研究报告:
-
-调用 `google_trend` 验证外部搜索趋势:
-
-参数:
-- marketplace: 用户指定站点
-- keyword: 用户输入的关键词
-- googleProp: "shoppingCart"（购物搜索）
-- monthly: true
-
-获取: Google Shopping 搜索热度趋势，判断是否为季节性、上升期或衰退期。
-
-### 第5步: 生成关键词研究报告
+### 第3步: 生成关键词研究报告
 
 综合所有数据，输出关键词研究报告:
 

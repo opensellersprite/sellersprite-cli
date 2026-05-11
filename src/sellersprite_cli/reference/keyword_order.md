@@ -30,7 +30,7 @@
 | `date` | string | 是 | 回溯类型. 可选值: W/M. 当 reverseType = 'W' 时, date 必须为 yyyyMMdd 格式, 且表示当周的周六. 当 reverseType = 'M' 时, date 必须为 yyyyMM 格式. |
 | `marketplace` | string | 是 | Amazon 站点代码（枚举值）：US, JP, UK, DE, FR, IT, ES, CA, IN |
 | `matchType` | integer |  | 匹配方式 可选值(必须严格使用下列数字值之一): 1: 词组匹配 2: 模糊匹配 3: 精准匹配  禁止使用未列出的值。  |
-| `order` | object |  | 排序 |
+| `order` | object |  | 排序（见[表1.8 关键词选品排序字段](./api_appendix.md#关键词选品排序字段表18)） |
 | `page` | integer |  | 页码 |
 | `reverseType` | string | 是 | 反查模式 可选值(仅填写字段名): - W: 周 - M: 月  |
 | `size` | integer |  | 每页条数 |
@@ -39,7 +39,7 @@
 ## 基本信息
 
 - **MCP Code**: `keyword_order`
-- **Method**: POST
+- **Method**: `POST`
 - **URL**: `https://api.sellersprite.com/v1/keyword/order`
 
 ## 响应参数

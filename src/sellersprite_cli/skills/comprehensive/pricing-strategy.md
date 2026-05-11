@@ -52,7 +52,7 @@
 
 参数:
 - marketplace: 用户指定站点
-- asin: 目标ASIN
+- asins: [目标ASIN]（array 类型，可一次传入多个 ASIN）
 - size: 20
 
 获取: TOP 20 竞品的价格、销量、评分等数据。

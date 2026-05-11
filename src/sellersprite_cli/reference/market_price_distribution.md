@@ -35,7 +35,7 @@
 ## 响应参数
 
 | 字段 | 类型 | 说明 |
-|------|------|------|------|
+|------|------|------|
 | nodeIdPath | String | 类目路径 |
 | distribution[].range | String | 价格区间 |
 | distribution[].minPrice | Float | 最低价 |

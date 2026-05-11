@@ -103,6 +103,12 @@ CLIENTS: dict[str, ClientSpec] = {
 
 CLIENT_NAMES = set(CLIENTS.keys())
 
+# Common aliases users might type → canonical client name.
+# Used by the CLI to forgive the most likely typos / shortenings.
+CLIENT_ALIASES: dict[str, str] = {
+    "claude": "claude-code",
+}
+
 
 # ── Helpers ───────────────────────────────────────────────────
 

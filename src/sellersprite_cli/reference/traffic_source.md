@@ -36,7 +36,7 @@ Amazon 流量关键词结构分析工具（ASIN / 关键词维度）。
 |--------|------|------|------|
 | `marketplace` | string | 是 | Amazon 站点代码（枚举值）：US, JP, UK, DE, FR, IT, ES, CA, IN |
 | `month` | string |  | 查询月份, 格式: yyyyMM |
-| `order` | object |  | 排序 |
+| `order` | object |  | 排序（见[表2.3 流量词列表排序字段](./api_appendix.md#流量词列表排序字段表23)） |
 | `page` | integer |  | 页码 |
 | `q` | string | 是 | asin 或者 关键词 |
 | `size` | integer |  | 每页条数 |
@@ -44,7 +44,7 @@ Amazon 流量关键词结构分析工具（ASIN / 关键词维度）。
 ## 基本信息
 
 - **MCP Code**: `traffic_source`
-- **Method**: POST
+- **Method**: `POST`
 - **URL**: `https://api.sellersprite.com/v1/traffic/source`
 
 ## 响应参数

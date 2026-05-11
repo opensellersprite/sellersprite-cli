@@ -63,7 +63,7 @@
 参数:
 - marketplace: 用户指定站点
 - asinList: [目标ASIN]
-- relations: 关联类型列表
+- relations: ["similar"]（array 必填，可选关联类型，如 "similar"）
 - size: 20
 
 获取: 与目标ASIN存在关联关系的竞品列表及其流量数据。
@@ -87,7 +87,7 @@
 - marketplace: 用户指定站点
 - asins: [目标ASIN]
 - reverseType: "M"
-- date: 当月，格式 yyyyMM（必填，如 "202605"）
+- date: 当月，格式 yyyyMM（必填，如 "202605"）。reverseType="M" 时用 yyyyMM 格式；reverseType="W" 时用 yyyyMMdd 格式（当周周六）
 
 获取: 转化优质词、平稳词、流失词和无效曝光词。
 

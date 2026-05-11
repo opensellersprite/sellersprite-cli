@@ -78,7 +78,7 @@
 | `minSupplyDemandRatio` | number |  | 最小供需比 |
 | `minWordCount` | integer |  | 最小单词个数 |
 | `month` | string |  | 查询月份, 格式: yyyyMM |
-| `order` | object |  | 排序 |
+| `order` | object |  | 排序（见[表1.8 关键词选品排序字段](./api_appendix.md#关键词选品排序字段表18)） |
 | `page` | integer |  | 页码 |
 | `size` | integer |  | 每页条数 |
 | `withYearlyGrowth` | boolean |  | 新细分市场 |

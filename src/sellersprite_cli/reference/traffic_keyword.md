@@ -22,7 +22,7 @@
 | `keyword` | string |  | 关键词 |
 | `marketplace` | string | 是 | Amazon 站点代码（枚举值）：US, JP, UK, DE, FR, IT, ES, CA, IN |
 | `month` | string |  | 查询月份, 格式: yyyyMM |
-| `order` | object |  | 排序 |
+| `order` | object |  | 排序（见[表2.3 流量词列表排序字段](./api_appendix.md#流量词列表排序字段表23)） |
 | `page` | integer |  | 页码 |
 | `size` | integer |  | 每页条数 |
 | `trafficKeywordTypes` | array |  | 流量占比类型 可选值(仅填写字段名): - primary: 主要流量词 - precise: 精准流量词 - preciseLongTail: 转化流失词  |

@@ -32,7 +32,7 @@
 ## 响应参数
 
 | 字段 | 类型 | 说明 |
-|------|------|------|------|
+|------|------|------|
 | nodeIdPath | String | 类目路径 |
 | trends[].month | String | 月份 |
 | trends[].units | Integer | 销量 |
