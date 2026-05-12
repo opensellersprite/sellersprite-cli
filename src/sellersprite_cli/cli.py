@@ -100,9 +100,9 @@ def _parse_extra(extra: list[str] | None) -> dict:
 def _coerce_arg(key: str, value: str):
     """Auto-coerce CLI string args to Python types."""
     camel = to_camel(key)
-    if value.lower() in ("true", "yes", "y"):
+    if value.lower() in ("true", "yes"):
         return True
-    if value.lower() in ("false", "no", "n"):
+    if value.lower() in ("false", "no"):
         return False
     if camel in ALL_LIST_PARAMS:
         return [v.strip() for v in value.split(",")]
