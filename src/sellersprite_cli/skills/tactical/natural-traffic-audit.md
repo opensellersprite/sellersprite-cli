@@ -24,7 +24,8 @@
 ```json
 {
   "marketplace": "US",
-  "asin": "B0XXXXXXXXX"
+  "asin": "B0XXXXXXXXX",
+  "month": "202604"
 }
 ```
 

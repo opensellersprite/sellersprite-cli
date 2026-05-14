@@ -26,11 +26,12 @@
 - marketplace: 用户指定站点
 - asin: 目标ASIN
 - order: 按 trafficPercentage 降序
-- size: 50
+- size: 100
 
 **3. `traffic_keyword_stat`** - 广告词概览统计:
 - marketplace: 用户指定站点
 - asin: 目标ASIN
+- month: 历史月份 yyyyMM（可选，不传默认近30天）
 
 **4. `keyword_order`** - 关键词转化表现:
 - marketplace: 用户指定站点

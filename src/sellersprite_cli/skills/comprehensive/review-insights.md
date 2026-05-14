@@ -25,7 +25,7 @@
 - marketplace: 用户指定站点
 - asin: 目标ASIN
 - categoryId: 可选（reference 中非必填，省略不影响调用）。如需提升类目相关性，可在第 2 步串行：先调用 `asin_prediction` 取 `asinDetail.categoryId`，再调用 `review`
-- size: 50（接口上限）
+- size: 10（接口上限）
 - 获取: 评论标题、内容、评分、评论人、评论时间
 
 **并行调用 C** — `keepa_info`:
@@ -45,7 +45,7 @@
 - marketplace: 用户指定站点
 - asin: 单个竞品ASIN
 - categoryId: 类目ID
-- size: 50
+- size: 10
 
 ### 第3步: 生成评论洞察报告
 

@@ -176,8 +176,17 @@ class SellerSprite:
     def asin_detail_with_coupon_trend(self, asin: str, marketplace: str | None = None) -> dict:
         return self._call("asin_detail_with_coupon_trend", self._req(marketplace, asin=asin))
 
-    def keepa_info(self, asin: str, marketplace: str | None = None) -> dict:
-        return self._call("keepa_info", self._req(marketplace, asin=asin))
+    def keepa_info(self, asin: str, marketplace: str | None = None,
+                    start_timestamp: int | None = None, end_timestamp: int | None = None,
+                    daily_latest: bool | None = None) -> dict:
+        p = self._req(marketplace, asin=asin)
+        if start_timestamp is not None:
+            p["startTimestamp"] = start_timestamp
+        if end_timestamp is not None:
+            p["endTimestamp"] = end_timestamp
+        if daily_latest is not None:
+            p["dailyLatest"] = daily_latest
+        return self._call("keepa_info", p)
 
     # ── 商品与竞品 (3) ─────────────────────────────────────
 

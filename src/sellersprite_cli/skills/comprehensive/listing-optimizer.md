@@ -31,6 +31,7 @@
 参数:
 - marketplace: 用户指定站点
 - asin: 目标ASIN
+- month: 历史月份 yyyyMM（可选，不传默认近30天）
 
 获取: 自然搜索词、广告词、推荐词数量分布。
 
@@ -40,7 +41,7 @@
 - marketplace: 用户指定站点
 - asin: 目标ASIN
 - order: 按 trafficPercentage 降序
-- size: 50
+- size: 10
 
 获取: 当前已获取流量的关键词列表、搜索量、排名、流量占比等。
 
@@ -65,9 +66,7 @@
 - asinList: [目标ASIN]
 - queryType: 2
 - minSearches: 1000
-- size: 30
-
-> 注意: `order` 参数为 object 类型，不要传字符串。
+- size: 10
 
 获取: 竞品有流量但本商品未覆盖的关键词机会。
 
@@ -77,9 +76,7 @@
 - marketplace: 用户指定站点
 - asin: 目标ASIN
 - categoryId: 可选；如需提升类目相关性，可先调用 `asin_prediction` 取 `asinDetail.categoryId`（asin_detail 响应中无此字段）
-- size: 30
-
-获取: 近期买家评价，分析好评卖点、差评痛点。
+- size: 10
 
 ### 第4步: 竞品 Listing 对比（可选，并行调用）
 
@@ -97,7 +94,7 @@
 - marketplace: 用户指定站点
 - asin: 单个竞品ASIN
 - order: 按 trafficPercentage 降序
-- size: 50
+- size: 10
 
 获取所有竞品的流量关键词，用于对比关键词覆盖差异。
 

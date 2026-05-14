@@ -265,9 +265,23 @@ def asin_detail_coupon(asin: AsinArg, marketplace: MpOpt = "US", key: KeyOpt = N
 
 
 @asin_app.command("keepa")
-def asin_keepa(asin: AsinArg, marketplace: MpOpt = "US", key: KeyOpt = None):
+def asin_keepa(
+    asin: AsinArg,
+    start_timestamp: Annotated[Optional[int], typer.Option("--start-timestamp", help="趋势起始时间戳(毫秒)")] = None,
+    end_timestamp: Annotated[Optional[int], typer.Option("--end-timestamp", help="趋势结束时间戳(毫秒)")] = None,
+    daily_latest: Annotated[Optional[bool], typer.Option("--daily-latest", help="仅获取每日最新数据 true/false")] = None,
+    marketplace: MpOpt = "US",
+    key: KeyOpt = None,
+):
     """Keepa 历史趋势"""
-    _print_result(_call_tool("keepa_info", key, marketplace, asin=asin))
+    kwargs = {"asin": asin}
+    if start_timestamp is not None:
+        kwargs["startTimestamp"] = start_timestamp
+    if end_timestamp is not None:
+        kwargs["endTimestamp"] = end_timestamp
+    if daily_latest is not None:
+        kwargs["dailyLatest"] = daily_latest
+    _print_result(_call_tool("keepa_info", key, marketplace, **kwargs))
 
 
 # ── Product commands ──────────────────────────────────────────
@@ -319,17 +333,25 @@ def product_search(
 @product_app.command("competitor")
 def product_competitor(
     asins: Annotated[Optional[str], typer.Option("--asins", help="ASIN 列表 (逗号分隔)")] = None,
+    month: Annotated[Optional[str], typer.Option("--month", help="查询月份 yyyyMM")] = None,
     page: PageOpt = None,
     size: SizeOpt = None,
     order_field: OrderFieldOpt = None,
     order_desc: OrderDescOpt = None,
+    extra: ExtraArg = None,
     marketplace: MpOpt = "US",
     key: KeyOpt = None,
 ):
     """竞品查询"""
-    kwargs = {"order_field": order_field, "order_desc": order_desc}
+    kwargs = _parse_extra(extra)
+    if order_field is not None:
+        kwargs["order_field"] = order_field
+    if order_desc is not None:
+        kwargs["order_desc"] = order_desc
     if asins:
         kwargs["asins"] = [a.strip() for a in asins.split(",")]
+    if month:
+        kwargs["month"] = month
     if page is not None:
         kwargs["page"] = page
     if size is not None:
@@ -340,11 +362,20 @@ def product_competitor(
 @product_app.command("node")
 def product_node(
     keyword: Annotated[Optional[str], typer.Option("--keyword", help="关键词")] = None,
+    node_id_path: Annotated[Optional[str], typer.Option("--node-id-path", help="类目节点路径")] = None,
+    month: Annotated[Optional[str], typer.Option("--month", help="查询月份 yyyyMM")] = None,
     marketplace: MpOpt = "US",
     key: KeyOpt = None,
 ):
     """产品类目查询"""
-    _print_result(_call_tool("product_node", key, marketplace, keyword=keyword))
+    kwargs = {}
+    if keyword:
+        kwargs["keyword"] = keyword
+    if node_id_path:
+        kwargs["nodeIdPath"] = node_id_path
+    if month:
+        kwargs["month"] = month
+    _print_result(_call_tool("product_node", key, marketplace, **kwargs))
 
 
 # ── Keyword commands ──────────────────────────────────────────
@@ -380,21 +411,23 @@ def keyword_mine(
 
 @keyword_app.command("research")
 def keyword_research(
-    keyword: Annotated[Optional[str], typer.Option("--keyword", help="关键词")] = None,
-    keyword_list: Annotated[Optional[str], typer.Option("--keyword-list", help="关键词列表 (逗号分隔)")] = None,
+    keywords: Annotated[Optional[str], typer.Option("--keywords", help="关键词")] = None,
     page: PageOpt = None,
     size: SizeOpt = None,
     order_field: OrderFieldOpt = None,
     order_desc: OrderDescOpt = None,
+    extra: ExtraArg = None,
     marketplace: MpOpt = "US",
     key: KeyOpt = None,
 ):
     """关键词市场选品分析"""
-    kwargs = {"order_field": order_field, "order_desc": order_desc}
-    if keyword:
-        kwargs["keywords"] = keyword
-    if keyword_list:
-        kwargs["keywordList"] = [k.strip() for k in keyword_list.split(",")]
+    kwargs = _parse_extra(extra)
+    if order_field is not None:
+        kwargs["order_field"] = order_field
+    if order_desc is not None:
+        kwargs["order_desc"] = order_desc
+    if keywords:
+        kwargs["keywords"] = keywords
     if page is not None:
         kwargs["page"] = page
     if size is not None:
@@ -407,6 +440,8 @@ def keyword_order(
     date: Annotated[str, typer.Option("--date", help="日期: W模式=yyyyMMdd(当周周六), M模式=yyyyMM")],
     asins: Annotated[Optional[str], typer.Option("--asins", help="ASIN 列表 (逗号分隔)")] = None,
     reverse_type: Annotated[str, typer.Option("--reverse-type", help="反查模式: W=周 M=月")] = "M",
+    conversion_type: Annotated[Optional[str], typer.Option("--conversion-type", help="转化类型 (逗号分隔): E=优质词 S=平稳词 L=流失词 I=无效曝光词")] = None,
+    variation: Annotated[Optional[str], typer.Option("--variation", help="是否查询变体: Y=否 N=是")] = None,
     page: PageOpt = None,
     size: SizeOpt = None,
     order_field: OrderFieldOpt = None,
@@ -419,6 +454,10 @@ def keyword_order(
               "order_field": order_field, "order_desc": order_desc}
     if asins:
         kwargs["asins"] = [a.strip() for a in asins.split(",")]
+    if conversion_type:
+        kwargs["conversionType"] = [c.strip() for c in conversion_type.split(",")]
+    if variation:
+        kwargs["variation"] = variation
     if page is not None:
         kwargs["page"] = page
     if size is not None:
@@ -440,14 +479,11 @@ def keyword_bsr(
 @keyword_app.command("trends")
 def keyword_trends(
     keyword: Annotated[str, typer.Argument(help="关键词")],
-    month: Annotated[Optional[str], typer.Option("--month", help="月份 (YYYY-MM)")] = None,
     marketplace: MpOpt = "US",
     key: KeyOpt = None,
 ):
     """关键词趋势分析"""
     kwargs = {"keyword": keyword}
-    if month:
-        kwargs["month"] = month
     _print_result(_call_tool("keyword_research_trends", key, marketplace, **kwargs))
 
 
@@ -456,6 +492,11 @@ def keyword_trends(
 @traffic_app.command("keyword")
 def traffic_keyword(
     asin: AsinArg,
+    keyword: Annotated[Optional[str], typer.Option("--keyword", help="关键词")] = None,
+    month: Annotated[Optional[str], typer.Option("--month", help="历史月份 yyyyMM")] = None,
+    badges: Annotated[Optional[str], typer.Option("--badges", help="流量词类型 (逗号分隔)")] = None,
+    traffic_keyword_types: Annotated[Optional[str], typer.Option("--traffic-keyword-types", help="流量占比类型 (逗号分隔)")] = None,
+    conversion_keyword_types: Annotated[Optional[str], typer.Option("--conversion-keyword-types", help="转化效果类型 (逗号分隔)")] = None,
     page: PageOpt = None,
     size: SizeOpt = None,
     order_field: OrderFieldOpt = None,
@@ -465,6 +506,16 @@ def traffic_keyword(
 ):
     """流量关键词明细"""
     kwargs = {"asin": asin, "order_field": order_field, "order_desc": order_desc}
+    if keyword:
+        kwargs["keyword"] = keyword
+    if month:
+        kwargs["month"] = month
+    if badges:
+        kwargs["badges"] = [b.strip() for b in badges.split(",")]
+    if traffic_keyword_types:
+        kwargs["trafficKeywordTypes"] = [t.strip() for t in traffic_keyword_types.split(",")]
+    if conversion_keyword_types:
+        kwargs["conversionKeywordTypes"] = [c.strip() for c in conversion_keyword_types.split(",")]
     if page is not None:
         kwargs["page"] = page
     if size is not None:
@@ -475,29 +526,30 @@ def traffic_keyword(
 @traffic_app.command("keyword-stat")
 def traffic_keyword_stat(
     asin: AsinArg,
-    month: Annotated[Optional[str], typer.Option("--month", help="月份 (YYYY-MM)")] = None,
+    month: Annotated[Optional[str], typer.Option("--month", help="历史月份 yyyyMM")] = None,
     marketplace: MpOpt = "US",
     key: KeyOpt = None,
 ):
     """流量关键词统计"""
-    _print_result(_call_tool("traffic_keyword_stat", key, marketplace, asin=asin, month=month))
+    kwargs = {"asin": asin}
+    if month:
+        kwargs["month"] = month
+    _print_result(_call_tool("traffic_keyword_stat", key, marketplace, **kwargs))
 
 
 @traffic_app.command("source")
 def traffic_source(
+    month: Annotated[str, typer.Option("--month", help="查询月份 yyyyMM (必填)")],
     asin: Annotated[Optional[str], typer.Option("--asin", help="ASIN 或关键词")] = None,
-    month: Annotated[Optional[str], typer.Option("--month", help="查询月份 yyyyMM")] = None,
     order_field: OrderFieldOpt = None,
     order_desc: OrderDescOpt = None,
     marketplace: MpOpt = "US",
     key: KeyOpt = None,
 ):
     """流量来源分析"""
-    kwargs = {"order_field": order_field, "order_desc": order_desc}
+    kwargs = {"order_field": order_field, "order_desc": order_desc, "month": month}
     if asin:
         kwargs["q"] = asin
-    if month:
-        kwargs["month"] = month
     _print_result(_call_tool("traffic_source", key, marketplace, **kwargs))
 
 
@@ -515,6 +567,7 @@ def traffic_listing_stat(
 def traffic_listing(
     asin_list: Annotated[str, typer.Option("--asin-list", help="ASIN 列表 (逗号分隔)")],
     relations: Annotated[str, typer.Option("--relations", help="关联类型 (逗号分隔)")],
+    variations: Annotated[Optional[bool], typer.Option("--variations", help="是否查询变体 true/false")] = None,
     page: PageOpt = None,
     size: SizeOpt = None,
     order_field: OrderFieldOpt = None,
@@ -529,6 +582,8 @@ def traffic_listing(
         "order_field": order_field,
         "order_desc": order_desc,
     }
+    if variations is not None:
+        kwargs["variations"] = variations
     if page is not None:
         kwargs["page"] = page
     if size is not None:
@@ -595,10 +650,16 @@ def _make_market_command(tool_name: str, label: str):
     """Factory for market analysis commands that all take node_id_path."""
     def cmd(
         node_id_path: Annotated[str, typer.Option("--node-id-path", help="类目节点路径")],
+        month: Annotated[Optional[str], typer.Option("--month", help="查询月份 yyyyMM")] = None,
         marketplace: MpOpt = "US",
         key: KeyOpt = None,
     ):
-        _print_result(_call_tool(tool_name, key, marketplace, node_id_path=node_id_path))
+        kwargs = {"node_id_path": node_id_path}
+        # Only add month for tools that support it
+        if tool_name in ("market_research_statistics", "market_listing_trend_distribution", "market_product_demand_trend"):
+            if month:
+                kwargs["month"] = month
+        _print_result(_call_tool(tool_name, key, marketplace, **kwargs))
     cmd.__doc__ = label
     return cmd
 
@@ -633,11 +694,16 @@ def trend_aba_weekly(
     size: SizeOpt = None,
     order_field: OrderFieldOpt = None,
     order_desc: OrderDescOpt = None,
+    extra: ExtraArg = None,
     marketplace: MpOpt = "US",
     key: KeyOpt = None,
 ):
     """ABA 周度趋势"""
-    kwargs = {"order_field": order_field, "order_desc": order_desc}
+    kwargs = _parse_extra(extra)
+    if order_field is not None:
+        kwargs["order_field"] = order_field
+    if order_desc is not None:
+        kwargs["order_desc"] = order_desc
     if keyword_list:
         kwargs["keywordList"] = [k.strip() for k in keyword_list.split(",")]
     if page is not None:
@@ -654,11 +720,16 @@ def trend_aba_monthly(
     size: SizeOpt = None,
     order_field: OrderFieldOpt = None,
     order_desc: OrderDescOpt = None,
+    extra: ExtraArg = None,
     marketplace: MpOpt = "US",
     key: KeyOpt = None,
 ):
     """ABA 月度趋势"""
-    kwargs = {"order_field": order_field, "order_desc": order_desc}
+    kwargs = _parse_extra(extra)
+    if order_field is not None:
+        kwargs["order_field"] = order_field
+    if order_desc is not None:
+        kwargs["order_desc"] = order_desc
     if keyword_list:
         kwargs["keywordList"] = [k.strip() for k in keyword_list.split(",")]
     if page is not None:
@@ -685,6 +756,8 @@ def trend_aba_trend(
 @trend_app.command("google")
 def trend_google(
     keyword: Annotated[Optional[str], typer.Option("--keyword", help="关键词")] = None,
+    google_prop: Annotated[Optional[str], typer.Option("--google-prop", help="类别: web=网页搜索, shoppingCart=购物搜索")] = None,
+    monthly: Annotated[Optional[bool], typer.Option("--monthly", help="是否按月份 true/false")] = None,
     marketplace: MpOpt = "US",
     key: KeyOpt = None,
 ):
@@ -692,20 +765,29 @@ def trend_google(
     kwargs = {}
     if keyword:
         kwargs["keyword"] = keyword
+    if google_prop:
+        kwargs["googleProp"] = google_prop
+    if monthly is not None:
+        kwargs["monthly"] = monthly
     _print_result(_call_tool("google_trend", key, marketplace, **kwargs))
 
 
 @trend_app.command("review")
 def trend_review(
     asin: AsinArg,
-    category_id: Annotated[str, typer.Argument(help="类目 ID")],
+    star_list: Annotated[Optional[str], typer.Option("--star-list", help="评论星级 (逗号分隔): 1-5")] = None,
+    type_list: Annotated[Optional[str], typer.Option("--type-list", help="评论类型 (逗号分隔): 1=图片 2=视频 3=VP 4=VINE")] = None,
     page: PageOpt = None,
     size: SizeOpt = None,
     marketplace: MpOpt = "US",
     key: KeyOpt = None,
 ):
     """买家评论查询"""
-    kwargs = {"asin": asin, "categoryId": category_id}
+    kwargs = {"asin": asin}
+    if star_list:
+        kwargs["starList"] = [int(s.strip()) for s in star_list.split(",")]
+    if type_list:
+        kwargs["typeList"] = [int(t.strip()) for t in type_list.split(",")]
     if page is not None:
         kwargs["page"] = page
     if size is not None:
@@ -716,11 +798,20 @@ def trend_review(
 # 工具特定的 size 默认值和上限（来自 API 文档）
 _SIZE_DEFAULTS = {
     "keyword_research": 15,
-    "review": 20,
+    "review": 10,
+    "aba_research_weekly": 40,
+    "aba_research_monthly": 15,
+    "traffic_extend": 50,
+    "traffic_keyword": 100,
+    "traffic_listing": 100,
+    "traffic_source": 100,
 }
 _SIZE_MAX = {
     "keyword_research": 15,
-    "review": 50,
+    "review": 10,
+    "aba_research_weekly": 40,
+    "aba_research_monthly": 15,
+    "traffic_extend": 50,
 }
 
 # Mapping: tool_name -> CLI command path

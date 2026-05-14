@@ -63,7 +63,7 @@ TOOLS: dict[str, ToolMeta] = {
     "aba_research_monthly": ToolMeta("aba_research_monthly", "trend", "ABA 月度趋势", [], {"keywordList"}, "request"),
     "aba_research_trend": ToolMeta("aba_research_trend", "trend", "ABA 趋势分析", ["keyword"], set(), "flat", paginated=False),
     "google_trend": ToolMeta("google_trend", "trend", "Google 搜索趋势", [], set(), "request", paginated=False),
-    "review": ToolMeta("review", "trend", "买家评论查询", ["asin", "category_id"], set(), "review", paginated=True),
+    "review": ToolMeta("review", "trend", "买家评论查询", ["asin"], set(), "review", paginated=True),
 }
 
 ALL_LIST_PARAMS: set[str] = {

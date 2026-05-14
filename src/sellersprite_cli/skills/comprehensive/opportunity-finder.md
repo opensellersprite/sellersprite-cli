@@ -36,21 +36,21 @@
 - searchModel: 4
 - includeKeywords: 用户关键词（可选）
 - order: 按 `searches` 降序（aba_research_weekly 响应字段为 keyword/searches/clicks/ctr/cvShareRate/rank，可用其中之一作为 field）
-- size: 30
+- size: 40
 
 **模式2 - 持续增长市场** (发现稳定增长):
 - marketplace: 用户指定站点
 - searchModel: 3
 - includeKeywords: 用户关键词（可选）
 - order: 按 `searches` 降序
-- size: 30
+- size: 15
 
 **模式3 - 潜力市场** (低竞争高需求):
 - marketplace: 用户指定站点
 - searchModel: 5
 - includeKeywords: 用户关键词（可选）
 - order: 按 `searches` 降序
-- size: 30
+- size: 15
 
 ### 第3步: ABA 月度趋势验证
 

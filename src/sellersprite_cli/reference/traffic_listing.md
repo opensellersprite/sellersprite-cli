@@ -35,7 +35,7 @@
 
 - **MCP Code**: `traffic_listing`
 - **Method**: `POST`
-- **URL**: `https://api.sellersprite.com/v1/traffic/listing`
+- **URL**: `https://api.sellersprite.com/v1/traffic/listing/page`
 
 ## 响应参数
 

@@ -41,12 +41,13 @@
 **1. `traffic_keyword_stat`** - 流量概览:
 - marketplace: 用户指定站点
 - asin: 目标ASIN
+- month: 历史月份 yyyyMM（可选，不传默认近30天）
 
 **2. `traffic_keyword`** - 流量关键词明细:
 - marketplace: 用户指定站点
 - asin: 目标ASIN
 - order: 按 trafficPercentage 降序
-- size: 30
+- size: 100
 
 **3. `traffic_source`** - 流量来源结构:
 - marketplace: 用户指定站点
@@ -56,13 +57,13 @@
 - marketplace: 用户指定站点
 - asinList: [目标ASIN]
 - relations: ["similar"]（array 必填，可选关联类型，如 "similar"）
-- size: 20
+- size: 10
 
 **5. `review`** - 买家评论:
 - marketplace: 用户指定站点
 - asin: 目标ASIN
 - categoryId: 类目ID（可选，提升类目相关性；从 asin_prediction.asinDetail.categoryId 获取。注意：asin_detail 响应中是 nodeId/nodeIdPath，并无 categoryId 字段）
-- size: 30
+- size: 10
 
 ### 第3步: 生成竞品分析报告
 

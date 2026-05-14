@@ -21,6 +21,7 @@
 参数:
 - marketplace: 用户指定站点
 - asin: 目标ASIN
+- month: 历史月份 yyyyMM（可选，不传默认近30天）
 
 获取: 自然搜索词数、各类广告词数、推荐词数，判断整体流量健康度。
 
@@ -42,7 +43,7 @@
 - marketplace: 用户指定站点
 - asin: 目标ASIN
 - order: 按 trafficPercentage 降序
-- size: 50
+- size: 100
 
 获取: TOP 50 流量关键词，包含搜索量、自然排名、广告排名、流量占比、PPC竞价等。
 

@@ -21,12 +21,12 @@
 **1. `keyword_research`** - 关键词市场全景:
 - marketplace: 用户指定站点
 - keywords: 用户输入的关键词
-- size: 50
+- size: 15
 
 **2. `keyword_miner`** - 关键词深度挖掘:
 - marketplace: 用户指定站点
 - keyword: 用户输入的关键词
-- size: 50
+- size: 15
 
 **3. `aba_research_weekly`** - ABA 周度排名趋势:
 - marketplace: 用户指定站点

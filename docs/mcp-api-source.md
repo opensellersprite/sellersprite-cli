@@ -480,41 +480,43 @@ curl -X GET 'https://api.sellersprite.com/v1/sales/prediction/bsr?marketplace=US
 
 ### 请求参数
 
-| 参数 | 类型 | 必填 | 说明 |
-|------|------|------|------|
-| marketplace | String | ✓ | 市场 |
-| asin | String | ✓ | ASIN |
-| keyword | String | | 关键词 |
-| month | String | | 历史月份 yyyyMM，不传默认最近30天 |
-| badges | List | | 流量词类型 |
-| trafficKeywordTypes | List | | 流量占比类型 |
-| conversionKeywordTypes | List | | 流量转化类型 |
-| page | Integer | | 默认1 |
-| size | Integer | | 默认50，最大100，最多查2000条 |
-| order.field | String | | 排序字段，默认 rankPosition（表2.3 流量词列表排序字段） |
-| order.desc | Boolean | | 默认 false |
+| # | 参数 | 类型 | 必填 | 说明 |
+|---|------|------|------|------|
+| 1 | marketplace | String | ✓ | 市场，见附录表1.2 |
+| 2 | asin | String | ✓ | ASIN |
+| 3 | keyword | String | | 关键词，留空返回所有流量词 |
+| 4 | month | String | | 历史月份 yyyyMM，不传默认最近30天 |
+| 5 | badges | List | | 流量词类型（附录表1.10） |
+| 6 | trafficKeywordTypes | List | | 流量占比类型（附录表2.0） |
+| 7 | conversionKeywordTypes | List | | 流量转化类型（附录表2.1） |
+| 8 | page | Integer | | 当前页，默认1 |
+| 9 | size | Integer | | 每页条数，默认50，最大100，最多查2000条 |
+| 10 | order.field | String | | 排序字段，默认 rankPosition（表2.3 流量词列表排序字段） |
+| 11 | order.desc | Boolean | | true=降序 false=升序，默认false |
 
 ### 响应参数
 
 | 字段 | 类型 | 说明 |
 |------|------|------|
-| marketplace/asin/total | - | 基本信息 |
-| items[].keyword/keywordCn | String | 关键词及翻译 |
-| items[].searches/products/purchases/purchaseRate | - | 搜索/商品数/购买相关 |
-| items[].bid/bidMin/bidMax | Float | PPC竞价 |
-| items[].badges | List | 曝光位置（naturalSearching/sponsorVideo等） |
-| items[].rankPosition.{page,pageSize,index,position,updatedTime} | - | 自然排名 |
-| items[].adPosition.{...同上} | - | 广告排名 |
-| items[].searchesRank | Integer | 周搜索量排名（ABA） |
-| items[].latest1/7/30daysAds | Integer | 近1/7/30天广告竞品数 |
-| items[].supplyDemandRatio | Float | 供需比 |
+| marketplace | String | 市场编码 |
+| asin | String | ASIN |
+| total | Integer | 总条数 |
+| items | List | 词条列表 |
+| items[].keyword | String | 关键词 |
+| items[].keywordCn | String | 中文翻译 |
+| items[].searches | Integer | 月搜索量 |
+| items[].products | Integer | 搜索结果商品数 |
+| items[].purchases | Integer | 月购买量 |
+| items[].purchaseRate | Float | 购买率 |
+| items[].bid/bidMax/bidMin | Float | PPC竞价 |
+| items[].badges | List | 曝光位置标记 |
+| items[].searchesRank | Integer | 搜索频率排名 |
 | items[].trafficPercentage | Float | 流量占比 |
-| items[].trafficKeywordType | String | 流量占比类型 |
-| items[].conversionKeywordType | String | 转化效果类型 |
-| items[].calculatedWeeklySearches | Float | 预估周曝光量 |
-| items[].impressions/clicks | - | 月展示/点击量 |
-| items[].naturalRatio/adRatio | Float | 自然/广告流量占比 |
-| stats[].{keywords,total} | - | 高频词统计 |
+| items[].naturalRatio | Float | 自然流量占比 |
+| items[].adRatio | Float | 广告流量占比 |
+| items[].clicks | Integer | 点击量 |
+| items[].impressions | Long | 展示量 |
+| stats | List | 高频词统计 |
 
 ### 请求示例
 ```bash
@@ -656,18 +658,19 @@ curl -X POST 'https://api.sellersprite.com/v1/keyword-research' \
 
 ### 请求参数
 
-| 参数 | 类型 | 必填 | 说明 |
-|------|------|------|------|
-| marketplace | String | ✓ | 市场 |
-| keyword | String | ✓ | 关键词 |
+| # | 参数 | 类型 | 必填 | 说明 |
+|---|------|------|------|------|
+| 1 | marketplace | String | ✓ | 市场，见附录表1.2 |
+| 2 | keyword | String | ✓ | 关键词 |
 
 ### 响应参数
 
 | 字段 | 类型 | 说明 |
 |------|------|------|
 | time | String | 时间（按月，从2017年01月起） |
-| keywrod | String | 关键词（注意原始拼写有误） |
-| keywrodCn/keywrodJp | String | 中文/日文翻译 |
+| keyword | String | 关键词 |
+| keywordCn | String | 中文翻译 |
+| keywordJp | String | 日文翻译 |
 | search | Integer | 搜索量 |
 | purchase | BigDecimal | 购买量 |
 | purchaseRate | BigDecimal | 购买率 |
@@ -737,21 +740,22 @@ curl -X POST 'https://api.sellersprite.com/v1/traffic/keyword-stat' \
 
 | 参数 | 类型 | 必填 | 说明 |
 |------|------|------|------|
-| marketplace | String | ✓ | 市场 |
+| marketplace | String | ✓ | 市场，见附录表1.2 |
 | asin | String | ✓ | ASIN |
 
 ### 响应参数
 
 | 字段 | 类型 | 说明 |
 |------|------|------|
-| asin | String | ASIN |
 | marketplace | String | 市场 |
-| totalTraffic | Integer | 总流量 |
-| organicTraffic | Integer | 自然流量 |
-| sponsoredTraffic | Integer | 广告流量 |
-| searchTraffic | Integer | 搜索流量 |
-| recommendTraffic | Integer | 推荐流量 |
-| displayTraffic | Integer | 展示广告流量 |
+| asin | String | ASIN编码 |
+| relations | Integer | 全部流量数 |
+| freeRelations | Integer | 免费流量数 |
+| paidRelations | Integer | 付费流量数 |
+| calcTime | Long | 最近计算时间 |
+| items | List | 统计概要列表 |
+| items[].relation | String | 关联类型（mib/fbt/csi/cob/mie/bab/vav/avp/bav/bca/sp/fsa） |
+| items[].count | Integer | 数量 |
 
 ### 请求示例
 ```bash
@@ -766,35 +770,67 @@ curl -X GET 'https://api.sellersprite.com/v1/traffic/listing-stat/US/B07Z82895W'
 ### 基本信息
 - **MCP Code**: `traffic_listing`
 - **Method**: POST
-- **URL**: `https://api.sellersprite.com/v1/traffic/listing`
+- **URL**: `https://api.sellersprite.com/v1/traffic/listing/page`
 
 ### 请求参数
 
-| 参数 | 类型 | 必填 | 说明 |
-|------|------|------|------|
-| marketplace | String | ✓ | 市场 |
-| asinList | List | ✓ | ASIN 列表 |
-| relations | List | | 关联类型（表2.2 关联流量关联类型） |
-| trafficSourceTypes | List | | 流量来源类型 |
-| page | Integer | | 默认1 |
-| size | Integer | | 默认50，最大100 |
+| # | 参数 | 类型 | 必填 | 说明 |
+|---|------|------|------|------|
+| 1 | marketplace | String | ✓ | 市场，见附录表1.2 |
+| 2 | asinList | List | ✓ | ASIN列表，例：["B07Z82895W"] |
+| 3 | relations | List | ✓ | 关联类型（表2.2 关联流量关联类型） |
+| 4 | variations | Boolean | | 是否查询变体，默认 false |
+| 5 | page | Integer | | 当前页，默认1 |
+| 6 | size | Integer | | 每页条数，默认50，最大100 |
+| 7 | order.field | String | | 排序字段（表2.5 关联流量排序字段） |
+| 8 | order.desc | Boolean | | true=降序 false=升序，默认 true |
 
 ### 响应参数
 
 | 字段 | 类型 | 说明 |
 |------|------|------|
 | asin | String | ASIN |
-| relations[].{asin,title,imageUrl,brand} | - | 关联 ASIN 信息 |
-| relations[].trafficSourceType | String | 流量来源 |
-| relations[].trafficCount | Integer | 流量数 |
-| relations[].conversionCount | Integer | 转化数 |
+| brand | String | 品牌 |
+| brandUrl | String | 品牌 URL |
+| imageUrl | String | 图片 URL |
+| title | String | 标题 |
+| parent | String | 父体 |
+| nodeId | String | 节点ID |
+| nodeIdPath | String | 节点路径 |
+| nodeLabelPath | String | 节点名称 |
+| bsrId | String | BSR ID |
+| bsr | Integer | BSR排名 |
+| units | Integer | 月销量 |
+| unitsCr | Float | 销量增长率 |
+| revenue | Float | 月销售额 |
+| price | Float | 价格 |
+| profit | Float | 利润率 |
+| fba | Float | FBA运费 |
+| ratings | Integer | 评分数 |
+| ratingsRate | Float | 评分增长率 |
+| rating | Float | 评分值 |
+| ratingsCv | Integer | 月新增评分数 |
+| ratingDelta | Float | 评分变化 |
+| availableDate | Long | 上架时间 |
+| fulfillment | String | 配送方式 |
+| variations | Integer | 变体数 |
+| sellers | Integer | 卖家数 |
+| sellerId | String | 卖家ID |
+| sellerName | String | 卖家名称 |
+| sellerNation | String | 卖家所属地 |
+| badge | Object | 标识（bestSeller, amazonChoice, newRelease, ebc, video） |
+| weight | Float | 重量 |
+| dimension | String | 尺寸 |
+| dimensionType | String | 尺寸类型 |
+| sku | String | SKU |
+| subcategories | List | 子类目 |
 
 ### 请求示例
 ```bash
-curl -X POST 'https://api.sellersprite.com/v1/traffic/listing' \
+curl -X POST 'https://api.sellersprite.com/v1/traffic/listing/page' \
   -H 'secret-key: Your Secret' \
   -H 'Content-Type: application/json' \
-  -d '{"marketplace":"US","asinList":["B07Z82895W"],"relations":["also_viewed"],"page":1,"size":1}'
+  -d '{"marketplace":"US","asinList":["B07Z82895W"],"relations":["also_viewed"],"variations":false,"page":1,"size":50}'
 ```
 
 ---
@@ -808,28 +844,57 @@ curl -X POST 'https://api.sellersprite.com/v1/traffic/listing' \
 
 ### 请求参数
 
-| 参数 | 类型 | 必填 | 说明 |
-|------|------|------|------|
-| marketplace | String | ✓ | 市场 |
-| asin | String | ✓ | ASIN |
-| month | String | | 历史月份 yyyyMM |
+| # | 参数 | 类型 | 必填 | 说明 |
+|---|------|------|------|------|
+| 1 | marketplace | String | ✓ | 市场，见附录表1.2 |
+| 2 | q | String | ✓ | ASIN 或关键词 |
+| 3 | month | String | ✓ | 筛选日期，yyyyMM 格式 |
+| 4 | page | Integer | | 当前页，默认1 |
+| 5 | size | Integer | | 每页条数，默认50，最大100 |
+| 6 | order.field | String | | 排序字段（表2.4 流量来源排序字段） |
+| 7 | order.desc | Boolean | | true=降序 false=升序，默认true |
 
 ### 响应参数
 
 | 字段 | 类型 | 说明 |
 |------|------|------|
+| keywords | Integer | 全部流量词数量 |
+| searchKeywords | Integer | 自然搜索词 |
+| acKeywords | Integer | AC推荐词 |
+| editorialKeywords | Integer | ER推荐词 |
+| fourStarsKeywords | Integer | 4星推荐词 |
+| hrKeywords | Integer | HR推荐词 |
+| adKeywords | Integer | SP广告词 |
+| videoKeywords | Integer | 视频广告词 |
+| brandKeywords | Integer | 品牌广告词 |
+| badgeLabels | List | 流量来源概览 |
+| badgeDetails | Map | 流量来源明细 |
+| asinInfo | Object | ASIN 相关信息 |
+
+### ASIN 信息字段
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
 | asin | String | ASIN |
-| trafficSources[].type | String | 流量来源类型 |
-| trafficSources[].percentage | Float | 占比 |
-| trafficSources[].count | Integer | 流量数 |
-| trafficSources[].keywords | List | 关键词列表 |
+| asinUrl | String | ASIN 链接 |
+| currency | String | 货币 |
+| price | Float | 价格 |
+| rating | Float | 评分 |
+| reviews | Integer | 评分数 |
+| title | String | 标题 |
+| sku | String | SKU |
+| variations | Integer | 变体数 |
+| nodeId | String | 节点ID |
+| nodeIdPath | String | 节点路径 |
+| nodeLabelPath | String | 节点名称 |
+| bsrRank | Integer | BSR排名 |
 
 ### 请求示例
 ```bash
 curl -X POST 'https://api.sellersprite.com/v1/traffic/source' \
   -H 'secret-key: Your Secret' \
   -H 'Content-Type: application/json' \
-  -d '{"marketplace":"US","asin":"B07Z82895W"}'
+  -d '{"marketplace":"US","q":"B07Z82895W","month":"202604","page":1,"size":50}'
 ```
 
 ---
@@ -843,41 +908,69 @@ curl -X POST 'https://api.sellersprite.com/v1/traffic/source' \
 
 ### 请求参数
 
-| 参数 | 类型 | 必填 | 说明 |
-|------|------|------|------|
-| marketplace | String | ✓ | 市场 |
-| keywordList | List | | 关键词列表 |
-| departments | List | | 类目 code |
-| includeKeywords | String | | 包含关键词 |
-| excludeKeywords | String | | 排除关键词 |
-| minSearchRank/maxSearchRank | Integer | | 搜索排名区间 |
-| minSearches/maxSearches | Integer | | 搜索量区间 |
-| minClicks/maxClicks | Integer | | 点击量区间 |
-| minCtr/maxCtr | Float | | 点击率区间 |
-| minCvShareRate/maxCvShareRate | Float | | 转化共享率区间 |
-| page | Integer | | 默认1 |
-| size | Integer | | 默认50，最大100 |
-| order.field/order.desc | - | | 排序（表2.4 ABA选品排序字段） |
+| # | 参数 | 类型 | 必填 | 说明 |
+|---|------|------|------|------|
+| 1 | marketplace | String | ✓ | 市场，见附录表1.2 |
+| 2 | date | String | | 查询日期，为空时查最新周 |
+| 3 | departments | List | | 类目列表 |
+| 4 | excludeKeywords | String | | 排除关键词 |
+| 5 | includeKeywords | String | | 包含关键词 |
+| 6 | exactFlag | Boolean | | 是否精确匹配 |
+| 7 | rankGrowthValue | Integer | | 搜索增长量 |
+| 8 | rankGrowthRate | Double | | 搜索增长率 |
+| 9 | minRankGrowthRate | Double | | 最小排名增长率 |
+| 10 | maxRankGrowthRate | Double | | 最大排名增长率 |
+| 11 | minSearchRank | Integer | | 最小排名 |
+| 12 | maxSearchRank | Integer | | 最大排名 |
+| 13 | minSearches | Integer | | 最小搜索量 |
+| 14 | maxSearches | Integer | | 最大搜索量 |
+| 15 | minMonopolyClickRate | Double | | 最小点击集中度 |
+| 16 | maxMonopolyClickRate | Double | | 最大点击集中度 |
+| 17 | minConversionRate | Double | | 最小转化占比 |
+| 18 | maxConversionRate | Double | | 最大转化占比 |
+| 19 | minWordCount | Integer | | 最小单词数 |
+| 20 | maxWordCount | Integer | | 最大单词数 |
+| 21 | minSPR | Integer | | 最小SPR |
+| 22 | maxSPR | Integer | | 最大SPR |
+| 23 | minTitleDensity | Integer | | 最小标题密度 |
+| 24 | maxTitleDensity | Integer | | 最大标题密度 |
+| 25 | minClicks | Integer | | 最小点击量 |
+| 26 | maxClicks | Integer | | 最大点击量 |
+| 27 | minImpressions | Integer | | 最小展示量 |
+| 28 | maxImpressions | Integer | | 最大展示量 |
+| 29 | searchModel | Integer | | 搜索模式：1热门 2异动 3持续增长 4快速飙升 5潜力 6长尾 |
+| 30 | page | Integer | | 当前页，默认1 |
+| 31 | size | Integer | | 每页条数，默认40，最大40 |
+| 32 | order.field | String | | 排序字段（表2.4 ABA选品排序字段） |
+| 33 | order.desc | Boolean | | true=降序 false=升序，默认true |
 
 ### 响应参数
 
 | 字段 | 类型 | 说明 |
 |------|------|------|
+| marketplace | String | 市场 |
+| date | String | 查询日期 |
 | keyword | String | 关键词 |
-| searches | Integer | 周搜索量 |
-| clicks | Integer | 周点击量 |
-| ctr | Float | 点击率 |
-| cvShareRate | Float | 转化共享率 |
-| cvShareAsins | List | TOP3 转化 ASIN |
-| asins | List | 相关 ASIN |
-| rank | Integer | 排名 |
+| keywordCn | String | 关键词中文 |
+| keywordJp | String | 关键词日文 |
+| departments | List | 类目 |
+| searchRank | Integer | 搜索排名 |
+| searchRankCv | Integer | 排名增长量 |
+| searchRankCr | Double | 排名增长率 |
+| searches | Integer | 搜索量 |
+| clicks | Integer | 点击量 |
+| impressions | Long | 展示量 |
+| purchaseRate | Double | 购买率 |
+| titleDensityExact | Integer | 首页商品标题中包含该关键词的商品数 |
+| clickShareRate | Double | 前三点击比 |
+| cvsShareRate | Double | 前三转化总比 |
 
 ### 请求示例
 ```bash
 curl -X POST 'https://api.sellersprite.com/v1/aba/research/weekly' \
   -H 'secret-key: Your Secret' \
   -H 'Content-Type: application/json' \
-  -d '{"marketplace":"US","page":1,"size":1}'
+  -d '{"marketplace":"US","page":1,"size":40}'
 ```
 
 ---
@@ -891,22 +984,46 @@ curl -X POST 'https://api.sellersprite.com/v1/aba/research/weekly' \
 
 ### 请求参数
 
-| 参数 | 类型 | 必填 | 说明 |
-|------|------|------|------|
-| marketplace | String | ✓ | 市场 |
-| keywordList | List | | 关键词列表 |
-| departments | List | | 类目 code |
-| includeKeywords | String | | 包含关键词 |
-| excludeKeywords | String | | 排除关键词 |
-| minSearches/maxSearches | Integer | | 月搜索量区间 |
-| page | Integer | | 默认1 |
-| size | Integer | | 默认50，最大100 |
-| order.field/order.desc | - | | 排序（表2.4 ABA选品排序字段） |
+| # | 参数 | 类型 | 必填 | 说明 |
+|---|------|------|------|------|
+| 1 | marketplace | String | ✓ | 市场，见附录表1.2 |
+| 2 | date | String | | 查询月份，为空时查最近30天 |
+| 3 | departments | List | | 类目列表 |
+| 4 | excludeKeywords | String | | 排除关键词 |
+| 5 | includeKeywords | String | | 包含关键词 |
+| 6 | exactFlag | Boolean | | 是否精确匹配 |
+| 7 | minRankGrowthRate | Double | | 最小排名增长率 |
+| 8 | maxRankGrowthRate | Double | | 最大排名增长率 |
+| 9 | minSearchRank | Integer | | 最小搜索排名 |
+| 10 | maxSearchRank | Integer | | 最大搜索排名 |
+| 11 | minSearches | Integer | | 最小搜索量 |
+| 12 | maxSearches | Integer | | 最大搜索量 |
+| 13 | minMonopolyClickRate | Double | | 最小点击集中度 |
+| 14 | maxMonopolyClickRate | Double | | 最大点击集中度 |
+| 15 | minConversionRate | Double | | 最小转化占比 |
+| 16 | maxConversionRate | Double | | 最大转化占比 |
+| 17 | minWordCount | Integer | | 最小单词数 |
+| 18 | maxWordCount | Integer | | 最大单词数 |
+| 19 | minSPR | Integer | | 最小SPR |
+| 20 | maxSPR | Integer | | 最大SPR |
+| 21 | minTitleDensity | Integer | | 最小标题密度 |
+| 22 | maxTitleDensity | Integer | | 最大标题密度 |
+| 23 | minClicks | Integer | | 最小点击量 |
+| 24 | maxClicks | Integer | | 最大点击量 |
+| 25 | minImpressions | Integer | | 最小展示量 |
+| 26 | maxImpressions | Integer | | 最大展示量 |
+| 27 | searchModel | Integer | | 搜索模式：1热门 2异动 3持续增长 4快速飙升 5潜力 6长尾 |
+| 28 | page | Integer | | 当前页，默认1 |
+| 29 | size | Integer | | 每页条数，最大15 |
+| 30 | order.field | String | | 排序字段（表2.4 ABA选品排序字段） |
+| 31 | order.desc | Boolean | | true=降序 false=升序，默认true |
 
 ### 响应参数
 
 | 字段 | 类型 | 说明 |
 |------|------|------|
+| marketplace | String | 市场 |
+| date | String | 查询月份 |
 | keyword | String | 关键词 |
 | searches | Integer | 月搜索量 |
 | clicks | Integer | 月点击量 |
@@ -920,7 +1037,7 @@ curl -X POST 'https://api.sellersprite.com/v1/aba/research/weekly' \
 curl -X POST 'https://api.sellersprite.com/v1/aba/research/monthly' \
   -H 'secret-key: Your Secret' \
   -H 'Content-Type: application/json' \
-  -d '{"marketplace":"US","page":1,"size":1}'
+  -d '{"marketplace":"US","page":1,"size":15}'
 ```
 
 ---
@@ -930,38 +1047,54 @@ curl -X POST 'https://api.sellersprite.com/v1/aba/research/monthly' \
 ### 基本信息
 - **MCP Code**: `keyword_order`
 - **Method**: POST
-- **URL**: `https://api.sellersprite.com/v1/keyword/order`
+- **URL**: `https://api.sellersprite.com/v1/keyword-order`
 
 ### 请求参数
 
-| 参数 | 类型 | 必填 | 说明 |
-|------|------|------|------|
-| marketplace | String | ✓ | 市场 |
-| asins | List | ✓ | ASIN 列表（最多40个） |
-| matchType | Integer | | 1=词组 2=模糊 3=精准；默认2 |
-| page | Integer | | 默认1 |
-| size | Integer | | 默认50，最大100 |
+| # | 参数 | 类型 | 必填 | 说明 |
+|---|------|------|------|------|
+| 1 | marketplace | String | ✓ | 市场，见表1.2 |
+| 2 | asins | List | ✓ | ASIN列表，最大20个 |
+| 3 | reverseType | String | ✓ | 反查模式：W=周，M=月 |
+| 4 | date | String | | 查询日期。周格式 yyyyMMdd(当周周六)，月格式 yyyyMM |
+| 5 | conversionType | List | | 转化类型：E=优质词 S=平稳词 L=流失词 I=无效曝光词 |
+| 6 | variation | List | | 是否查询变体：Y=否，N=是 |
+| 7 | page | Integer | | 当前页，默认1 |
+| 8 | size | Integer | | 每页条数，默认50 |
+| 9 | order.field | String | | 排序字段（表2.6 出单词排序字段） |
+| 10 | order.desc | Boolean | | 是否倒序，默认 false |
 
 ### 响应参数
 
 | 字段 | 类型 | 说明 |
 |------|------|------|
-| asin | String | ASIN |
-| keyword | String | 出单关键词 |
+| marketplace | String | 市场 |
+| keyword | String | 关键词 |
 | keywordCn | String | 中文翻译 |
+| keywordJp | String | 日文翻译 |
+| asin | String | 所属ASIN |
+| searches | Integer | 搜索量 |
+| monopolyClickRate | Float | 点击垄断率 |
+| cvsShareRate | Float | 转化共享率 |
 | searchRank | Integer | 搜索排名 |
-| orderCount | Integer | 出单数 |
-| orderRate | Float | 出单率 |
-| page | Integer | 页码 |
+| searchRankGv | Integer | 搜索量变化 |
+| searchRankGr | Double | 搜索量变化率 |
+| top3ClickingRate | Float | 前三点击占比 |
+| top3ConversionRate | Float | 前三转化占比 |
+| conversionType | String | 转化类型：E=优质 S=平稳 L=流失 I=无效 |
+| pages | Integer | 总页数 |
+| page | Integer | 当前页 |
 | size | Integer | 每页条数 |
 | total | Integer | 总条数 |
+| took | Integer | 耗时(毫秒) |
+| order | Object | 当前排序信息 |
 
 ### 请求示例
 ```bash
-curl -X POST 'https://api.sellersprite.com/v1/keyword/order' \
+curl -X POST 'https://api.sellersprite.com/v1/keyword-order' \
   -H 'secret-key: Your Secret' \
   -H 'Content-Type: application/json' \
-  -d '{"marketplace":"US","asins":["B07Z82895W"],"page":1,"size":1}'
+  -d '{"marketplace":"US","asins":["B07Z82895W"],"reverseType":"M","date":"202412","page":1,"size":50}'
 ```
 
 ---
@@ -973,43 +1106,41 @@ curl -X POST 'https://api.sellersprite.com/v1/keyword/order' \
 - **Method**: GET
 - **URL**: `https://api.sellersprite.com/v1/review/{marketplace}/{asin}`
 
-### 请求参数（路径）
+### 请求参数
 
-| 参数 | 类型 | 必填 | 说明 |
-|------|------|------|------|
-| marketplace | String | ✓ | 市场 |
-| asin | String | ✓ | ASIN |
-| categoryId | String | | 类目节点 |
-| star | Integer | | 星级筛选 |
-| hasImage | Boolean | | 仅含图片评论 |
-| hasVideo | Boolean | | 仅含视频评论 |
-| hasComment | Boolean | | 仅含文字评论 |
-| page | Integer | | 默认1 |
-| size | Integer | | 默认20，最大50 |
+| # | 参数 | 类型 | 必填 | 说明 |
+|---|------|------|------|------|
+| 1 | marketplace | String | ✓ | 市场，见附录表1.2 |
+| 2 | asin | String | ✓ | ASIN |
+| 3 | starList | List | | 评论星级（1-5星） |
+| 4 | typeList | List | | 评论类型：1=图片 2=视频 3=VP 4=VINE |
+| 5 | page | Integer | | 当前页，默认1 |
+| 6 | size | Integer | | 每页条数，默认5，最大10 |
 
 ### 响应参数
 
 | 字段 | 类型 | 说明 |
 |------|------|------|------|
-| asin | String | ASIN |
-| totalReviews | Integer | 总评论数 |
-| positiveRate | Float | 好评率 |
-| neutralRate | Float | 中评率 |
-| negativeRate | Float | 差评率 |
-| reviews[].id | String | 评论ID |
-| reviews[].rating | Integer | 星级 |
-| reviews[].title | String | 评论标题 |
-| reviews[].content | String | 评论内容 |
-| reviews[].author | String | 评论者 |
-| reviews[].date | String | 评论日期 |
-| reviews[].helpful | Integer | 有帮助数 |
-| reviews[].verified | Boolean | 是否已验证购买 |
-| reviews[].images | List | 评论图片 |
-| reviews[].videos | List | 评论视频 |
+| author | String | 评论用户 |
+| title | String | 评论标题 |
+| content | String | 评论内容 |
+| date | Long | 日期时间戳 |
+| star | Integer | 星级 |
+| authorLabels | List | 评论人标签 |
+| skus | List | SKU信息 |
+| images | List | 图片链接 |
+| videos | List | 视频链接 |
+| likes | Integer | 点赞数 |
+| image | Boolean | 是否图片评论 |
+| video | Boolean | 是否视频评论 |
+| verified | Boolean | 是否VP购买评论 |
+| vine | Boolean | 是否VINE评论 |
+| free | Boolean | 是否免费评论 |
+| experience | Boolean | 是否抢先体验评论 |
 
 ### 请求示例
 ```bash
-curl -X GET 'https://api.sellersprite.com/v1/review/US/B07Z82895W?size=1' \
+curl -X GET 'https://api.sellersprite.com/v1/review/US/B07Z82895W?starList=4,5&typeList=1&page=1&size=10' \
   -H 'secret-key: Your Secret'
 ```
 
@@ -1537,16 +1668,49 @@ curl -X POST 'https://api.sellersprite.com/v1/market/ebc-distribution' \
 
 ### 请求参数
 
-| 参数 | 类型 | 必填 | 说明 |
-|------|------|------|------|
-| marketplace | String | ✓ | 市场 |
-| asinList | List | ✓ | ASIN 列表 |
-| matchType | Integer | | 匹配类型：1=模糊 2=宽泛 3=精准 |
-| minSearches | Integer | | 最小搜索量 |
-| includeKeywords | String | | 包含关键词 |
-| excludeKeywords | String | | 排除关键词 |
-| page | Integer | | 默认1 |
-| size | Integer | | 默认50，最大100 |
+| # | 参数 | 类型 | 必填 | 说明 |
+|---|------|------|------|------|
+| 1 | marketplace | String | ✓ | 市场，见附录表1.2 |
+| 2 | asinList | List | ✓ | ASIN列表，最多20个 |
+| 3 | historyDate | String | | 历史日期，yyyyMM格式 |
+| 4 | queryType | Integer | | 查询方式：0=所有变体 1=畅销变体 2=当前变体，默认2 |
+| 5 | minSearches | Integer | | 最小月搜索量 |
+| 6 | maxSearches | Integer | | 最大月搜索量 |
+| 7 | minSearchRank | Integer | | 最小搜索排名 |
+| 8 | maxSearchRank | Integer | | 最大搜索排名 |
+| 9 | minPurchases | Integer | | 最小购买量 |
+| 10 | maxPurchases | Integer | | 最大购买量 |
+| 11 | minPurchaseRate | Float | | 最小购买率 |
+| 12 | maxPurchaseRate | Float | | 最大购买率 |
+| 13 | minProducts | Integer | | 最小商品数 |
+| 14 | maxProducts | Integer | | 最大商品数 |
+| 15 | minSupplyDemandRatio | Float | | 最小供需比 |
+| 16 | maxSupplyDemandRatio | Float | | 最大供需比 |
+| 17 | minBid | Float | | 最小PPC竞价 |
+| 18 | maxBid | Float | | 最大PPC竞价 |
+| 19 | minAdProducts | Integer | | 最小广告竞品数 |
+| 20 | maxAdProducts | Integer | | 最大广告竞品数 |
+| 21 | minAvgPrice | Float | | 最小均价 |
+| 22 | maxAvgPrice | Float | | 最大均价 |
+| 23 | minWordCount | Integer | | 最小单词个数 |
+| 24 | maxWordCount | Integer | | 最大单词个数 |
+| 25 | includeKeywords | List | | 包含的词 |
+| 26 | excludeKeywords | List | | 排除的词 |
+| 27 | minSPR | Integer | | 最小SPR |
+| 28 | maxSPR | Integer | | 最大SPR |
+| 29 | minTitleDensity | Integer | | 最小标题密度 |
+| 30 | maxTitleDensity | Integer | | 最大标题密度 |
+| 31 | minMonopolyClickRate | Float | | 最小点击集中度 |
+| 32 | maxMonopolyClickRate | Float | | 最大点击集中度 |
+| 33 | minTrafficPercentage | Float | | 最小流量占比 |
+| 34 | maxTrafficPercentage | Float | | 最大流量占比 |
+| 35 | minConversionRate | Float | | 最小转化率 |
+| 36 | maxConversionRate | Float | | 最大转化率 |
+| 37 | amazonChoice | Boolean | | 亚马逊推荐词 |
+| 38 | page | Integer | | 当前页，默认1 |
+| 39 | size | Integer | | 每页条数，默认50，最大50 |
+| 40 | order.field | String | | 排序字段（表2.5 关联流量排序字段） |
+| 41 | order.desc | Boolean | | true=降序 false=升序，默认true |
 
 ### 响应参数
 
@@ -1565,7 +1729,7 @@ curl -X POST 'https://api.sellersprite.com/v1/market/ebc-distribution' \
 curl -X POST 'https://api.sellersprite.com/v1/traffic/extend' \
   -H 'secret-key: Your Secret' \
   -H 'Content-Type: application/json' \
-  -d '{"marketplace":"US","asinList":["B07Z82895W"],"page":1,"size":1}'
+  -d '{"marketplace":"US","asinList":["B07Z82895W"],"page":1,"size":50}'
 ```
 
 ---
@@ -1610,33 +1774,33 @@ curl -X POST 'https://api.sellersprite.com/v1/aba/research/trend' \
 
 ### 基本信息
 - **MCP Code**: `google_trend`
-- **Method**: POST
-- **URL**: `https://api.sellersprite.com/v1/google/trend`
+- **Method**: GET
+- **URL**: `https://api.sellersprite.com/v1/google/trends`
 
 ### 请求参数
 
-| 参数 | 类型 | 必填 | 说明 |
-|------|------|------|------|
-| marketplace | String | ✓ | 市场 |
-| keywords | List | | 关键词列表 |
-| startDate | String | | 开始日期 yyyy-MM-dd |
-| endDate | String | | 结束日期 yyyy-MM-dd |
+| # | 参数 | 类型 | 必填 | 说明 |
+|---|------|------|------|------|
+| 1 | marketplace | String | ✓ | 市场，见附录表1.2 |
+| 2 | keyword | String | | 关键字 |
+| 3 | googleProp | String | | 类别：web=Google网页搜索，shoppingCart=Google购物搜索 |
+| 4 | monthly | Boolean | | 是否按月份，默认 false |
 
 ### 响应参数
 
 | 字段 | 类型 | 说明 |
 |------|------|------|
-| keyword | String | 关键词 |
-| timeline[].date | String | 日期 |
-| timeline[].value | Integer | 搜索指数 |
-| timeline[].category | Integer | 类别 |
+| marketplace | String | 市场 |
+| keyword | String | 关键字 |
+| link | String | Google趋势链接 |
+| items | List | 趋势数据明细 |
+| items[].time | Long | 时间戳（毫秒） |
+| items[].value | Integer | 趋势指数值 |
 
 ### 请求示例
 ```bash
-curl -X POST 'https://api.sellersprite.com/v1/google/trend' \
-  -H 'secret-key: Your Secret' \
-  -H 'Content-Type: application/json' \
-  -d '{"marketplace":"US","keywords":["earbuds"],"startDate":"2024-01-01","endDate":"2024-12-31"}'
+curl -X GET 'https://api.sellersprite.com/v1/google/trends?marketplace=US&keyword=iphone+stand' \
+  -H 'secret-key: Your Secret'
 ```
 
 ---

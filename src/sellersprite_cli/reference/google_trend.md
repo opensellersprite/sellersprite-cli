@@ -14,7 +14,7 @@
 
 适合与 Amazon 关键词数据结合使用，用于：
 - 新品立项前的需求趋势验证
-- 判断关键词是否为“短期热词”还是“长期需求”
+- 判断关键词是否为"短期热词"还是"长期需求"
 - 对比不同平台（Google vs Amazon）的需求变化节奏
 
 ## MCP 调用名称
@@ -25,39 +25,58 @@
 
 | 参数名 | 类型 | 必填 | 说明 |
 |--------|------|------|------|
-| `endDate` | string |  | 结束日期，格式: yyyy-MM-dd |
-| `googleProp` | string |  | 搜索来源类型（枚举值）: web, shoppingCart |
-| `keyword` | string |  | 关键字 |
-| `keywords` | array |  | 关键词列表 |
-| `marketplace` | string | 是 | Amazon 站点代码（枚举值）：US, JP, UK, DE, FR, IT, ES, CA, IN |
-| `monthly` | boolean |  | 按照月份 |
-| `startDate` | string |  | 开始日期，格式: yyyy-MM-dd |
+| `marketplace` | string | 是 | Amazon 站点代码：US, JP, UK, DE, FR, IT, ES, CA, IN |
+| `keyword` | string | | 关键字 |
+| `googleProp` | string | | 类别：web=Google网页搜索，shoppingCart=Google购物搜索 |
+| `monthly` | boolean | | 是否按月份，默认 false |
 
 ## 基本信息
 
 - **MCP Code**: `google_trend`
-- **Method**: `POST`
-- **URL**: `https://api.sellersprite.com/v1/google/trend`
+- **Method**: `GET`
+- **URL**: `https://api.sellersprite.com/v1/google/trends`
 
 ## 响应参数
 
 | 字段 | 类型 | 说明 |
 |------|------|------|
-| keyword | String | 关键词 |
-| timeline[].date | String | 日期 |
-| timeline[].value | Integer | 搜索指数 |
-| timeline[].category | Integer | 类别 |
+| marketplace | String | 市场 |
+| keyword | String | 关键字 |
+| link | String | Google趋势链接 |
+| items | List | 趋势数据明细 |
+| items[].time | Long | 时间戳（毫秒） |
+| items[].value | Integer | 趋势指数值 |
 
 ## 请求示例
 
 ```json
 {
-  "request": {
-    "googleProp": "web",
-    "keyword": "wireless earbuds",
+  "code": "OK",
+  "message": "成功",
+  "data": {
     "marketplace": "US",
-    "monthly": false
+    "keyword": "iphone stand",
+    "link": "https://trends.google.com/trends/explore?...",
+    "items": [
+      {"time": 1599350400000, "value": 33},
+      {"time": 1599955200000, "value": 37}
+    ]
   }
 }
 ```
 
+## CLI 使用示例
+
+```bash
+# 基本用法
+sellersprite trend google --keyword "iphone stand"
+
+# 搜索类型：网页搜索
+sellersprite trend google --keyword "iphone stand" --google-prop web
+
+# 搜索类型：购物搜索
+sellersprite trend google --keyword "iphone stand" --google-prop shoppingCart
+
+# 按月份汇总
+sellersprite trend google --keyword "iphone stand" --monthly
+```
