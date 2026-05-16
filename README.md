@@ -21,6 +21,29 @@
 
 > 💡 购买密钥后，通过本 CLI 即可调用全部接口，无需再按 API 单独付费。Token 消耗直降 90%+。
 
+## 🚀 在 Claude Code 一键安装 27 个 Skills
+
+通过 [ClawHub](https://clawhub.ai/opensellersprite/sellersprite-skills) 一行命令导入到 Claude Code（需先安装 Node.js）：
+
+```bash
+# 全局安装（推荐 · 所有项目可用）
+npx clawhub@latest install opensellersprite/sellersprite-skills
+
+# 项目级安装（团队共享 · 提交到 .claude/skills/ 后队友自动同步）
+npx clawhub@latest install opensellersprite/sellersprite-skills --project
+```
+
+安装后**重启 Claude Code**，即可使用：
+
+```
+/product-research wireless earbuds    # 智能选品
+/market-analysis earbuds US           # 市场全景
+/competitor-analysis B0XXX            # 竞品拆解
+# ...另外 7 个 /命令 + 17 个对话触发的战术选品卡
+```
+
+> 完整技能清单见 [skills/README.md](src/sellersprite_cli/skills/README.md)。Skills 由 Claude Code 直接执行，调用本 CLI 的 MCP 工具拿数据 —— 需要先 `pip install sellersprite-cli` 并配置密钥（见下文）。
+
 ## 安装
 
 ```bash
