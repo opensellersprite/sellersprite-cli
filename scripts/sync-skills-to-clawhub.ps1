@@ -11,8 +11,8 @@
 #   ./scripts/sync-skills-to-clawhub.ps1 -Branch main   # push to main
 #   ./scripts/sync-skills-to-clawhub.ps1 -DryRun        # preview only
 #
-# Re-run after each skills change. ClawHub picks up the new version automatically
-# (bump `version:` in skills/SKILL.md beforehand).
+# Re-run after each skills change. The script first syncs SKILL.md frontmatter
+# `version:` to pyproject.toml, then pushes. ClawHub re-Detect picks up the new commit.
 
 param(
     [string]$RemoteUrl = "https://github.com/opensellersprite/sellersprite-skills.git",
@@ -38,15 +38,25 @@ if (-not (Test-Path $SkillMd)) {
     throw "SKILL.md not found at $SkillMd"
 }
 
-# 2. Sanity: working tree must be clean (subtree push refuses dirty trees in some setups)
-$dirty = git status --porcelain
+# 2. Sync SKILL.md frontmatter version to pyproject.toml (single source of truth)
+Write-Host "`n==> Syncing SKILL.md frontmatter version..."
+python "$PSScriptRoot/package_skills.py" --sync-version
+$syncExit = $LASTEXITCODE
+if ($syncExit -eq 2) {
+    throw "SKILL.md frontmatter version was updated. Commit the change, then re-run this script."
+} elseif ($syncExit -ne 0) {
+    throw "package_skills.py --sync-version failed with exit code $syncExit"
+}
+
+# 3. Sanity: tracked files must be clean (untracked '??' is fine — subtree only reads tracked)
+$dirty = git status --porcelain | Where-Object { $_ -notmatch '^\?\?' }
 if ($dirty) {
-    Write-Host "`n[!] Working tree has uncommitted changes:" -ForegroundColor Yellow
-    Write-Host $dirty
+    Write-Host "`n[!] Tracked files have uncommitted changes:" -ForegroundColor Yellow
+    Write-Host ($dirty -join "`n")
     throw "Commit or stash before running subtree push."
 }
 
-# 3. Show the version that will be pushed
+# 4. Show the version that will be pushed
 $frontmatter = Get-Content $SkillMd -TotalCount 10 | Out-String
 if ($frontmatter -match 'version:\s*(\S+)') {
     Write-Host "==> SKILL.md version: $($Matches[1])"
@@ -60,7 +70,7 @@ if ($DryRun) {
     return
 }
 
-# 4. Push the skills subtree to the standalone repo
+# 5. Push the skills subtree to the standalone repo
 Write-Host "`n==> Pushing subtree..."
 git subtree push --prefix=$Prefix $RemoteUrl $Branch
 if ($LASTEXITCODE -ne 0) {

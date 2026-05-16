@@ -10,6 +10,7 @@ and produces:
 
 import json
 import re
+import sys
 import zipfile
 from pathlib import Path
 
@@ -161,6 +162,29 @@ def read_project_version() -> str:
     if not match:
         raise RuntimeError(f"version not found in {PYPROJECT_FILE}")
     return match.group(1)
+
+
+def sync_skill_md_version() -> tuple[bool, str]:
+    """Rewrite SKILL.md frontmatter `version:` to match pyproject.toml.
+
+    Returns (changed, version). Raises if SKILL.md has no frontmatter version line.
+    """
+    version = read_project_version()
+    skill_md = SKILLS_DIR / "SKILL.md"
+    content = skill_md.read_text(encoding="utf-8")
+    new_content, n = re.subn(
+        r"^(version:\s*)\S+",
+        lambda m: f"{m.group(1)}{version}",
+        content,
+        count=1,
+        flags=re.MULTILINE,
+    )
+    if n == 0:
+        raise RuntimeError("frontmatter 'version:' line not found in SKILL.md")
+    changed = new_content != content
+    if changed:
+        skill_md.write_text(new_content, encoding="utf-8")
+    return changed, version
 
 
 def build_skills_zip(version: str) -> Path:
@@ -365,6 +389,13 @@ def build_system_prompt_zip(system_prompt_md: str, skills_json: str, readme_md: 
 def main():
     DIST_DIR.mkdir(exist_ok=True)
 
+    # Sync SKILL.md frontmatter version to pyproject.toml (single source of truth)
+    changed, version = sync_skill_md_version()
+    if changed:
+        print(f"SKILL.md frontmatter version updated -> {version}")
+    else:
+        print(f"SKILL.md frontmatter version already at {version}")
+
     # Collect all skill files
     skill_files = []
     for subdir in (SKILLS_DIR / "comprehensive", SKILLS_DIR / "tactical"):
@@ -377,7 +408,6 @@ def main():
     skills = [parse_skill(f) for f in skill_files]
 
     # Build artefacts in memory
-    version = read_project_version()
     system_prompt_md = build_system_prompt(skills)
     skills_json = json.dumps(skills, ensure_ascii=False, indent=2)
     readme_md = build_system_prompt_readme(version, len(skills))
@@ -396,4 +426,13 @@ def main():
 
 
 if __name__ == "__main__":
+    # Lightweight mode: only sync SKILL.md frontmatter version, skip artefact build.
+    # Used by sync-skills-to-clawhub.ps1 before pushing the subtree.
+    if "--sync-version" in sys.argv:
+        changed, version = sync_skill_md_version()
+        if changed:
+            print(f"SKILL.md frontmatter version updated -> {version}")
+            sys.exit(2)  # signal "file changed, please commit"
+        print(f"SKILL.md frontmatter version already at {version}")
+        sys.exit(0)
     main()
