@@ -46,8 +46,25 @@ npx clawhub@latest install opensellersprite/sellersprite-skills --project
 
 ## 安装
 
+> **要求：** Python ≥ 3.10
+
 ```bash
 pip install sellersprite-cli
+```
+
+### 国内镜像加速
+
+临时使用清华镜像：
+
+```bash
+pip install -i https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple sellersprite-cli
+```
+
+设为默认（升级 pip 后配置）：
+
+```bash
+python -m pip install --upgrade pip
+pip config set global.index-url https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple
 ```
 
 ## 配置密钥
