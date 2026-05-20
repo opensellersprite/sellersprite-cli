@@ -81,19 +81,25 @@ sellersprite config
 
 密钥在 [卖家精灵开放平台](https://open.sellersprite.com) 获取。
 
-以上命令会自动将密钥保存到当前目录的 `.env` 文件中， sellersprite 会自动读取。
+配置会保存到全局 `.env` 文件，所有项目共享：
 
-你也可以手动设置环境变量：
+- **Linux / macOS**: `~/.config/sellersprite/.env`
+- **Windows**: `%APPDATA%\sellersprite\.env`
+
+### 项目级密钥覆盖
+
+如需为当前项目单独配置密钥（不影响全局），加 `--project`：
 
 ```bash
-# Linux / macOS
-export SELLERSPRITE_KEY="你的API密钥"
+sellersprite config --key 项目密钥 --project
+```
 
-# Windows CMD
-set SELLERSPRITE_KEY=你的密钥
+这会保存到当前目录的 `.env` 文件。读取优先级：**项目 `.env` > 全局 `.env`**。
 
-# Windows PowerShell
-$env:SELLERSPRITE_KEY = "你的API密钥"
+也可以直接编辑 `.env` 文件：
+
+```
+SELLERSPRITE_KEY=你的API密钥
 ```
 
 ## CLI 使用

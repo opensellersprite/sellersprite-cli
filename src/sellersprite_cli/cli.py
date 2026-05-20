@@ -35,18 +35,15 @@ _state = {"key": None, "marketplace": "US"}
 
 
 def _resolve_key(explicit: str | None = None) -> str:
-    key = explicit or _state.get("key") or os.environ.get("SELLERSPRITE_KEY", "")
+    key = explicit or _state.get("key")
     if not key:
-        # Try .env file
-        env_file = Path.cwd() / ".env"
-        if env_file.exists():
-            for line in env_file.read_text(encoding="utf-8").splitlines():
-                line = line.strip()
-                if line.startswith("SELLERSPRITE_KEY="):
-                    key = line.split("=", 1)[1].strip().strip("\"'")
-                    break
+        # 1. Try project-level .env first
+        key = _read_env_file(Path.cwd() / ".env")
     if not key:
-        console.print("[red]缺少 API 密钥。[/red]请设置 SELLERSPRITE_KEY 环境变量或使用 --key")
+        # 2. Fall back to global .env
+        key = _read_env_file(_global_config_file())
+    if not key:
+        console.print("[red]缺少 API 密钥。[/red]请执行 sellersprite config --key <你的密钥> 进行配置")
         raise typer.Exit(1)
     return key
 
@@ -869,27 +866,40 @@ def list_tools():
             table.add_row(_TOOL_COMMANDS.get(tn, f"sellersprite {domain} {tn}"), TOOLS[tn].label)
         console.print(table)
         console.print()
-    console.print(f"[bold]共 {len(TOOLS)} 个工具[/bold]")
+    try:
+        console.print(f"[bold]共 {len(TOOLS)} 个工具[/bold]")
+    except OSError:
+        print(f"共 {len(TOOLS)} 个工具")
 
 
-# ── Config command ────────────────────────────────────────────
+# ── Config helpers ───────────────────────────────────────────
 
-@app.command("config")
-def config_key(
-    key: Annotated[Optional[str], typer.Option("--key", "-k", help="API 密钥")] = None,
-):
-    """配置 API 密钥（保存到 .env 文件）"""
-    from rich.prompt import Prompt
+def _global_config_dir() -> Path:
+    """Return the global config directory (cross-platform)."""
+    if platform.system() == "Windows":
+        app_data = os.environ.get("APPDATA") or str(Path.home() / "AppData" / "Roaming")
+        return Path(app_data) / "sellersprite"
+    return Path.home() / ".config" / "sellersprite"
 
-    if not key:
-        key = Prompt.ask("请输入你的 SellerSprite API 密钥", password=True)
 
-    key = key.strip().strip("\"'")
-    if not key:
-        console.print("[red]密钥不能为空[/red]")
-        raise typer.Exit(1)
+def _global_config_file() -> Path:
+    """Return the global config file path."""
+    return _global_config_dir() / ".env"
 
-    env_file = Path.cwd() / ".env"
+
+def _read_env_file(env_file: Path) -> str:
+    """Read SELLERSPRITE_KEY from a .env file."""
+    if env_file.exists():
+        for line in env_file.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if line.startswith("SELLERSPRITE_KEY="):
+                return line.split("=", 1)[1].strip().strip("\"'")
+    return ""
+
+
+def _write_env_file(env_file: Path, key: str) -> None:
+    """Write SELLERSPRITE_KEY to a .env file."""
+    env_file.parent.mkdir(parents=True, exist_ok=True)
     lines = []
     replaced = False
 
@@ -906,19 +916,35 @@ def config_key(
 
     env_file.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
-    console.print(f"[green]密钥已保存到 {env_file}[/green]")
 
-    # Show OS-specific hints
-    sys_name = platform.system()
-    console.print("\n[bold]你也可以通过环境变量临时设置：[/bold]")
-    if sys_name == "Windows":
-        console.print(f"  [cyan]CMD:[/cyan]    set SELLERSPRITE_KEY={key}")
-        console.print(f"  [cyan]PowerShell:[/cyan] $env:SELLERSPRITE_KEY = \"{key}\"")
-    elif sys_name == "Darwin":
-        console.print(f"  [cyan]zsh/bash:[/cyan] export SELLERSPRITE_KEY=\"{key}\"")
-    else:
-        console.print(f"  [cyan]bash:[/cyan] export SELLERSPRITE_KEY=\"{key}\"")
-    console.print("\n[dim]提示：.env 文件中的密钥会自动被 sellersprite 读取，无需每次 export[/dim]")
+# ── Config command ────────────────────────────────────────────
+
+@app.command("config")
+def config_key(
+    key: Annotated[Optional[str], typer.Option("--key", "-k", help="API 密钥")] = None,
+    project: Annotated[bool, typer.Option("--project", "-p", help="保存到当前项目 .env 文件（覆盖全局密钥）")] = False,
+):
+    """配置 API 密钥（默认保存到全局配置文件）"""
+    from rich.prompt import Prompt
+
+    if not key:
+        key = Prompt.ask("请输入你的 SellerSprite API 密钥", password=True)
+
+    key = key.strip().strip("\"'")
+    if not key:
+        console.print("[red]密钥不能为空[/red]")
+        raise typer.Exit(1)
+
+    if project:
+        env_file = Path.cwd() / ".env"
+        _write_env_file(env_file, key)
+        console.print(f"[green]密钥已保存到 {env_file}[/green]")
+        console.print("[dim]提示：当前项目优先使用此密钥，其他项目仍使用全局配置[/dim]")
+        return
+
+    config_file = _global_config_file()
+    _write_env_file(config_file, key)
+    console.print(f"[green]密钥已保存到 {config_file}[/green]")
 
 
 # ── Init command ──────────────────────────────────────────────

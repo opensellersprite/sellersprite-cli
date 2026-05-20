@@ -8,8 +8,10 @@ traffic, market analysis, ABA trends, and reviews.
 import json
 import logging
 import os
+import platform
 import time
 from importlib.metadata import version as _version
+from pathlib import Path
 
 import requests
 
@@ -20,12 +22,31 @@ logger = logging.getLogger(__name__)
 __version__ = _version("sellersprite-cli")
 
 
+def _global_config_file() -> Path:
+    """Return the global config file path (cross-platform)."""
+    if platform.system() == "Windows":
+        app_data = os.environ.get("APPDATA") or str(Path.home() / "AppData" / "Roaming")
+        return Path(app_data) / "sellersprite" / ".env"
+    return Path.home() / ".config" / "sellersprite" / ".env"
+
+
+def _read_global_key() -> str:
+    """Read API key from global .env file."""
+    config_file = _global_config_file()
+    if config_file.exists():
+        for line in config_file.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if line.startswith("SELLERSPRITE_KEY="):
+                return line.split("=", 1)[1].strip().strip("\"'")
+    return ""
+
+
 class SellerSprite:
     """卖家精灵 API 客户端。
 
     Usage::
 
-        ss = SellerSprite()                       # reads SELLERSPRITE_KEY env
+        ss = SellerSprite()                       # reads global config file
         ss = SellerSprite("your-secret-key")      # explicit key
 
         result = ss.product_node(keyword="earbuds")
@@ -33,10 +54,10 @@ class SellerSprite:
 
     def __init__(self, secret_key: str | None = None, marketplace: str = "US",
                  base_url: str = "https://mcp.sellersprite.com/mcp"):
-        self.secret_key = secret_key or os.environ.get("SELLERSPRITE_KEY", "")
+        self.secret_key = secret_key or _read_global_key()
         if not self.secret_key:
             raise ValueError(
-                "缺少 API 密钥。请设置 SELLERSPRITE_KEY 环境变量或传入 secret_key"
+                "缺少 API 密钥。请执行 sellersprite config --key <你的密钥> 进行配置"
             )
         self.marketplace = marketplace
         self.base_url = base_url

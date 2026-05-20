@@ -39,15 +39,8 @@ pip install sellersprite-cli
 ```
 
 ```bash
-# 设置密钥（二选一）
-export SELLERSPRITE_KEY="你的密钥"   # Linux/Mac
-set SELLERSPRITE_KEY=你的密钥         # Windows CMD
-```
-
-或在项目根目录创建 `.env` 文件：
-
-```
-SELLERSPRITE_KEY=你的密钥
+# 设置密钥
+sellersprite config --key 你的密钥
 ```
 
 ```python
