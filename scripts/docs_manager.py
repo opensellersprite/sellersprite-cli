@@ -1,19 +1,328 @@
 #!/usr/bin/env python3
-"""Unified docs manager — audit and fix reference/*.md against mcp-api-source.md.
+"""Unified docs manager — scrape, sync, audit and fix docs.
 
 Usage:
+    python docs_manager.py sync     # Scrape official API docs and force-overwrite mcp-api-source.md
     python docs_manager.py audit    # Read-only report
-    python docs_manager.py fix      # Auto-fill missing sections
+    python docs_manager.py fix      # Auto-fill missing sections from mcp-api-source.md to reference/*.md
 """
 
 import argparse
+import json
 import re
 from pathlib import Path
+
+# Optional deps — only needed for sync mode
+try:
+    from playwright.sync_api import sync_playwright
+except ImportError:
+    sync_playwright = None
+try:
+    from bs4 import BeautifulSoup
+except ImportError:
+    BeautifulSoup = None
 
 DOCS_DIR = Path(__file__).parent.parent / "src" / "sellersprite_cli" / "reference"
 MCP_FILE = Path(__file__).parent.parent / "docs" / "mcp-api-source.md"
 OUTPUT_DIR = Path(__file__).parent.parent / "output"
+CACHE_FILE = Path(__file__).parent.parent / "temp" / "api_docs_cache.json"
 
+# API page ID → (section_number, chinese_title)
+# MCP Code is scraped from the page itself, so we don't hardcode it.
+API_PAGES = [
+    (1, "查竞品"),
+    (2, "选产品"),
+    (9, "查产品类目"),
+    (3, "ASIN 详情"),
+    (56, "ASIN优惠趋势"),
+    (57, "ASIN详情及优惠趋势"),
+    (27, "ASIN 销量预测"),
+    (26, "BSR销量预测"),
+    (14, "关键词反查(流量词列表)"),
+    (22, "商品趋势详情(keepa)"),
+    (10, "关键词选品"),
+    (11, "关键词选品-趋势数据"),
+    (6, "关键词挖掘"),
+    (46, "拓展流量词"),
+    (19, "ABA 数据选品-按周"),
+    (20, "ABA 数据选品-按月"),
+    (60, "ABA 数据选品-关键词趋势"),
+    (12, "谷歌趋势"),
+    (24, "出单词反查"),
+    (16, "关联流量列表"),
+    (13, "流量词统计"),
+    (15, "关联流量统计"),
+    (17, "查流量来源(关键词流向)"),
+    (29, "选市场列表"),
+    (30, "选市场-统计"),
+    (31, "选市场-商品集中度"),
+    (32, "选市场-品牌集中度"),
+    (35, "选市场-卖家所属地分布"),
+    (33, "选市场-卖家集中度"),
+    (34, "选市场-卖家类型分布"),
+    (36, "选市场-商品需求趋势"),
+    (37, "选市场-上架时间分布"),
+    (38, "选市场-上架趋势分布"),
+    (39, "选市场-评分数分布"),
+    (40, "选市场-评分值分布"),
+    (41, "选市场-价格分布"),
+    (42, "选市场-A+视频分布"),
+    (25, "查评论"),
+]
+
+
+# ── Web scraping ──────────────────────────────────────────
+
+def scrape_all_pages(use_cache: bool = True) -> dict[str, dict]:
+    """Scrape all API pages and return {mcp_code: data_dict}."""
+    if use_cache and CACHE_FILE.exists():
+        try:
+            data = json.loads(CACHE_FILE.read_text(encoding="utf-8"))
+            print(f"[CACHE] Loaded {len(data)} tools from {CACHE_FILE}")
+            return data
+        except Exception:
+            pass
+
+    if sync_playwright is None:
+        raise RuntimeError("playwright is required for sync. Run: pip install playwright")
+    if BeautifulSoup is None:
+        raise RuntimeError("beautifulsoup4 is required for sync. Run: pip install beautifulsoup4")
+
+    results: dict[str, dict] = {}
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        for api_id, title in API_PAGES:
+            url = f"https://open.sellersprite.com/api/{api_id}"
+            print(f"[FETCH] {url} ...")
+            try:
+                page.goto(url, wait_until="networkidle", timeout=30000)
+                page.wait_for_timeout(2000)
+                html = page.content()
+                data = parse_html_tables(html)
+                if data.get("mcp_code"):
+                    results[data["mcp_code"]] = data
+                    print(f"  -> {data['mcp_code']} ({title})")
+                else:
+                    print(f"  -> WARNING: no MCP Code found")
+            except Exception as e:
+                print(f"  -> ERROR: {e}")
+        browser.close()
+
+    # Save cache
+    CACHE_FILE.parent.mkdir(parents=True, exist_ok=True)
+    CACHE_FILE.write_text(json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"[CACHE] Saved {len(results)} tools to {CACHE_FILE}")
+    return results
+
+
+def parse_html_tables(html: str) -> dict:
+    """Extract tables from scraped HTML."""
+    soup = BeautifulSoup(html, "html.parser")
+    tables = soup.find_all("table")
+
+    data: dict = {"method": "", "url": "", "mcp_code": "", "request_params": [], "response_params": []}
+
+    for i, table in enumerate(tables):
+        rows = []
+        for tr in table.find_all("tr"):
+            cells = [td.get_text(strip=True) for td in tr.find_all(["td", "th"])]
+            if cells and any(cells):
+                rows.append(cells)
+
+        if not rows:
+            continue
+
+        # Table 0: basic info
+        if i == 0 and any("Http Method" in str(r) for r in rows):
+            for row in rows:
+                if len(row) >= 2:
+                    key, val = row[0], row[1]
+                    if "Method" in key:
+                        data["method"] = val
+                    elif "Request URL" in key:
+                        data["url"] = val
+                    elif "MCP Code" in key:
+                        data["mcp_code"] = val
+
+        # Table 1: request params (has "是否必填" column)
+        elif any("是否必填" in str(r) for r in rows[:1]):
+            header = rows[0]
+            for row in rows[1:]:
+                if len(row) >= 6:
+                    data["request_params"].append({
+                        "idx": row[0],
+                        "name": row[1],
+                        "type": row[2],
+                        "required": row[3],
+                        "label": row[4],
+                        "desc": row[5] if len(row) > 5 else "",
+                    })
+
+        # Table 2+: response params (no "是否必填", but has "参数名称" and "参数描述")
+        elif any("参数名称" in str(r) for r in rows[:1]) and not any("是否必填" in str(r) for r in rows[:1]):
+            for row in rows[1:]:
+                if len(row) >= 4:
+                    data["response_params"].append({
+                        "idx": row[0],
+                        "name": row[1],
+                        "type": row[2],
+                        "label": row[3],
+                        "desc": row[4] if len(row) > 4 else "",
+                    })
+
+    return data
+
+
+def generate_markdown(api_id: int, title: str, data: dict) -> str:
+    """Generate a markdown section matching mcp-api-source.md format."""
+    lines = []
+    lines.append(f"## {api_id}. {title}")
+    lines.append("")
+    lines.append("### 基本信息")
+    lines.append(f"- **MCP Code**: `{data['mcp_code']}`")
+    lines.append(f"- **Method**: {data['method']}")
+    lines.append(f"- **URL**: `{data['url']}`")
+    lines.append("")
+
+    # Request params
+    if data["request_params"]:
+        lines.append("### 请求参数")
+        lines.append("")
+        lines.append("| # | 参数 | 类型 | 必填 | 说明 |")
+        lines.append("|---|------|------|------|------|")
+        for p in data["request_params"]:
+            req = "✓" if p["required"] and p["required"] != " " else ""
+            desc = p["desc"] if p["desc"] else ""
+            if p["label"] and p["label"] != p["name"]:
+                if desc:
+                    desc = f"{p['label']}，{desc}"
+                else:
+                    desc = p["label"]
+            lines.append(f"| {p['idx']} | {p['name']} | {p['type']} | {req} | {desc} |")
+        lines.append("")
+
+    # Response params
+    if data["response_params"]:
+        lines.append("### 响应参数")
+        lines.append("")
+        lines.append("| # | 字段 | 类型 | 说明 | 示例 |")
+        lines.append("|---|------|------|------|------|")
+        for p in data["response_params"]:
+            label = p["label"] if p["label"] else ""
+            desc = p["desc"] if p["desc"] else ""
+            lines.append(f"| {p['idx']} | {p['name']} | {p['type']} | {label} | {desc} |")
+        lines.append("")
+
+    # Request example
+    lines.append("### 请求示例")
+    lines.append("")
+    lines.append("```bash")
+    lines.append(f"curl -X {data['method']} '{data['url']}' \\")
+    lines.append("  -H 'secret-key: Your Secret' \\")
+    if data["method"] == "POST":
+        lines.append("  -H 'Content-Type: application/json' \\")
+    # Try to build a minimal example body
+    body_params = [p for p in data["request_params"] if p["required"] and p["required"] != " "]
+    if body_params:
+        example = {}
+        for p in body_params:
+            if p["name"] == "marketplace":
+                example["marketplace"] = "US"
+            elif p["name"] == "nodeIdPath":
+                example["nodeIdPath"] = "2619525011"
+            elif p["name"] == "asin":
+                example["asin"] = "B08GHW4TBS"
+            elif p["name"] == "keyword":
+                example["keyword"] = "test"
+            elif p["name"] == "date":
+                example["date"] = "202412"
+            elif p["name"] == "bsr":
+                example["bsr"] = 2
+            elif p["name"] == "category_id":
+                example["category_id"] = "11260432011"
+            elif p["type"] == "String":
+                example[p["name"]] = ""
+            elif p["type"] == "Integer":
+                example[p["name"]] = 1
+            elif p["type"] == "List":
+                example[p["name"]] = []
+            else:
+                example[p["name"]] = ""
+        if data["method"] == "GET" and example:
+            qs = "&".join(f"{k}={v}" for k, v in example.items())
+            lines.append(f"  -G -d '{qs}'")
+        elif example:
+            import json as _json
+            lines.append(f"  -d '{_json.dumps(example)}'")
+    lines.append("```")
+    lines.append("")
+
+    return "\n".join(lines)
+
+
+# ── mcp-api-source.md sync ────────────────────────────────
+
+def find_tool_section(mcp_content: str, mcp_code: str) -> tuple[int, int] | None:
+    """Find start/end positions of a tool section in mcp-api-source.md."""
+    code_pattern = rf"\*\*MCP Code\*\*:\s*`{re.escape(mcp_code)}`"
+    match = re.search(code_pattern, mcp_content)
+    if not match:
+        return None
+    start = mcp_content.rfind("\n## ", 0, match.start())
+    if start == -1:
+        start = 0
+    else:
+        start += 1
+    end = mcp_content.find("\n## ", match.start())
+    if end == -1:
+        end = len(mcp_content)
+    return start, end
+
+
+def sync_mcp_source(force: bool = False) -> tuple[int, int, int]:
+    """Sync official API docs to mcp-api-source.md. Returns (updated, unchanged, new)."""
+    scraped = scrape_all_pages(use_cache=not force)
+    mcp_content = MCP_FILE.read_text(encoding="utf-8")
+
+    updated = 0
+    unchanged = 0
+    new = 0
+
+    # Since scraping returns {mcp_code: data} in insertion order,
+    # we zip API_PAGES order with scraped items.
+    scraped_items = list(scraped.items())
+
+    for idx, (api_id, title) in enumerate(API_PAGES):
+        if idx >= len(scraped_items):
+            print(f"[WARN] No scraped data for {api_id}. {title}")
+            continue
+        code, data = scraped_items[idx]
+
+        new_section = generate_markdown(api_id, title, data)
+        existing = find_tool_section(mcp_content, code)
+
+        if existing is None:
+            print(f"[NEW] {api_id}. {title} ({code})")
+            mcp_content = mcp_content.rstrip() + "\n\n---\n\n" + new_section
+            new += 1
+        else:
+            start, end = existing
+            old_section = mcp_content[start:end]
+            if old_section.strip() == new_section.strip():
+                print(f"[OK] {api_id}. {title} ({code})")
+                unchanged += 1
+            else:
+                print(f"[UPDATE] {api_id}. {title} ({code})")
+                mcp_content = mcp_content[:start] + new_section + mcp_content[end:]
+                updated += 1
+
+    MCP_FILE.write_text(mcp_content, encoding="utf-8")
+    print(f"\nSync complete: {updated} updated, {unchanged} unchanged, {new} new")
+    return updated, unchanged, new
+
+
+# ── Original audit/fix logic (unchanged) ──────────────────
 
 def extract_sections(content: str) -> dict[str, str]:
     """Extract sections from a markdown file by ## / ### headings."""
@@ -126,7 +435,7 @@ def build_doc(tool_name: str, doc_content: str, mcp_content: str) -> str:
 
     # 4. Request params (keep from doc; fall back to mcp)
     doc_params = find_section(doc_sections, ["参数"])
-    mcp_params = find_section(mcp_sections, ["请求参数"])
+    mcp_params = find_section(mcp_sections, ["参数"])
     params = doc_params or mcp_params
     if params:
         parts.append("## 参数")
@@ -167,7 +476,7 @@ def build_doc(tool_name: str, doc_content: str, mcp_content: str) -> str:
     return "\n".join(parts) + "\n"
 
 
-def run_audit() -> list[tuple[str, str, list[str]]]:
+def run_audit() -> tuple[list, list[Path]]:
     """Audit mode: compare reference/*.md against mcp-api-source.md."""
     mcp_content = MCP_FILE.read_text(encoding="utf-8")
     doc_files = sorted([f for f in DOCS_DIR.glob("*.md")])
@@ -296,12 +605,21 @@ def run_fix() -> tuple[int, int]:
     return updated, unchanged
 
 
+# ── Main ──────────────────────────────────────────────────
+
 def main():
-    parser = argparse.ArgumentParser(description="Docs manager: audit or fix reference/*.md")
-    parser.add_argument("command", choices=["audit", "fix"], help="audit=report only, fix=auto-fill missing")
+    parser = argparse.ArgumentParser(description="Docs manager: sync, audit or fix reference/*.md")
+    parser.add_argument("command", choices=["sync", "audit", "fix"],
+                        help="sync=scrape official docs and overwrite mcp-api-source.md, audit=report only, fix=auto-fill missing")
+    parser.add_argument("--force", action="store_true", help="Force re-scrape (ignore cache)")
     args = parser.parse_args()
 
-    if args.command == "audit":
+    if args.command == "sync":
+        updated, unchanged, new = sync_mcp_source(force=args.force)
+        print(f"\nRunning fix to sync reference/*.md...")
+        fixed, ok = run_fix()
+        print(f"\nDone: mcp-api-source.md ({updated} updated, {unchanged} unchanged, {new} new), reference/*.md ({fixed} updated, {ok} unchanged)")
+    elif args.command == "audit":
         issues, doc_files = run_audit()
         report = print_report(issues, doc_files)
         OUTPUT_DIR.mkdir(exist_ok=True)

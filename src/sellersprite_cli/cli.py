@@ -647,7 +647,9 @@ def _make_market_command(tool_name: str, label: str):
     """Factory for market analysis commands that all take node_id_path."""
     def cmd(
         node_id_path: Annotated[str, typer.Option("--node-id-path", help="类目节点路径")],
-        month: Annotated[Optional[str], typer.Option("--month", help="查询月份 yyyyMM")] = None,
+        month: Annotated[Optional[str], typer.Option("--month", help="筛选日期 yyyyMM，默认最近30天，最早支持2021年7月")] = None,
+        top_n: Annotated[Optional[int], typer.Option("--top-n", help="头部Listing数量，仅需求趋势有效")] = None,
+        new_product: Annotated[Optional[int], typer.Option("--new-product", help="新品定义阈值（月），仅需求趋势有效")] = None,
         marketplace: MpOpt = "US",
         key: KeyOpt = None,
     ):
@@ -656,6 +658,12 @@ def _make_market_command(tool_name: str, label: str):
         if tool_name in ("market_research_statistics", "market_listing_trend_distribution", "market_product_demand_trend"):
             if month:
                 kwargs["month"] = month
+        # Only add demand-trend-specific params
+        if tool_name == "market_product_demand_trend":
+            if top_n is not None:
+                kwargs["top_n"] = top_n
+            if new_product is not None:
+                kwargs["new_product"] = new_product
         _print_result(_call_tool(tool_name, key, marketplace, **kwargs))
     cmd.__doc__ = label
     return cmd
