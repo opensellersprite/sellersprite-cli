@@ -433,10 +433,18 @@ def build_doc(tool_name: str, doc_content: str, mcp_content: str) -> str:
     parts.append(f"`mcp__sellersprite__{tool_name}`")
     parts.append("")
 
-    # 4. Request params (keep from doc; fall back to mcp)
+    # 4. Request params (always prefer MCP, as it's the authoritative source)
     doc_params = find_section(doc_sections, ["参数"])
-    mcp_params = find_section(mcp_sections, ["参数"])
-    params = doc_params or mcp_params
+    mcp_req_params = find_section(mcp_sections, ["请求参数"])
+
+    # Always prefer MCP request params
+    if mcp_req_params:
+        params = mcp_req_params
+    elif doc_params:
+        params = doc_params
+    else:
+        params = None
+
     if params:
         parts.append("## 参数")
         parts.append("")
@@ -453,10 +461,18 @@ def build_doc(tool_name: str, doc_content: str, mcp_content: str) -> str:
         parts.append(basic)
         parts.append("")
 
-    # 6. Response params (from mcp if missing in doc)
-    resp = find_section(doc_sections, ["响应参数"])
-    if not resp:
-        resp = find_section(mcp_sections, ["响应参数"])
+    # 6. Response params (always prefer MCP, as it's the authoritative source)
+    doc_resp = find_section(doc_sections, ["响应参数"])
+    mcp_resp = find_section(mcp_sections, ["响应参数"])
+
+    # Always prefer MCP response params, as mcp-api-source.md is the authoritative source
+    if mcp_resp:
+        resp = mcp_resp
+    elif doc_resp:
+        resp = doc_resp
+    else:
+        resp = None
+
     if resp:
         parts.append("## 响应参数")
         parts.append("")

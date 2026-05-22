@@ -22,10 +22,10 @@
 
 ## 参数
 
-| 参数名 | 类型 | 必填 | 说明 |
-|--------|------|------|------|
-| `keyword` | string | 是 | 关键字 |
-| `marketplace` | string | 是 | Amazon 站点代码（枚举值）：US, JP, UK, DE, FR, IT, ES, CA, IN |
+| # | 参数 | 类型 | 必填 | 说明 |
+|---|------|------|------|------|
+| 1 | marketplace | String | ✓ | 市场，见表 1.2 |
+| 2 | keyword | String | ✓ |  |
 
 ## 基本信息
 
@@ -35,17 +35,18 @@
 
 ## 响应参数
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| time | String | 时间（按月，从2017年01月起） |
-| keywrod | String | 关键词（注意原始拼写有误） |
-| keywrodCn/keywrodJp | String | 中文/日文翻译 |
-| search | Integer | 搜索量 |
-| purchase | BigDecimal | 购买量 |
-| purchaseRate | BigDecimal | 购买率 |
-| yearlyGrowth | BigDecimal | 同比增长率 |
-| chainGrowth | BigDecimal | 环比增长率 |
-| threeMonthGrowth | BigDecimal | 三个月增长率 |
+| # | 字段 | 类型 | 说明 | 示例 |
+|---|------|------|------|------|
+| 1 | time | String | 时间 |  |
+| 2 | keywrod | String | 关键词 |  |
+| 3 | keywrodCn | String | 关键词-中文 |  |
+| 4 | keywrodJp | String | 关键词-日文 |  |
+| 5 | search | Integer | 搜索量 |  |
+| 6 | purchase | BigDecimal | 购买量 |  |
+| 7 | purchaseRate | BigDecimal | 购买率 |  |
+| 8 | yearlyGrowth | BigDecimal | 同比增长率 |  |
+| 9 | chainGrowth | BigDecimal | 环比增长率 |  |
+| 10 | threeMonthGrowth | BigDecimal | 三个月增长率 |  |
 
 ## 请求示例
 

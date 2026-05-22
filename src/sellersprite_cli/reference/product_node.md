@@ -18,12 +18,12 @@
 
 ## 参数
 
-| 参数名 | 类型 | 必填 | 说明 |
-|--------|------|------|------|
-| `keyword` | string |  | 搜索关键字，nodeId或类目名称 |
-| `marketplace` | string | 是 | Amazon 站点代码（枚举值）：US, JP, UK, DE, FR, IT, ES, CA, IN |
-| `month` | string |  | 查询月份, 格式: yyyyMM |
-| `nodeIdPath` | string |  | 类目节点 id 字符串 |
+| # | 参数 | 类型 | 必填 | 说明 |
+|---|------|------|------|------|
+| 1 | marketplace | String | ✓ | 市场，见表 1.2 |
+| 2 | nodeIdPath | String |  | 类目节点 id 字符串，2619525011:3741271:3741281 |
+| 3 | keyword | String |  | 搜索关键字，nodeId或类目名称，Books 或者 4053 |
+| 4 | month | String |  | 查询历史月份类目，格式yyyyMM，202502 |
 
 ## 基本信息
 
@@ -33,13 +33,13 @@
 
 ## 响应参数
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| nodeIdPath | String | 类目 id 字符串 |
-| nodeLabelPath | String | 类目英文名称（冒号分隔） |
-| nodeLabelLocale | String | 类目节点中文名 |
-| nodeLabelPathLocale | String | 类目所属节点中文名 |
-| products | Integer | 类目下产品数 |
+| # | 字段 | 类型 | 说明 | 示例 |
+|---|------|------|------|------|
+| 1 | nodeIdPath | String | 类目 id 字符串，即 nodeIdPath | 2619525011:3741271 |
+| 2 | nodeLabelPath | String | 类目名称 | Appliances:Dishwashers |
+| 3 | products | Integer | 类目下产品数 | 42 |
+| 4 | nodeLabelLocale | String | 类目节点名称中文 | 洗碗机 |
+| 5 | nodeLabelPathLocale | String | 类目所属所有节点名称中文 | 大家电:洗碗机 |
 
 ## 请求示例
 

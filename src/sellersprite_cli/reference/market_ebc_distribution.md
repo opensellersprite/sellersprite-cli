@@ -18,13 +18,13 @@ A+ 页面与商品视频内容对销量影响的内容配置效应评估。
 
 ## 参数
 
-| 参数名 | 类型 | 必填 | 说明 |
-|--------|------|------|------|
-| `marketplace` | string | 是 | Amazon 站点代码（枚举值）：US, JP, UK, DE, FR, IT, ES, CA, IN |
-| `month` | string |  | 查询月份, 格式: yyyyMM |
-| `newProduct` | integer |  | 新品定义阈值（单位：月），用于指定将上架在该时间范围内的商品视为新品。可根据行业特性调整，如服装类通常为 1，母婴等长生命周期行业可设为 6 |
-| `nodeIdPath` | string | 是 | 产品所属的类目节点 ID, 例如： 2619525011:3741271， 通常通过查询【产品类目信息】获取，或由用户直接指定类目路径 |
-| `topN` | integer |  | 头部Listing数量, 做竞争分析时，一般是取头部产品和整体样本做对比，来判断市场竞争度/集中度, 卖家精灵默认是取头部前10商品 |
+| # | 参数 | 类型 | 必填 | 说明 |
+|---|------|------|------|------|
+| 1 | marketplace | String | ✓ | 站点编码，见表 1.2 |
+| 2 | month | String |  | 筛选日期,默认最近30天，见表 1.1 |
+| 3 | topN | Integer |  | 头部Listing数量，10 |
+| 4 | newProduct | Integer |  | 新品定义，6 |
+| 5 | nodeIdPath | String | ✓ | 节点 id 路径字符串，1064954:1069242:1069784:1069820:1069838:1069828 |
 
 ## 基本信息
 
@@ -34,15 +34,13 @@ A+ 页面与商品视频内容对销量影响的内容配置效应评估。
 
 ## 响应参数
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| nodeIdPath | String | 类目路径 |
-| hasEbc | Integer | 有 A+ 的商品数 |
-| hasEbcRatio | Float | A+ 占比 |
-| hasVideo | Integer | 有视频的商品数 |
-| hasVideoRatio | Float | 视频占比 |
-| hasAplusVideo | Integer | 有 A++ 的商品数 |
-| hasAplusVideoRatio | Float | A++ 占比 |
+| # | 字段 | 类型 | 说明 | 示例 |
+|---|------|------|------|------|
+| 1 | label | String | 类型说明 | 有A+有视频 |
+| 2 | products | Integer | 产品数 | 1 |
+| 3 | productsRatio | Float | 类目名称产品占比 | 20 |
+| 4 | units | Integer | 销量 | 1311 |
+| 5 | unitsRatio | Float | 销量占比 | 23.34 |
 
 ## 请求示例
 

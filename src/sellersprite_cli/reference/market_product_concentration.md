@@ -23,14 +23,14 @@
 
 ## 参数
 
-| 参数名 | 类型 | 必填 | 说明 |
-|--------|------|------|------|
-| `asins` | array |  | 过滤 ASIN |
-| `marketplace` | string | 是 | Amazon 站点代码（枚举值）：US, JP, UK, DE, FR, IT, ES, CA, IN |
-| `month` | string |  | 查询月份, 格式: yyyyMM |
-| `newProduct` | integer |  | 新品定义阈值（单位：月），用于指定将上架在该时间范围内的商品视为新品。可根据行业特性调整，如服装类通常为 1，母婴等长生命周期行业可设为 6 |
-| `nodeIdPath` | string | 是 | 产品所属的类目节点 ID, 例如： 2619525011:3741271， 通常通过查询【产品类目信息】获取，或由用户直接指定类目路径 |
-| `topN` | integer |  | 头部Listing数量, 做竞争分析时，一般是取头部产品和整体样本做对比，来判断市场竞争度/集中度, 卖家精灵默认是取头部前10商品 |
+| # | 参数 | 类型 | 必填 | 说明 |
+|---|------|------|------|------|
+| 1 | marketplace | String | ✓ | 站点编码，见表 1.2 |
+| 2 | month | String |  | 筛选日期,默认最近30天，见表 1.1 |
+| 3 | asins | List |  | 过滤asin，["B00P19MFYE"] |
+| 4 | topN | Integer |  | 头部Listing数量，10 |
+| 5 | newProduct | Integer |  | 新品定义，6 |
+| 6 | nodeIdPath | String | ✓ | 节点 id 路径字符串，1064954:1069242:1069784:1069820:1069838:1069828 |
 
 ## 基本信息
 
@@ -40,15 +40,26 @@
 
 ## 响应参数
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| nodeIdPath | String | 类目路径 |
-| totalProducts | Integer | 总商品数 |
-| top10Units | Float | TOP10 销量占比 |
-| top20Units | Float | TOP20 销量占比 |
-| top50Units | Float | TOP50 销量占比 |
-| top100Units | Float | TOP100 销量占比 |
-| concentrationLevel | String | 集中度等级 |
+| # | 字段 | 类型 | 说明 | 示例 |
+|---|------|------|------|------|
+| 1 | title | String | 标题 | Pilot G2, Dr. Grip Gel/Ltd, ExecuGel G6, Q7 Rollerball Gel Ink Pen Refills, 0.7mm, Fine Point, Black Ink, 3 Packs of 2 |
+| 2 | asin | String | asin | B00P19MFYE |
+| 3 | asinUrl | String | asin链接 | https://www.amazon.com/dp/B00P19MFYE |
+| 4 | imageUrl | String | 图片链接 | https://images-na.ssl-images-amazon.com/images/I/51hxvoxGnjL._AC_US200_.jpg |
+| 5 | ranking | Integer | 排名 | 1 |
+| 6 | brand | String | 品牌 | PILOT |
+| 7 | sellerName | String | 卖家名称 | JA Wholesale LLC |
+| 8 | sellerType | String | 卖家类型 | FBA |
+| 9 | price | Float | 价格 | 6.19 |
+| 10 | shelfDate | String | 上架时间 | 2014-10-30 |
+| 11 | ratings | Integer | 评分数 | 5695 |
+| 12 | reviews | Integer | 评论数 | 133 |
+| 13 | rating | Float | 评论值 | 4.8 |
+| 14 | newFlag | Integer | 是否新品 1新品，0非新品 | 0 |
+| 15 | totalUnits | Integer | 总销量 | 2515 |
+| 16 | totalRevenue | Float | 总销额 | 18837.35 |
+| 17 | totalUnitsRatio | Float | 总销量占比 | 0.4478 |
+| 18 | totalRevenueRatio | Float | 总销额占比 | 0.3052 |
 
 ## 请求示例
 

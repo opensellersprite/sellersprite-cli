@@ -22,10 +22,11 @@
 
 ## 参数
 
-| 参数名 | 类型 | 必填 | 说明 |
-|--------|------|------|------|
-| `keyword` | string | 是 | 关键字 |
-| `marketplace` | string | 是 | Amazon 站点代码（枚举值）：US, JP, UK, DE, FR, IT, ES, CA, IN |
+| # | 参数 | 类型 | 必填 | 说明 |
+|---|------|------|------|------|
+| 1 | marketplace | String | ✓ | 市场，见表 1.2 |
+| 2 | keyword | String | ✓ | 关键词 |
+| 3 | timeGranularity | String |  | 时间粒度，W：周，M：月 |
 
 ## 基本信息
 
@@ -35,15 +36,12 @@
 
 ## 响应参数
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| keyword | String | 关键词 |
-| time | String | 时间 |
-| searches | Integer | 搜索量 |
-| clicks | Integer | 点击量 |
-| ctr | Float | 点击率 |
-| cvShareRate | Float | 转化共享率 |
-| rank | Integer | 排名 |
+| # | 字段 | 类型 | 说明 | 示例 |
+|---|------|------|------|------|
+| 1 | date | Date | 日期 |  |
+| 2 | rank | String | ABA排名 |  |
+| 3 | searches | String | 搜索量 |  |
+| 4 | label | Integer | 日期标签 |  |
 
 ## 请求示例
 

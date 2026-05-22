@@ -32,14 +32,16 @@ Amazon 流量关键词结构分析工具（ASIN / 关键词维度）。
 
 ## 参数
 
-| 参数名 | 类型 | 必填 | 说明 |
-|--------|------|------|------|
-| `marketplace` | string | 是 | Amazon 站点代码：US, JP, UK, DE, FR, IT, ES, CA, IN |
-| `month` | string | 是 | 查询月份，格式 yyyyMM |
-| `q` | string | 是 | ASIN 或关键词 |
-| `page` | integer |  | 当前页，默认1 |
-| `size` | integer |  | 每页条数，默认50，最大100 |
-| `order` | object |  | 排序（见[表2.4 流量来源排序字段](./api_appendix.md#流量来源排序字段表24)） |
+| # | 参数 | 类型 | 必填 | 说明 |
+|---|------|------|------|------|
+| 1 | marketplace | String | ✓ | 市场,见表1.2，US |
+| 2 | q | String | ✓ | asin 或者 关键词，B07Z82895W |
+| 3 | month | String | ✓ | 筛选日期,yyyyMM格式，202203 |
+| 4 | page | Integer |  | 页码，从 1 开始，默认：1 |
+| 5 | size | Integer |  | 每页条数，默认：50最大： 100 |
+| 6 | order | Object |  | 排序 |
+| 7 | └field | String |  | 排序字段，见表2.4 |
+| 8 | └desc | boolean |  | true为降序 false为升序，默认降序 |
 
 ## 基本信息
 
@@ -49,38 +51,33 @@ Amazon 流量关键词结构分析工具（ASIN / 关键词维度）。
 
 ## 响应参数
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| keywords | Integer | 全部流量词数量 |
-| searchKeywords | Integer | 自然搜索词 |
-| acKeywords | Integer | AC推荐词 |
-| editorialKeywords | Integer | ER推荐词 |
-| fourStarsKeywords | Integer | 4星推荐词 |
-| hrKeywords | Integer | HR推荐词 |
-| adKeywords | Integer | SP广告词 |
-| videoKeywords | Integer | 视频广告词 |
-| brandKeywords | Integer | 品牌广告词 |
-| badgeLabels | List | 流量来源概览 |
-| badgeDetails | Map | 流量来源明细 |
-| asinInfo | Object | ASIN 相关信息 |
-
-## ASIN 信息字段
-
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| asin | String | ASIN |
-| asinUrl | String | ASIN 链接 |
-| currency | String | 货币 |
-| price | Float | 价格 |
-| rating | Float | 评分 |
-| reviews | Integer | 评分数 |
-| title | String | 标题 |
-| sku | String | SKU |
-| variations | Integer | 变体数 |
-| nodeId | String | 节点ID |
-| nodeIdPath | String | 节点路径 |
-| nodeLabelPath | String | 节点名称 |
-| bsrRank | Integer | BSR排名 |
+| # | 字段 | 类型 | 说明 | 示例 |
+|---|------|------|------|------|
+| 1 | keywords | Integer | 全部流量词 | 1 |
+| 2 | searchKeywords | Integer | 自然搜索词 | 12 |
+| 3 | acKeywords | String | AC推荐词 | 13 |
+| 4 | editorialKeywords | Integer | ER推荐词 | 13 |
+| 5 | fourStarsKeywords | Integer | 4星推荐词 | 14 |
+| 6 | hrKeywords | Integer | HR推荐词 | 1 |
+| 7 | adKeywords | Integer | SP广告词 | 3 |
+| 8 | videoKeywords | Integer | 视频广告词 | 4 |
+| 9 | brandKeywords | Integer | 品牌广告词 | 5 |
+| 10 | badgeLabels | List | 流量来源概览 | [“SEARCH”, “OFFICIAL”, “AD”] |
+| 11 | badgeDetails | Map | 流量来源明细 | {“SEARCH”: [“NATURAL_SEARCHING”],”OFFICIAL”: [“AMAZON_CHOICE”],”AD”: [“SPONSOR_BRAND”,”SPONSOR_VIDEO”,”HIGHLY_RATED”,”ADS”]} |
+| 12 | asinInfo | Object | Asin相关信息 |  |
+| 13 | └asin | String | asin | B078J8VPVW |
+| 14 | └asinUrl | String | 该asin对应亚马逊地址 | https://www.amazon.com/dp/B08GHW4TBS |
+| 15 | └currency | String | 货币code | $ |
+| 16 | └price | Float | 价格 | 23 |
+| 17 | └rating | Float | 评分 | 234 |
+| 18 | └reviews | Integer | 评分数 | 23 |
+| 19 | └title | String | 标题 | Diapers Size 2, 186 Count - Pampers Swaddlers Disposable Baby Diapers, ONE MONTH SUPPLY |
+| 20 | └sku | String | sku | ["Color: Beige","Size: 47 inches"] |
+| 21 | └variations | Integer | 变体数 | 2 |
+| 22 | └nodeId | Long | 类目ID | 12097479011 |
+| 23 | └nodeIdPath | String | 类目ID路径 | 172282:24046923011:172541:12097479011 |
+| 24 | └nodeLabelPath | String | 类目路径 | Electronics:Headphones, Earbuds & Accessories:Headphones & Earbuds:Over-Ear Headphones |
+| 25 | └bsrRank | Long | 大类排名(BSR) | 175204 |
 
 ## 请求示例
 
@@ -96,15 +93,3 @@ Amazon 流量关键词结构分析工具（ASIN / 关键词维度）。
 }
 ```
 
-## CLI 使用示例
-
-```bash
-# 基本用法
-sellersprite traffic source 202604 --q B07Z82895W
-
-# 使用 --asin 参数
-sellersprite traffic source 202604 --asin B07Z82895W
-
-# 带排序
-sellersprite traffic source 202604 --asin B07Z82895W --order-field keywords --order-desc
-```

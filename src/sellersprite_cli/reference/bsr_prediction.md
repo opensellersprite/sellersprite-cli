@@ -13,11 +13,11 @@
 
 ## 参数
 
-| 参数名 | 类型 | 必填 | 说明 |
-|--------|------|------|------|
-| `marketplace` | string | 是 | Amazon 站点代码（枚举值）：US, JP, UK, DE, FR, IT, ES, CA, IN |
-| `bsr` | integer | 是 | Amazon 大类 BSR 排名 |
-| `categoryId` | string | 是 | 一级类目节点，查产品类目返回 |
+| # | 参数 | 类型 | 必填 | 说明 |
+|---|------|------|------|------|
+| 1 | marketplace | String | ✓ | 市场,见表1.2，US |
+| 2 | bsr | Integer | ✓ | 大类排名，1024 |
+| 3 | categoryId | String | ✓ | 一级类目节点，查产品类目返回，11260432011 |
 
 ## 基本信息
 
@@ -27,14 +27,17 @@
 
 ## 响应参数
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| marketplace | String | 市场 |
-| bsr | Integer | BSR 排名 |
-| categoryLabel | String | 类目名称 |
-| estDailySales | Integer | 预测日销量 |
-| estMonthSales | Integer | 预测30天销量 |
-| itemList[].{bsr,estDailySales,estMonthSales} | - | 类目内排名靠前的BSR销量明细 |
+| # | 字段 | 类型 | 说明 | 示例 |
+|---|------|------|------|------|
+| 1 | marketplace | String | 市场 | US |
+| 2 | bsr | Integer | 1 | B07Z82895W |
+| 3 | categoryLabel | String | 类目名称 | 2685 |
+| 4 | estDailySales | Integer | 预测日销量 | 99 |
+| 5 | estMonthSales | Integer | 预测30天销量 | 2965 |
+| 6 | itemList | List | 明细 |  |
+| 7 | └bsr | Integer | bsr | 1 |
+| 8 | └estDailySales | Integer | 预测日销量 | 99 |
+| 9 | └estMonthSales | Integer | 预测30天销量 | 2965 |
 
 ## 请求示例
 

@@ -15,13 +15,13 @@
 
 ## 参数
 
-| 参数名 | 类型 | 必填 | 说明 |
-|--------|------|------|------|
-| `marketplace` | string | 是 | Amazon 站点代码（枚举值）：US, JP, UK, DE, FR, IT, ES, CA, IN |
-| `month` | string |  | 筛选日期，默认最近30天，最早查询时间为2021年7月份，格式: yyyyMM |
-| `newProduct` | integer |  | 新品定义阈值（单位：月），用于指定将上架在该时间范围内的商品视为新品。可根据行业特性调整，如服装类通常为 1，母婴等长生命周期行业可设为 6 |
-| `nodeIdPath` | string | 是 | 产品所属的类目节点 ID, 例如： 2619525011:3741271， 通常通过查询【产品类目信息】获取，或由用户直接指定类目路径 |
-| `topN` | integer |  | 头部Listing数量, 做竞争分析时，一般是取头部产品和整体样本做对比，来判断市场竞争度/集中度, 卖家精灵默认是取头部前10商品 |
+| # | 参数 | 类型 | 必填 | 说明 |
+|---|------|------|------|------|
+| 1 | marketplace | String | ✓ | 市场 id，见表 1.2 |
+| 2 | month | String |  | 筛选日期,默认最近30天，最早查询时间为2021年7月份，见表 1.1 |
+| 3 | topN | Integer |  | 头部Listing数量，10 |
+| 4 | newProduct | Integer |  | 新品定义，6 |
+| 5 | nodeIdPath | String | ✓ | 节点 id 路径字符串，1064954:1069242:1069784:1069820:1069838:1069828 |
 
 ## 基本信息
 
@@ -33,13 +33,13 @@
 
 | # | 字段 | 类型 | 说明 | 示例 |
 |---|------|------|------|------|
-| 1 | asinCount | String | ASIN 数量 | 22187 |
+| 1 | asinCount | String | asin数量 | 22187 |
 | 2 | returnRatio | String | 退货率，百分比 | 1.38 |
 | 3 | searchToPurchaseRatio | List | 搜索购买比，千分比 | 3.17875 |
 | 4 | avgReturnRatio | Integer | 类目平均退货率，百分比 | 2.72 |
 | 5 | avgSearchToPurchaseRatio | Float | 类目平均搜索购买比，千分比 | 2.6 |
-| 6 | items | List | 月浏览趋势 | |
-| 7 | └date | String | 时间，yyyy-MM-dd 格式 | 2022-09-10 |
+| 6 | items | List | 月浏览趋势 |  |
+| 7 | └date | String | 时间，yyyy-MM-dd格式 | 2022-09-10 |
 | 8 | └glanceViews | Integer | 浏览量 | 2 |
 
 ## 请求示例

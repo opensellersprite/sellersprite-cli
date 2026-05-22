@@ -15,13 +15,13 @@
 
 ## 参数
 
-| 参数名 | 类型 | 必填 | 说明 |
-|--------|------|------|------|
-| `marketplace` | string | 是 | Amazon 站点代码（枚举值）：US, JP, UK, DE, FR, IT, ES, CA, IN |
-| `month` | string |  | 查询月份, 格式: yyyyMM |
-| `newProduct` | integer |  | 新品定义阈值（单位：月），用于指定将上架在该时间范围内的商品视为新品。可根据行业特性调整，如服装类通常为 1，母婴等长生命周期行业可设为 6 |
-| `nodeIdPath` | string | 是 | 产品所属的类目节点 ID, 例如： 2619525011:3741271， 通常通过查询【产品类目信息】获取，或由用户直接指定类目路径 |
-| `topN` | integer |  | 头部Listing数量, 做竞争分析时，一般是取头部产品和整体样本做对比，来判断市场竞争度/集中度, 卖家精灵默认是取头部前10商品 |
+| # | 参数 | 类型 | 必填 | 说明 |
+|---|------|------|------|------|
+| 1 | marketplace | String | ✓ | 站点编码，见表 1.2 |
+| 2 | month | String |  | 筛选日期,默认最近30天，见表 1.1 |
+| 3 | topN | Integer |  | 头部Listing数量，10 |
+| 4 | newProduct | Integer |  | 新品定义，6 |
+| 5 | nodeIdPath | String | ✓ | 节点 id 路径字符串，1064954:1069242:1069784:1069820:1069838:1069828 |
 
 ## 基本信息
 
@@ -31,13 +31,25 @@
 
 ## 响应参数
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| nodeIdPath | String | 类目路径 |
-| totalSellers | Integer | 总卖家数 |
-| top1SellerUnits | Float | TOP1 卖家销量占比 |
-| top5SellersUnits | Float | TOP5 卖家销量占比 |
-| top10SellersUnits | Float | TOP10 卖家销量占比 |
+| # | 字段 | 类型 | 说明 | 示例 |
+|---|------|------|------|------|
+| 1 | name | String | 卖家名称 | JA Wholesale LLC |
+| 2 | ranking | Integer | 排名 | 1 |
+| 3 | asinSet | List | 包含的商品ASIN集合 | ["B00P19MFYE"] |
+| 4 | products | Integer | 商品数量，包含新品 | 4 |
+| 5 | newProducts | Integer | 新品数量 | 1 |
+| 6 | newUnits | Integer | 新品销量 | 45 |
+| 7 | newRevenue | Float | 新品销售额 | 2342 |
+| 8 | newUnitsRatio | Float | 新品销量占比 | 4.3 |
+| 9 | newRevenueRatio | Float | 新品销售额占比 | 4 |
+| 10 | avgPrice | Float | 平均价格 | 6.19 |
+| 11 | ratings | Integer | 评分数 | 5695 |
+| 12 | rating | Float | 评分值 | 4.8 |
+| 13 | reviews | Integer | 评论数 | 234 |
+| 14 | totalUnits | Integer | 总销量 | 32342 |
+| 15 | totalRevenue | Float | 总销额 | 18837.35 |
+| 16 | totalUnitsRatio | Float | 总销量占比 | 0.4478 |
+| 17 | totalRevenueRatio | Float | 总销额占比 | 0.3052 |
 
 ## 请求示例
 

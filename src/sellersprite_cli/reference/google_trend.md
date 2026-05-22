@@ -23,12 +23,12 @@
 
 ## 参数
 
-| 参数名 | 类型 | 必填 | 说明 |
-|--------|------|------|------|
-| `marketplace` | string | 是 | Amazon 站点代码：US, JP, UK, DE, FR, IT, ES, CA, IN |
-| `keyword` | string | | 关键字 |
-| `googleProp` | string | | 类别：web=Google网页搜索，shoppingCart=Google购物搜索 |
-| `monthly` | boolean | | 是否按月份，默认 false |
+| # | 参数 | 类型 | 必填 | 说明 |
+|---|------|------|------|------|
+| 1 | marketplace | String | ✓ | 市场，见表 1.2 |
+| 2 | keyword | String |  | 关键字，iphone stand |
+| 3 | googleProp | String |  | 类别，web:google网页搜索shoppingCart:google购物搜索 |
+| 4 | monthly | boolean |  | 按照月份，false（默认值） |
 
 ## 基本信息
 
@@ -38,14 +38,14 @@
 
 ## 响应参数
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| marketplace | String | 市场 |
-| keyword | String | 关键字 |
-| link | String | Google趋势链接 |
-| items | List | 趋势数据明细 |
-| items[].time | Long | 时间戳（毫秒） |
-| items[].value | Integer | 趋势指数值 |
+| # | 字段 | 类型 | 说明 | 示例 |
+|---|------|------|------|------|
+| 1 | marketplace | String | 市场，见表 1.2 | US |
+| 2 | keyword | String | 关键字 | phone stand |
+| 3 | link | String | google trend链接 |  |
+| 4 | items | List | 明细 |  |
+| 5 | └time | Long | 时间戳 | 1555804800000 |
+| 6 | └value | Integer | 值 | 2 |
 
 ## 请求示例
 
@@ -65,18 +65,3 @@
 }
 ```
 
-## CLI 使用示例
-
-```bash
-# 基本用法
-sellersprite trend google --keyword "iphone stand"
-
-# 搜索类型：网页搜索
-sellersprite trend google --keyword "iphone stand" --google-prop web
-
-# 搜索类型：购物搜索
-sellersprite trend google --keyword "iphone stand" --google-prop shoppingCart
-
-# 按月份汇总
-sellersprite trend google --keyword "iphone stand" --monthly
-```

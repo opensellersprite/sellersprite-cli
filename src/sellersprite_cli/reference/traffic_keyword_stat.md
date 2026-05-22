@@ -32,11 +32,11 @@ Amazon ASIN 流量关键词结构【概览统计】工具。
 
 ## 参数
 
-| 参数名 | 类型 | 必填 | 说明 |
-|--------|------|------|------|
-| `marketplace` | string | 是 | Amazon 站点代码（枚举值）：US, JP, UK, DE, FR, IT, ES, CA, IN |
-| `asin` | string | 是 | ASIN |
-| `month` | string |  | 查询月份, 格式: yyyyMM，不传默认近30天 |
+| # | 参数 | 类型 | 必填 | 说明 |
+|---|------|------|------|------|
+| 1 | marketplace | String | ✓ | 市场,见表1.2，US |
+| 2 | asin | String | ✓ | B07Z82895W |
+| 3 | month | String |  | 查询月份，202605 |
 
 ## 基本信息
 
@@ -46,19 +46,31 @@ Amazon ASIN 流量关键词结构【概览统计】工具。
 
 ## 响应参数
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| asin | String | ASIN |
-| total | Integer | 总流量词数 |
-| items[].keyword | String | 关键词 |
-| items[].keywordCn | String | 中文翻译 |
-| items[].searches | Integer | 月搜索量 |
-| items[].products | Integer | 商品数 |
-| items[].purchases | Integer | 月购买量 |
-| items[].purchaseRate | Float | 购买率 |
-| items[].trafficPercentage | Float | 流量占比 |
-| items[].trafficKeywordType | String | 流量类型 |
-| items[].conversionKeywordType | String | 转化类型 |
+| # | 字段 | 类型 | 说明 | 示例 |
+|---|------|------|------|------|
+| 1 | marketplace | String | 市场 | US |
+| 2 | asin | String | asin | B07Z82895W |
+| 3 | keywords | Integer | 全部流量词条数 | 2685 |
+| 4 | ranks | Integer | 自然流量词条数 | 1848 |
+| 5 | ads | Integer | 广告流量词条数 | 1414 |
+| 6 | calcTime | Long | 最近计算时间 |  |
+| 7 | badgeCount | Object | 流量词类型统计 |  |
+| 8 | └ns | Integer | 自然搜索词数量 | 1070 |
+| 9 | └ac | Integer | AC推荐词数量 | 0 |
+| 10 | └er | Integer | ER推荐词数量 | 42 |
+| 11 | └fs | Integer | 4星推荐词数量 | 0 |
+| 12 | └hr | Integer | HR广告词数量 | 117 |
+| 13 | └sb | Integer | 品牌广告词数量 | 334 |
+| 14 | └sv | Integer | 视频广告词数量 | 208 |
+| 15 | └ad | Integer | SP广告词数量 | 764 |
+| 16 | └ns | Integer | 自然搜索词数量 | 1070 |
+| 17 | └ac | Integer | AC推荐词数量 | 0 |
+| 18 | └er | Integer | ER推荐词数量 | 42 |
+| 19 | └fs | Integer | 4星推荐词数量 | 0 |
+| 20 | └hr | Integer | HR广告词数量 | 117 |
+| 21 | └sb | Integer | 品牌广告词数量 | 334 |
+| 22 | └sv | Integer | 视频广告词数量 | 208 |
+| 23 | └ad | Integer | SP广告词数量 | 764 |
 
 ## 请求示例
 

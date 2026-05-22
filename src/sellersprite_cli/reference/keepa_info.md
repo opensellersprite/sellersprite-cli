@@ -35,13 +35,13 @@
 
 ## 参数
 
-| 参数名 | 类型 | 必填 | 说明 |
-|--------|------|------|------|
-| `marketplace` | string | 是 | Amazon 站点代码（枚举值）：US, JP, UK, DE, FR, IT, ES, CA, IN |
-| `asin` | string | 是 | Amazon 商品编号（ASIN） |
-| `dailyLatest` | boolean |  | 是否仅获取每日最新数据 |
-| `endTimestamp` | integer |  | 趋势结束时间戳 |
-| `startTimestamp` | integer |  | 趋势起始时间戳 |
+| # | 参数 | 类型 | 必填 | 说明 |
+|---|------|------|------|------|
+| 1 | marketplace | String | ✓ | 市场，见表 1.2 |
+| 2 | asin | String | ✓ | B08GHW4TBS |
+| 3 | startTimestamp | Long |  | Trend Data Start Timestamp |
+| 4 | endTimestamp | Long |  | Trend Data End Timestamp |
+| 5 | dailyLatest | Boolean |  | Only Get Daily Latest Data |
 
 ## 基本信息
 
@@ -51,26 +51,50 @@
 
 ## 响应参数
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| marketplace/asin/dataAsin/parentAsin/variationAsins | - | 基本ASIN信息 |
-| rootCategory/rootCategoryLabel | - | BSR大类信息 |
-| salesRankReference/salesRankReferenceHistory | - | 排名节点变动历史 |
-| nodeIdPath/nodeLabelPath | - | 上架类目全路径 |
-| productStatus | String | STANDARD/DOWNLOADABLE/EBOOK等 |
-| availabilityAmazon | String | 亚马逊跟卖状态 |
-| title/brand/asinUrl/brandUrl | - | 标题品牌链接 |
-| imageUrl/zoomImageUrl/imageUrls | - | 商品图片 |
-| dimensions/weight/weightGram | - | 净尺寸/重量 |
-| pkgDimensions/pkgDimensionsSize/pkgWeight/pkgWeightGram | - | 打包尺寸/重量 |
-| fbaFees/fbaItems | - | FBA费用 |
-| numberOfPages/numberOfItems | - | 页数/商品数 |
-| price[].{timePoint,value} | - | 价格趋势 |
-| dealPrice/buyBox/priceList | - | 各种价格趋势 |
-| buyBoxSellerIdHistory | List | 黄金购物车卖家历史 |
-| bsr[].{timePoint,value} | - | BSR排名趋势 (-1表示无效) |
-| subSalesRank[].{nodeId,node,ranks} | - | 小类排名趋势 |
-| reviews/rating/sellers | List | 评分数/值/卖家数趋势 |
+| # | 字段 | 类型 | 说明 | 示例 |
+|---|------|------|------|------|
+| 1 | marketplace | String | 市场 | 见表 1.2 |
+| 2 | asin | String | asin | B07V34QQ3C |
+| 3 | dataAsin | String | 实际返回Keepa数据的ASIN | B07V34QQ3C |
+| 4 | parentAsin | String | 父体ASIN | B0CWW9N7QW |
+| 5 | variationAsins | List | 变体ASIN列表 | ["B0CN2PBVNS","B0BT4PMNY4","B0C6FYKC3D","B0CSLMG2TF","B0CGGPC6G3","B0BXG8L46Y","B0CRSZGN9L","B07V34QQ3C"] |
+| 6 | rootCategory | String | BSR大类节点ID | 172282 |
+| 7 | rootCategoryLabel | String | 跟类目 | Electronics |
+| 8 | salesRankReference | String | 排名节点ID | 541966 |
+| 9 | salesRankReferenceHistory | List | 排名节点变动历史 | PairStrDto 趋势字符串数据结构 |
+| 10 | nodeIdPath | String | 上架类目全路径 | 172282:541966:13896617011:565098:13896597011 |
+| 11 | nodeLabelPath | String | 上架类目名称全路径 | Electronics:Computers & Accessories:Computers & Tablets:Desktops:Towers |
+| 12 | productStatus | String | 商品状态 | STANDARD:everything accessibleDOWNLOADABLE:no marketplace/3rd party price dataEBOOK:no price data and sales rank accessibleINACCESSIBLE:no data accessibleINVALID:invalid or deprecated asinVARIATION_PARENT:product is a parent ASINUNKNOWN:null of status |
+| 13 | availabilityAmazon | String | 亚马逊跟卖转态 | -1 |
+| 14 | title | String | 标题 | iBUYPOWER Gaming PC Computer Desktop Element 9260 (Intel Core i7-9700F 3.0Ghz, NVIDIA GeForce GTX 1660 Ti 6GB, 16GB DDR4, 240GB SSD, 1TB HDD, Wi-Fi & Windows 10 Home) Black |
+| 15 | brand | String | 品牌 | iBUYPOWER |
+| 16 | asinUrl | String | ASIN链接 | https://www.amazon.com/dp/B07V34QQ3C |
+| 17 | brandUrl | String | 品牌链接 | https://www.amazon.com/s?k=iBUYPOWER |
+| 18 | salesRankUrl | String | 销售排名链接 | https://www.amazon.com/b/?node=541966 |
+| 19 | imageUrl | String | 商品缩略图200*200 | https://images-na.ssl-images-amazon.com/images/I/711nEj5l5SL._AC_US200_.jpg |
+| 20 | zoomImageUrl | String | 商品大图600*600 | https://images-na.ssl-images-amazon.com/images/I/711nEj5l5SL._AC_US600_.jpg |
+| 21 | imageUrls | List | 商品图片列表 | ["https://images-na.ssl-images-amazon.com/images/I/711nEj5l5SL._AC_US200_.jpg","https://images-na.ssl-images-amazon.com/images/I/61bpfnvHjqL._AC_US200_.jpg",......] |
+| 22 | dimensions | String | 净尺寸 | 97 |
+| 23 | weight | String | 净重量 | 1063280 |
+| 24 | weightGram | Integer | 净重数值 单位统一为：克(g) | 1055398:1063252:1063280 |
+| 25 | pkgDimensions | String | 打包尺寸 | 22 x 19.9 x 12.4 inches |
+| 26 | pkgDimensionsSize | List | 打包尺寸 长/宽/高 单位统一为：厘米(cm) | [558,506,316] |
+| 27 | pkgWeight | String | 打包重量 | 0.11 pounds |
+| 28 | pkgWeightGram | Integer | 打包重量数值 单位统一为：克(g) | 13660 |
+| 29 | fbaFees | Float | FBA总费用 | 26.11 |
+| 30 | fbaItems | String | FBA费用项明细JSON串，包含：仓储费，仓储费税，运送打包费，运送打包费税 | "{\"pickAndPackFeeTax\":0,\"storageFee\":0,\"storageFeeTax\":0,\"pickAndPackFee\":26.11}" |
+| 31 | numberOfPages | Integer | 在第几页 | -1 |
+| 32 | numberOfItems | Integer | 在第几个 | 1 |
+| 33 | price | List | 价格趋势 | 见 PairNumberDto 趋势数字数据结构 |
+| 34 | dealPrice | List | 成交价趋势 | 见 PairNumberDto 趋势数字数据结构 |
+| 35 | buyBox | List | 黄金购物车价格趋势 | 见 PairNumberDto 趋势数字数据结构 |
+| 36 | priceList | List | 划线价格 | 见 PairNumberDto 趋势数字数据结构 |
+| 37 | buyBoxSellerIdHistory | List | 黄金购物车卖家Id历史趋势 | PairStrDto 趋势字符串数据结构 |
+| 38 | bsr | List | 大类BSR排名历史趋势 | 见 PairNumberDto 趋势数字数据结构 |
+| 39 | subSalesRank | List | 小类排名趋势数据 | 见 SubRankTrendDto 小类排名趋势 |
+| 40 | reviews | List | 评分数趋势数据 | 见 PairNumberDto 趋势数字数据结构 |
+| 41 | rating | List | 评分值趋势数据 | 见 PairNumberDto 趋势数字数据结构 |
+| 42 | sellers | List | 卖家数趋势数据 | 见 PairNumberDto 趋势数字数据结构 |
 
 ## 请求示例
 

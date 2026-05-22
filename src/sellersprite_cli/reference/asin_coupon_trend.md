@@ -12,10 +12,10 @@
 
 ## 参数
 
-| 参数名 | 类型 | 必填 | 说明 |
-|--------|------|------|------|
-| `marketplace` | string | 是 | Amazon 站点代码（枚举值）：US, JP, UK, DE, FR, IT, ES, CA, IN |
-| `asin` | string | 是 | Amazon 商品编号（ASIN） |
+| # | 参数 | 类型 | 必填 | 说明 |
+|---|------|------|------|------|
+| 1 | marketplace | String | ✓ | 市场，见表 1.2 |
+| 2 | asin | String | ✓ | B08GHW4TBS |
 
 ## 基本信息
 
@@ -25,15 +25,15 @@
 
 ## 响应参数
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| marketplace | String | 市场 |
-| asin | String | ASIN |
-| date | String | 日期 |
-| type | String | 优惠类型：M=减免金额, P=百分比折扣 |
-| asinPrice | Float | ASIN 价格 |
-| couponPrice | Float | 优惠金额 |
-| finalPrice | Float | 实际价格 |
+| # | 字段 | 类型 | 说明 | 示例 |
+|---|------|------|------|------|
+| 1 | marketplace | String | marketplace |  |
+| 2 | asin | String | asin |  |
+| 3 | date | String | 日期 |  |
+| 4 | type | String | 优惠类型 | M: 减免金额, P: 百分比折扣 |
+| 5 | asinPrice | Float | ASIN价格 |  |
+| 6 | couponPrice | Float | 优惠金额 |  |
+| 7 | finalPrice | Float | 实际价格 |  |
 
 ## 请求示例
 

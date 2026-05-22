@@ -16,14 +16,14 @@
 
 ## 参数
 
-| 参数名 | 类型 | 必填 | 说明 |
-|--------|------|------|------|
-| `marketplace` | string | 是 | Amazon 站点代码：US, JP, UK, DE, FR, IT, ES, CA, IN |
-| `asin` | string | 是 | ASIN |
-| `starList` | array | | 评论星级（1-5星） |
-| `typeList` | array | | 评论类型：1=图片 2=视频 3=VP 4=VINE |
-| `page` | integer | | 当前页，默认1 |
-| `size` | integer | | 每页条数，默认5，最大10 |
+| # | 参数 | 类型 | 必填 | 说明 |
+|---|------|------|------|------|
+| 1 | marketplace | String | ✓ | 市场，见表 1.2 |
+| 2 | asin | String | ✓ | ASIN |
+| 3 | starList | List |  | 评论星级，1: 一星, 2: 二星, 3: 三星, 4: 四星, 5: 五星 |
+| 4 | typeList | List |  | 评论类型，1：图片评论, 2：视频评论, 3：VP评论, 4：vine评论 |
+| 5 | page | Integer |  | 页码，从 1 开始，默认：1 |
+| 6 | size | Integer |  | 每页条数，最大10，默认：5 |
 
 ## 基本信息
 
@@ -33,24 +33,24 @@
 
 ## 响应参数
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| author | String | 评论用户 |
-| title | String | 评论标题 |
-| content | String | 评论内容 |
-| date | Long | 日期时间戳 |
-| star | Integer | 星级 |
-| authorLabels | List | 评论人标签 |
-| skus | List | SKU信息 |
-| images | List | 图片链接 |
-| videos | List | 视频链接 |
-| likes | Integer | 点赞数 |
-| image | Boolean | 是否图片评论 |
-| video | Boolean | 是否视频评论 |
-| verified | Boolean | 是否VP购买评论 |
-| vine | Boolean | 是否VINE评论 |
-| free | Boolean | 是否免费评论 |
-| experience | Boolean | 是否抢先体验评论 |
+| # | 字段 | 类型 | 说明 | 示例 |
+|---|------|------|------|------|
+| 1 | author | String | 用户 |  |
+| 2 | title | String | 标题 |  |
+| 3 | content | String | 评论内容 |  |
+| 4 | date | Long | 日期（时间戳） | 1772380800000 |
+| 5 | star | Integer | 星级 |  |
+| 6 | authorLabels | List | 评论人标签 |  |
+| 7 | skus | List | sku信息 |  |
+| 8 | images | List | 图片链接 |  |
+| 9 | videos | List | 视频链接 |  |
+| 10 | likes | Integer | 点赞数 |  |
+| 11 | image | Boolean | 是否图片评论 |  |
+| 12 | video | Boolean | 是否视频评论 |  |
+| 13 | verified | Boolean | 是否实际购买评论 |  |
+| 14 | vine | Boolean | 是否特邀评论 |  |
+| 15 | free | Boolean | 是否免费评论 |  |
+| 16 | experience | Boolean | 是否抢先体验评论 |  |
 
 ## 请求示例
 
@@ -59,21 +59,3 @@ curl -X GET 'https://api.sellersprite.com/v1/review/US/B07Z82895W?starList=4,5&t
   -H 'secret-key: Your Secret'
 ```
 
-## CLI 使用示例
-
-```bash
-# 基本用法
-sellersprite trend review B07Z82895W
-
-# 筛选4-5星评论
-sellersprite trend review B07Z82895W --star-list 4,5
-
-# 筛选有图片的评论
-sellersprite trend review B07Z82895W --type-list 1
-
-# 筛选VP评论
-sellersprite trend review B07Z82895W --type-list 3
-
-# 筛选VINE评论
-sellersprite trend review B07Z82895W --type-list 4
-```

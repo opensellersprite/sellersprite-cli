@@ -41,52 +41,54 @@ AI 应优先调用该工具获取客观量化依据，而非凭经验猜测。
 
 ## 参数
 
-| 参数名 | 类型 | 必填 | 说明 |
-|--------|------|------|------|
-| `amazonChoice` | boolean |  | 亚马逊推荐词 |
-| `excludeKeywords` | array |  | 排除的词 |
-| `filterRootWord` | integer |  | 过滤词根 可选值(必须严格使用下列数字值之一): 0: 包含所有 1: 只包含词根  禁止使用未列出的值。  |
-| `historyDate` | string |  | 查询月份, 格式: yyyyMM |
-| `includeKeywords` | array |  | 包含的词 |
-| `keyword` | string | 是 | 关键词 |
-| `keywordList` | array |  | 批量查询关键词 |
-| `marketplace` | string | 是 | Amazon 站点代码（枚举值）：US, JP, UK, DE, FR, IT, ES, CA, IN |
-| `matchType` | integer |  | 匹配方式 可选值(必须严格使用下列数字值之一): 2: 广泛匹配 3: 词组匹配  禁止使用未列出的值。  |
-| `maxAdProducts` | integer |  | 最大广告竞品数 |
-| `maxBid` | number |  | 最大ppc竞价 |
-| `maxMonopolyClickRate` | number |  | 最大点击集中度 |
-| `maxPrice` | number |  | 最大均价 |
-| `maxProducts` | integer |  | 最大商品数 |
-| `maxPurchases` | integer |  | 最大购买量 |
-| `maxPurchasesRate` | number |  | 最大购买率 |
-| `maxRating` | number |  | 最大评分值 |
-| `maxRatings` | integer |  | 最大评分数 |
-| `maxRelevancy` | number |  | 最大相关度 |
-| `maxSPR` | integer |  | 最大SPR |
-| `maxSearch` | integer |  | 最大搜索量 |
-| `maxSearchRank` | integer |  | 最大搜索排名 |
-| `maxSupplyDemandRatio` | number |  | 最大供需比 |
-| `maxTitleDensity` | integer |  | 最大标题密度 |
-| `maxWordCount` | integer |  | 最大单词个数 |
-| `minAdProducts` | integer |  | 最小广告竞品数 |
-| `minBid` | number |  | 最小ppc竞价 |
-| `minMonopolyClickRate` | number |  | 最小点击集中度 |
-| `minPrice` | number |  | 最小均价 |
-| `minProducts` | integer |  | 最小商品数 |
-| `minPurchases` | integer |  | 最小购买量 |
-| `minPurchasesRate` | number |  | 最小购买率 |
-| `minRating` | number |  | 最小评分值 |
-| `minRatings` | integer |  | 最小评分数 |
-| `minRelevancy` | number |  | 最小相关度 |
-| `minSPR` | integer |  | 最小SPR |
-| `minSearch` | integer |  | 最小搜索量 |
-| `minSearchRank` | integer |  | 最小搜索排名 |
-| `minSupplyDemandRatio` | number |  | 最小供需比 |
-| `minTitleDensity` | integer |  | 最小标题密度 |
-| `minWordCount` | integer |  | 最小单词个数 |
-| `order` | object |  | 排序（见[表1.8 关键词选品排序字段](./api_appendix.md#关键词选品排序字段表18)） |
-| `page` | integer |  | 页码 |
-| `size` | integer |  | 每页条数 |
+| # | 参数 | 类型 | 必填 | 说明 |
+|---|------|------|------|------|
+| 1 | marketplace | String | ✓ | 市场，见表 1.2 |
+| 2 | historyDate | String |  | 历史日期，yyyyMM格式，最近30天不传或传空字符串，202201 |
+| 3 | keyword | String | ✓ | 关键词 |
+| 4 | keywordList | List |  | 批量查询关键词，["phone stand"] |
+| 5 | minSearch | Integer |  | 最小搜索量，543 |
+| 6 | maxSearch | Integer |  | 最大搜索量，23453 |
+| 7 | minPurchases | Integer |  | 最小购买量，6 |
+| 8 | maxPurchases | Integer |  | 最大购买量，34 |
+| 9 | minPurchasesRate | Float |  | 最小购买率，3 |
+| 10 | maxPurchasesRate | Float |  | 最大购买率，43 |
+| 11 | minSPR | Integer |  | 最小SPR，2 |
+| 12 | maxSPR | Integer |  | 最大SPR，16 |
+| 13 | minTitleDensity | Integer |  | 最小标题密度，2 |
+| 14 | maxTitleDensity | Integer |  | 最大标题密度，23 |
+| 15 | minRelevancy | Float |  | 最小相关度，23，最小0 |
+| 16 | maxRelevancy | Float |  | 最大相关度，90，最大100 |
+| 17 | minSearchRank | Integer |  | 最小搜索排名，33 |
+| 18 | maxSearchRank | Integer |  | 最大搜索排名，3223 |
+| 19 | minProducts | Integer |  | 最小商品数，54 |
+| 20 | maxProducts | Integer |  | 最大商品数，324 |
+| 21 | minSupplyDemandRatio | Float |  | 最小供需比，11.2 |
+| 22 | maxSupplyDemandRatio | Float |  | 最大供需比，45.2 |
+| 23 | minAdProducts | Integer |  | 最小广告竞品数，123 |
+| 24 | maxAdProducts | Integer |  | 最大广告竞品数，345 |
+| 25 | minWordCount | Integer |  | 最小单词个数，2 |
+| 26 | maxWordCount | Integer |  | 最大单词个数，4 |
+| 27 | minMonopolyClickRate | Float |  | 最小点击集中度，23.4 |
+| 28 | maxMonopolyClickRate | Float |  | 最大点击集中度，53.1 |
+| 29 | minBid | Float |  | 最小ppc竞价，10.2 |
+| 30 | maxBid | Float |  | 最大ppc竞价，23.1 |
+| 31 | minPrice | Float |  | 最小均价，43.3 |
+| 32 | maxPrice | Float |  | 最大均价，234.2 |
+| 33 | minRatings | Integer |  | 最小评分数，100 |
+| 34 | maxRatings | Integer |  | 最大评分数，399 |
+| 35 | minRating | Float |  | 最小评分值，3 |
+| 36 | maxRating | Float |  | 最大评分值，4.9 |
+| 37 | amazonChoice | Boolean |  | 亚马逊推荐词，true |
+| 38 | filterRootWord | Integer |  | 过滤词根 0包含所有 1只包含词根，0 |
+| 39 | matchType | Integer |  | 2: 广泛匹配, 3: 词组匹配，2 |
+| 40 | includeKeywords | List |  | 包含的词，["phone stand"] |
+| 41 | excludeKeywords | List |  | 排除的词，["phone stand"] |
+| 42 | page | Integer |  | 页码，从 1 开始，默认：1 |
+| 43 | size | Integer |  | 每页条数，默认：50，最大：100 |
+| 44 | order | Object |  | 排序 |
+| 45 | └field | String |  | 排序字段，加入筛序条件之后，不能以相关度排序，见表2.4 |
+| 46 | └desc | boolean |  | true为降序 false为升序，默认降序 |
 
 ## 基本信息
 
@@ -96,27 +98,41 @@ AI 应优先调用该工具获取客观量化依据，而非凭经验猜测。
 
 ## 响应参数
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| marketplace | String | 市场 |
-| keyword/keywordCn/keywordJp | String | 关键词及其翻译 |
-| departments[].{code,label} | - | 类目 |
-| month | String | 搜索月份 |
-| supplement | String | 是否补充关键词 |
-| searches/purchases/purchaseRate | - | 搜索/购买相关 |
-| monopolyClickRate | Float | 点击垄断率 |
-| products/adProducts | Integer | 商品数/广告竞品数 |
-| supplyDemandRatio | Float | 供需比 |
-| avgPrice/avgRatings/avgRating | - | 平均价格/评分数/评分值 |
-| bidMin/bidMax/bid | Float | PPC价格 |
-| cvsShareRate | Float | 转化共享率 |
-| wordCount | Integer | 单词个数 |
-| titleDensity | Integer | 标题密度 |
-| spr | Integer | SPR |
-| relevancy | Double | 相关度 |
-| amazonChoice | Boolean | 亚马逊推荐词 |
-| searchRank | Integer | 搜索排名 |
-| clicks/impressions | - | 点击量/展示量 |
+| # | 字段 | 类型 | 说明 | 示例 |
+|---|------|------|------|------|
+| 1 | marketplace | String | 市场，见表 1.2 | US |
+| 2 | keyword | String | 关键词 | phone stand for recording |
+| 3 | keywordCn | String | 关键词中文翻译 | 用于录音的电话支架 |
+| 4 | keywordJp | String | 关键词英文翻译 | 録音用電話スタンド |
+| 5 | departments | List | 类目 |  |
+| 6 | └code | String | 类目代码 | electronics |
+| 7 | └label | String | 类目名称 | Electronics |
+| 8 | month | String | 搜索月份 | 2022.01 |
+| 9 | supplement | String | 是否属于补充关键词（无当前月搜索量） | N |
+| 10 | searches | Integer | 搜索量 | 21582 |
+| 11 | purchases | Integer | 月购买量 | 1996 |
+| 12 | purchaseRate | Float | 月购买率 | 0.0925 |
+| 13 | monopolyClickRate | Float | 点击垄断率 | 0.3 |
+| 14 | products | Integer | 商品数 | 1645 |
+| 15 | adProducts | Integer | 广告竞品数 | 34 |
+| 16 | supplyDemandRatio | Float | 供需比 | 13.12 |
+| 17 | avgPrice | Float | 平均价格 | 36.14 |
+| 18 | avgRatings | Integer | 平均评分数 | 12223 |
+| 19 | avgRating | Float | 平均评分值 | 4.5 |
+| 20 | bidMin | Float | 最小PPC价格 | 1.34 |
+| 21 | bidMax | Float | 最大PPC价格 | 3.21 |
+| 22 | bid | Float | PPC价格 | 1.6 |
+| 23 | cvsShareRate | Float | 转化共享率 | 0.3084 |
+| 24 | wordCount | Integer | 单词个数 | 4 |
+| 25 | titleDensity | Integer | 标题密度 | 42.9 |
+| 26 | spr | Integer | SPR | 6 |
+| 27 | relevancy | Double | 相关度 | 28.6 |
+| 28 | amazonChoice | Boolean | 亚马逊推荐词 true是的 false不是 | false |
+| 29 | searchRank | Integer | 搜索排名 | 17910 |
+| 30 | └code | String | 类目代码 | electronics |
+| 31 | └label | String | 类目名称 | Electronics |
+| 32 | clicks | Integer | 点击量 | 10 |
+| 33 | impressions | Long | 展示量 | 20 |
 
 ## 请求示例
 

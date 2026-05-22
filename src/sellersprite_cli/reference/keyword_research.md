@@ -36,52 +36,54 @@
 
 ## 参数
 
-| 参数名 | 类型 | 必填 | 说明 |
-|--------|------|------|------|
-| `departments` | array |  | 查询类目，见关键词选品类目接口，传递code |
-| `excludeKeywords` | string |  | 排除的关键字 |
-| `keywords` | string |  | 关键词 |
-| `marketPeriod` | string |  | 市场周期 |
-| `marketplace` | string | 是 | Amazon 站点代码（枚举值）：US, JP, UK, DE, FR, IT, ES, CA, IN |
-| `maxAraClickRate` | number |  | 最大点击集中度 |
-| `maxAvgPrice` | number |  | 最大均价 |
-| `maxBid` | number |  | 最大PPC竞价 |
-| `maxGoodsValue` | number |  | 最大货流值 |
-| `maxProducts` | integer |  | 最大商品数 |
-| `maxPurchaseRate` | number |  | 最大购买率 |
-| `maxPurchases` | integer |  | 最大购买量 |
-| `maxRating` | number |  | 最大评分值 |
-| `maxRatings` | integer |  | 最大评分数 |
-| `maxSearchMonthCr` | number |  | 最大月搜索量同比增长率 |
-| `maxSearchMonthCv` | integer |  | 最大月搜索量同比增长值 |
-| `maxSearchNearlyCr` | number |  | 最大月搜索量近3个月增长率 |
-| `maxSearchNearlyCv` | integer |  | 最大月搜索量近3个月增长值 |
-| `maxSearches` | integer |  | 最大月搜索量 |
-| `maxSearchesCr` | number |  | 最大月搜索量增长率 |
-| `maxSupplyDemandRatio` | number |  | 最大供需比 |
-| `maxWordCount` | integer |  | 最大单词个数 |
-| `minAraClickRate` | number |  | 最小点击集中度 |
-| `minAvgPrice` | number |  | 最小均价 |
-| `minBid` | number |  | 最小PPC竞价 |
-| `minGoodsValue` | number |  | 最小货流值 |
-| `minProducts` | integer |  | 最小商品数 |
-| `minPurchaseRate` | number |  | 最小购买率 |
-| `minPurchases` | integer |  | 最小购买量 |
-| `minRating` | number |  | 最小评分值 |
-| `minRatings` | integer |  | 最小评分数 |
-| `minSearchMonthCr` | number |  | 最小月搜索量同比增长率 |
-| `minSearchMonthCv` | integer |  | 最小月搜索量同比增长值 |
-| `minSearchNearlyCr` | number |  | 最小月搜索量近3个月增长率 |
-| `minSearchNearlyCv` | integer |  | 最小月搜索量近3个月增长值 |
-| `minSearches` | integer |  | 最小月搜索量 |
-| `minSearchesCr` | number |  | 最小月搜索量增长率 |
-| `minSupplyDemandRatio` | number |  | 最小供需比 |
-| `minWordCount` | integer |  | 最小单词个数 |
-| `month` | string |  | 查询月份, 格式: yyyyMM |
-| `order` | object |  | 排序（见[表1.8 关键词选品排序字段](./api_appendix.md#关键词选品排序字段表18)） |
-| `page` | integer |  | 页码 |
-| `size` | integer |  | 每页条数 |
-| `withYearlyGrowth` | boolean |  | 新细分市场 |
+| # | 参数 | 类型 | 必填 | 说明 |
+|---|------|------|------|------|
+| 1 | marketplace | String | ✓ | 市场，见表 1.2 |
+| 2 | month | String |  | 筛选日期,yyyyMM格式，支持近24个月的，202203 |
+| 3 | departments | List |  | 查询类目，见关键词选品类目接口，传递code，["automotive","baby-products"] |
+| 4 | keywords | String |  | 关键词，N95 |
+| 5 | excludeKeywords | String |  | 排除的关键字，portable |
+| 6 | minSearches | Integer |  | 最小月搜索量，100 |
+| 7 | maxSearches | Integer |  | 最大月搜索量，300 |
+| 8 | minSearchesCr | Float |  | 最小月搜索量增长率，10 |
+| 9 | maxSearchesCr | Float |  | 最大月搜索量增长率，50.8 |
+| 10 | minProducts | Integer |  | 最小商品数，10 |
+| 11 | maxProducts | Integer |  | 最大商品数，90 |
+| 12 | minPurchases | Integer |  | 最小购买量，100 |
+| 13 | maxPurchases | Integer |  | 最大购买量，500 |
+| 14 | minPurchaseRate | Float |  | 最小购买率，3.2 |
+| 15 | maxPurchaseRate | Float |  | 最大购买率，10.5 |
+| 16 | withYearlyGrowth | Boolean |  | 新细分市场，false |
+| 17 | minSearchMonthCv | Integer |  | 最小月搜索量同比增长值，1000 |
+| 18 | maxSearchMonthCv | Integer |  | 最大月搜索量同比增长值，3000 |
+| 19 | minSearchMonthCr | Float |  | 最小月搜索量同比增长率，5.3 |
+| 20 | maxSearchMonthCr | Float |  | 最大月搜索量同比增长率，30.1 |
+| 21 | minSearchNearlyCv | Integer |  | 最小月搜索量近3个月增长值，6000 |
+| 22 | maxSearchNearlyCv | Integer |  | 最大月搜索量近3个月增长值，20000 |
+| 23 | minSearchNearlyCr | Float |  | 最小月搜索量近3个月增长率，10.3 |
+| 24 | maxSearchNearlyCr | Float |  | 最大月搜索量近3个月增长率，20.4 |
+| 25 | marketPeriod | String |  | 市场周期，见表1.7 |
+| 26 | minAvgPrice | Float |  | 最小均价，20 |
+| 27 | maxAvgPrice | Float |  | 最大均价，30.3 |
+| 28 | minRatings | Integer |  | 最小评分数，2000 |
+| 29 | maxRatings | Integer |  | 最大评分数，3000 |
+| 30 | minRating | Float |  | 最小评分值，3.2 |
+| 31 | maxRating | Float |  | 最大评分值，4.1 |
+| 32 | minBid | Float |  | 最小PPC竞价，6.2 |
+| 33 | maxBid | Float |  | 最大PPC竞价，10.6 |
+| 34 | minAraClickRate | Float |  | 最小点击集中度，20.1 |
+| 35 | maxAraClickRate | Float |  | 最大点击集中度，56.4 |
+| 36 | minGoodsValue | Float |  | 最小货流值，10.1 |
+| 37 | maxGoodsValue | Float |  | 最大货流值，41.1 |
+| 38 | minSupplyDemandRatio | Float |  | 最小供需比，5.6 |
+| 39 | maxSupplyDemandRatio | Float |  | 最大供需比，10.4 |
+| 40 | minWordCount | Integer |  | 最小单词个数，1 |
+| 41 | maxWordCount | Integer |  | 最大单词个数，3 |
+| 42 | page | Integer |  | 页码，从 1 开始，默认：1 |
+| 43 | size | Integer |  | 每页条数，默认15，最大：15 |
+| 44 | order | Object |  | 排序 |
+| 45 | └field | String |  | 排序字段，见表1.8 |
+| 46 | └desc | boolean |  | true为降序 false为升序，默认降序 |
 
 ## 基本信息
 
@@ -91,25 +93,56 @@
 
 ## 响应参数
 
-| 字段 | 类型 | 说明 |
-|------|------|------|
-| marketplace/keywords/keywordCn | - | 市场/关键词/中文 |
-| searches/clicks/impressions/purchases | - | 搜索/点击/展示/购买 |
-| growth/purchaseRate/products/supplyDemandRatio | - | 增长率/购买率/产品数/供需比 |
-| searchDepartments[].{code,label,total,ratio} | - | 类目分布 |
-| month/supplement/marketPeriod | - | 月份/补充/市场周期 |
-| searchMonthlyCv/Cr | - | 同比增长值/率 |
-| searchNearlyCv/Cr | - | 近3月增长值/率 |
-| currency | String | 货币 |
-| avgPrice/avgRatings/avgRating | - | 平均价格/评分数/值 |
-| relationAsinList[].{price,ratings,rating} | - | 关联ASIN |
-| bid/bidMin/bidMax | Float | 竞价 |
-| araClickRate/araShareRate | Float | 点击垄断率/共享转化率 |
-| araAsinList[].{asin,title,imageUrl,clickRate,conversionShareRate} | - | 点击前三ASIN |
-| goodsValue | Float | 货流值 |
-| brands/categories | List | TOP3 品牌/类目 |
-| titleDensityExact | String | 标题密度 |
-| brand/hasBrandWord | - | 品牌/是否品牌词 |
+| # | 字段 | 类型 | 说明 | 示例 |
+|---|------|------|------|------|
+| 1 | marketplace | String | 市场 | US |
+| 2 | keywords | String | 关键词 | polaroid cameras |
+| 3 | searches | Integer | 搜索量 | 141356 |
+| 4 | clicks | Integer | 点击量 | 在某个关键词搜索结果页中被点击的总次数非单个ASIN在关键词下的点击量 |
+| 5 | impressions | Long | 展示量 | 在某个关键词搜索结果页中所有ASIN的总展示次数非单个ASIN在关键词下的曝光量 |
+| 6 | purchases | Integer | 月购买量 | 4029 |
+| 7 | growth | Float | 增长率 | -25.482092 |
+| 8 | purchaseRate | Float | 月购买率 | 0.0285 |
+| 9 | products | Integer | 产品数 | 173 |
+| 10 | supplyDemandRatio | Float | 供需比 | 817.09 |
+| 11 | searchDepartments | List | 类目 |  |
+| 12 | └code | String | 类目代码 | electronics |
+| 13 | └label | String | 类目名称 | Electronics |
+| 14 | └total | Integer | 类目总计 | 141356 |
+| 15 | └ratio | Float | 类目占比 | 1 |
+| 16 | month | String | 查询月份 | 2022.01 |
+| 17 | supplement | String | 是否属于补充关键词 | N |
+| 18 | searchMonthlyCv | Integer | 关键词同比增长 | 139749 |
+| 19 | searchMonthlyCr | Float | 关键词同比增长率 | 8696.27 |
+| 20 | searchNearlyCv | Integer | 关键词近3个月增长值 | -48338 |
+| 21 | searchNearlyCr | Float | 关键词近3个月增长率 | -25.48 |
+| 22 | currency | String | 货币 | $ |
+| 23 | avgPrice | Float | 平均价格 | 116.24 |
+| 24 | avgRatings | Integer | 平均评分数 | 2584 |
+| 25 | avgRating | Float | 平均评论数 | 4.5 |
+| 26 | relationAsinList | List | 关键词关联asin | 4.8 |
+| 27 | └price | Float | 价格 | 59.95 |
+| 28 | └ratings | Integer | 评分数 | 20115 |
+| 29 | └rating | Float | 评分 | 4.7 |
+| 30 | bidMin | Float | bid最小价格 | 0.987 |
+| 31 | bidMax | Float | bid最大价格 | 2.54 |
+| 32 | bid | Float | bid价格 | 1.26 |
+| 33 | araClickRate | Float | 点击垄断率 | 0.2633 |
+| 34 | araShareRate | Float | 共享转化率 | 0.2633 |
+| 35 | araAsinList | List | 点击前三ASIN |  |
+| 36 | └asin | String | asin | B099VDRGG1 |
+| 37 | └title | String | title | Fujifilm Instax Mini 9 |
+| 38 | └imageUrl | String | 图片 | https://m.media-amazon.com/images/I/51aZiZaicYL._AC_US200_.jpg |
+| 39 | └clickRate | Double | 点击率 | 0.116 |
+| 40 | └conversionShareRate | Double | 转化率 | 0.1217 |
+| 41 | goodsValue | Float | 货流值 | 0.0108 |
+| 42 | brands | List | TOP3 品牌 | ["LEGO","Jorumo","Nifeliz"] |
+| 43 | categories | List | TOP3 类目 | ["Toys","Home","Mobile_Apps"] |
+| 44 | titleDensityExact | String | 标题密度首页商品包含该关键词的数量（不含广告位） | 21 |
+| 45 | marketPeriod | String | 市场周期 | S11,S12 |
+| 46 | brand | String | 品牌 | Fujifilm |
+| 47 | hasBrandWord | Boolean | 是否存在品牌词 | false |
+| 48 | keywordCn | String | 中文翻译 | 宝丽来相机 |
 
 ## 请求示例
 
