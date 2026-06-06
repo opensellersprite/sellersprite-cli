@@ -41,3 +41,8 @@ ENV/
 /.claude
 /tests/
 /CLAUDE.md
+
+temp
+output
+html
+scripts
