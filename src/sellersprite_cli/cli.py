@@ -60,7 +60,8 @@ def _call_tool(tool_name: str, key: str | None, marketplace: str, **kwargs):
     cleaned = {k: v for k, v in kwargs.items() if v is not None}
     # 组装 order 排序对象
     order_field = cleaned.pop("order_field", None)
-    order_desc = cleaned.pop("order_desc", None)
+    order_desc_raw = cleaned.pop("order_desc", None)
+    order_desc = str(order_desc_raw).lower() == "true" if order_desc_raw is not None else None
     if order_field is not None or order_desc is not None:
         order = {}
         if order_field is not None:
@@ -231,7 +232,7 @@ AsinArg = Annotated[str, typer.Argument(help="ASIN 编号")]
 SizeOpt = Annotated[Optional[int], typer.Option("--size", help="返回条数")]
 PageOpt = Annotated[Optional[int], typer.Option("--page", help="页码")]
 OrderFieldOpt = Annotated[Optional[str], typer.Option("--order-field", help="排序字段")]
-OrderDescOpt = Annotated[Optional[bool], typer.Option("--order-desc", help="是否降序 true/false")]
+OrderDescOpt = Annotated[Optional[str], typer.Option("--order-desc", help="是否降序 true/false")]
 ExtraArg = Annotated[Optional[list[str]], typer.Argument(help="额外参数 key=value ...")]
 
 
@@ -286,12 +287,14 @@ def asin_keepa(
 @product_app.command("search")
 def product_search(
     keyword: Annotated[Optional[str], typer.Option("--keyword", help="关键词")] = None,
+    month: Annotated[Optional[str], typer.Option("--month", help="查询月份 yyyyMM")] = None,
     min_price: Annotated[Optional[float], typer.Option("--min-price", help="最低价")] = None,
     max_price: Annotated[Optional[float], typer.Option("--max-price", help="最高价")] = None,
     min_units: Annotated[Optional[int], typer.Option("--min-units", help="最低月销")] = None,
     max_units: Annotated[Optional[int], typer.Option("--max-units", help="最高月销")] = None,
     min_rating: Annotated[Optional[float], typer.Option("--min-rating", help="最低评分")] = None,
     max_rating: Annotated[Optional[float], typer.Option("--max-rating", help="最高评分")] = None,
+    match_type: Annotated[Optional[int], typer.Option("--match-type", help="匹配方式: 1词组匹配 2模糊匹配 3精准匹配")] = None,
     page: PageOpt = None,
     size: SizeOpt = None,
     order_field: OrderFieldOpt = None,
@@ -304,18 +307,22 @@ def product_search(
     kwargs = _parse_extra(extra)
     if keyword:
         kwargs["keyword"] = keyword
+    if month is not None:
+        kwargs["month"] = month
     if min_price is not None:
-        kwargs["priceMin"] = min_price
+        kwargs["minPrice"] = min_price
     if max_price is not None:
-        kwargs["priceMax"] = max_price
+        kwargs["maxPrice"] = max_price
     if min_units is not None:
-        kwargs["unitsMin"] = min_units
+        kwargs["minUnits"] = min_units
     if max_units is not None:
-        kwargs["unitsMax"] = max_units
+        kwargs["maxUnits"] = max_units
     if min_rating is not None:
-        kwargs["ratingMin"] = min_rating
+        kwargs["minRating"] = min_rating
     if max_rating is not None:
-        kwargs["ratingMax"] = max_rating
+        kwargs["maxRating"] = max_rating
+    if match_type is not None:
+        kwargs["matchType"] = match_type
     if page is not None:
         kwargs["page"] = page
     if size is not None:
