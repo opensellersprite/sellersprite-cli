@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sellersprite-cli"
-version = "0.1.17"
+version = "0.1.18"
 description = "卖家精灵 CLI — 交互式终端工具 + MCP 客户端 + 27 AI Skills，通过 MCP 调用 38 个 Amazon 数据工具"
 readme = "README.md"
 license = "MIT"
