@@ -267,18 +267,18 @@ def asin_keepa(
     asin: AsinArg,
     start_timestamp: Annotated[Optional[int], typer.Option("--start-timestamp", help="趋势起始时间戳(毫秒)")] = None,
     end_timestamp: Annotated[Optional[int], typer.Option("--end-timestamp", help="趋势结束时间戳(毫秒)")] = None,
-    daily_latest: Annotated[Optional[bool], typer.Option("--daily-latest", help="仅获取每日最新数据 true/false")] = None,
+    daily_latest: Annotated[Optional[str], typer.Option("--daily-latest", help="仅获取每日最新数据 true/false")] = None,
     marketplace: MpOpt = "US",
     key: KeyOpt = None,
 ):
     """Keepa 历史趋势"""
     kwargs = {"asin": asin}
     if start_timestamp is not None:
-        kwargs["startTimestamp"] = start_timestamp
+        kwargs["start_timestamp"] = start_timestamp
     if end_timestamp is not None:
-        kwargs["endTimestamp"] = end_timestamp
+        kwargs["end_timestamp"] = end_timestamp
     if daily_latest is not None:
-        kwargs["dailyLatest"] = daily_latest
+        kwargs["daily_latest"] = daily_latest.lower() == "true"
     _print_result(_call_tool("keepa_info", key, marketplace, **kwargs))
 
 
@@ -545,6 +545,8 @@ def traffic_keyword_stat(
 def traffic_source(
     month: Annotated[str, typer.Option("--month", help="查询月份 yyyyMM (必填)")],
     asin: Annotated[Optional[str], typer.Option("--asin", help="ASIN 或关键词")] = None,
+    page: PageOpt = None,
+    size: SizeOpt = None,
     order_field: OrderFieldOpt = None,
     order_desc: OrderDescOpt = None,
     marketplace: MpOpt = "US",
@@ -554,6 +556,10 @@ def traffic_source(
     kwargs = {"order_field": order_field, "order_desc": order_desc, "month": month}
     if asin:
         kwargs["q"] = asin
+    if page is not None:
+        kwargs["page"] = page
+    if size is not None:
+        kwargs["size"] = size
     _print_result(_call_tool("traffic_source", key, marketplace, **kwargs))
 
 

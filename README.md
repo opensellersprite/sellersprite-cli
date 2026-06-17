@@ -117,7 +117,7 @@ sellersprite               # 无参数启动交互式菜单
 sellersprite asin detail B0D6LQ5VZM
 sellersprite asin predict B0D6LQ5VZM
 sellersprite asin coupon B0D6LQ5VZM
-sellersprite asin keepa B0D6LQ5VZM
+sellersprite asin keepa B0D6LQ5VZM --daily-latest true --start-timestamp 1722470400000 --end-timestamp 1754006400000
 
 # 商品与竞品
 sellersprite product search --keyword "wireless earbuds" --min-price 10 --max-price 30
@@ -126,15 +126,16 @@ sellersprite product node --keyword earbuds
 
 # 关键词
 sellersprite keyword mine --keyword earbuds --size 20
-sellersprite keyword research --keyword earbuds
-sellersprite keyword order --asins B0XXX1,B0XXX2
+sellersprite keyword research --keywords earbuds
+sellersprite keyword order --reverse-type M --date 202501 --asins B0XXX1,B0XXX2
 sellersprite keyword bsr 10000 172282
-sellersprite keyword trends earbuds --month 2025-01
+sellersprite keyword trends earbuds
 
 # 流量
-sellersprite traffic keyword --asin-list B0XXX1,B0XXX2
-sellersprite traffic keyword-stat B0XXX1 --month 2025-01
-sellersprite traffic source --asin B0XXX1
+sellersprite traffic keyword B0XXX1
+sellersprite traffic keyword-stat B0XXX1 --month 202501
+sellersprite traffic source --month 202501 --asin B0XXX1
+sellersprite traffic source --month 202501 --asin B0XXX1 --size 50
 sellersprite traffic listing --asin-list B0XXX1 --relations also_bought
 sellersprite traffic extend --asin-list B0XXX1
 
@@ -152,7 +153,7 @@ sellersprite trend aba-monthly --keyword-list earbuds
 sellersprite trend aba-monthly --keyword-list earbuds
 sellersprite trend aba-trend earbuds
 sellersprite trend google --keyword earbuds
-sellersprite trend review B0D6LQ5VZM 172282
+sellersprite trend review B0D6LQ5VZM --star-list 4,5
 ```
 
 ### 其他命令
