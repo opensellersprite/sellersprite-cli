@@ -28,6 +28,10 @@
 >
 > 💡 购买密钥后，通过本 CLI 即可调用全部接口，无需再按 API 单独付费。Token 消耗直降 90%+。
 
+## 📚 接口文档
+
+完整 MCP 接口文档见：[https://open.sellersprite.com/api](https://open.sellersprite.com/api)
+
 ## 🚀 在 Claude Code 一键安装 27 个 Skills
 
 通过 [ClawHub](https://clawhub.ai/opensellersprite/sellersprite-skills) 一行命令导入到 Claude Code（需先安装 Node.js）：
@@ -162,6 +166,69 @@ sellersprite trend aba-trend earbuds
 sellersprite trend google --keyword earbuds
 sellersprite trend review B0D6LQ5VZM --star-list 4,5
 ```
+
+### 参数注意事项
+
+1. **参数命名层级**
+   - CLI 选项使用 **kebab-case**：`--start-timestamp`
+   - Python 方法参数使用 **snake_case**：`start_timestamp`
+   - 接口入参使用 **camelCase**：`startTimestamp`
+   - 转换由 CLI / `mcp_client.py` 自动处理，正常使用时无需关心。
+
+2. **`extra key=value` 传参必须用 snake_case**
+
+   `extra` 参数会经过 `_req()` 自动转 camelCase，但只对带下划线的 key 生效：
+
+   ```bash
+   # ✅ 正确
+   sellersprite product search --keyword earbuds extra="min_price=10 max_price=30"
+
+   # ❌ 错误，kebab-case 不会转换
+   sellersprite product search --keyword earbuds extra="min-price=10"
+   ```
+
+3. **`--daily-latest` 接受 true/false 字符串**
+
+   ```bash
+   sellersprite asin keepa B0D6LQ5VZM --daily-latest true
+   sellersprite asin keepa B0D6LQ5VZM --daily-latest false
+   ```
+
+4. **时间戳单位是毫秒**
+
+   `asin keepa` 的 `--start-timestamp` / `--end-timestamp` 为毫秒时间戳：
+
+   ```bash
+   sellersprite asin keepa B0D6LQ5VZM \
+     --start-timestamp 1722470400000 \
+     --end-timestamp 1754006400000
+   ```
+
+5. **月份格式为 `yyyyMM`**
+
+   涉及月份的参数（如 `--month`）统一使用 `yyyyMM`，例如 `202501`、`202604`。
+
+6. **分页参数使用 `--page` 和 `--size`**
+
+   以下命令支持分页，默认每页条数因接口而异，最大一般不超过 100：
+
+   ```bash
+   # 商品筛选
+   sellersprite product search --keyword earbuds --size 50 --page 1
+
+   # 流量词列表
+   sellersprite traffic keyword B0XXX1 --size 100 --page 1
+
+   # 流量来源
+   sellersprite traffic source --month 202501 --asin B0XXX1 --size 50 --page 1
+
+   # 评论查询
+   sellersprite trend review B0D6LQ5VZM --star-list 4,5 --size 10 --page 1
+
+   # ABA 数据
+   sellersprite trend aba-weekly --keyword-list earbuds,buds --size 40 --page 1
+   sellersprite trend aba-monthly --keyword-list earbuds --size 15 --page 1
+   ```
 
 ### 其他命令
 
