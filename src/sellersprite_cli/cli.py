@@ -1,5 +1,6 @@
 """CLI entry point — Typer app with domain-grouped subcommands and interactive TUI."""
 
+import base64
 import difflib
 import json
 import os
@@ -115,6 +116,19 @@ def _coerce_arg(key: str, value: str):
     return value
 
 
+def _read_image_file(image_file: str) -> str:
+    """Read an image file and return its Base64 encoded content."""
+    try:
+        with open(image_file, "rb") as f:
+            return base64.b64encode(f.read()).decode("ascii")
+    except FileNotFoundError:
+        console.print(f"[red]文件不存在: {image_file}[/red]")
+        raise typer.Exit(1)
+    except Exception as e:
+        console.print(f"[red]读取文件失败: {e}[/red]")
+        raise typer.Exit(1)
+
+
 def _print_result(data):
     """Pretty-print tool result."""
     if isinstance(data, (dict, list)):
@@ -209,12 +223,13 @@ def _run_tui():
 
 # ── Domain sub-apps ──────────────────────────────────────────
 
-asin_app = typer.Typer(help="ASIN 分析 (5 个工具)")
+asin_app = typer.Typer(help="ASIN 分析 (6 个工具)")
 product_app = typer.Typer(help="商品与竞品 (3 个工具)")
 keyword_app = typer.Typer(help="关键词 (5 个工具)")
 traffic_app = typer.Typer(help="流量 (6 个工具)")
 market_app = typer.Typer(help="市场分析 (14 个工具)")
 trend_app = typer.Typer(help="ABA / 趋势 (5 个工具)")
+trademark_app = typer.Typer(help="商标查询 (4 个工具)")
 
 app.add_typer(asin_app, name="asin")
 app.add_typer(product_app, name="product")
@@ -222,6 +237,7 @@ app.add_typer(keyword_app, name="keyword")
 app.add_typer(traffic_app, name="traffic")
 app.add_typer(market_app, name="market")
 app.add_typer(trend_app, name="trend")
+app.add_typer(trademark_app, name="trademark")
 
 
 # ── Common param annotations ─────────────────────────────────
@@ -280,6 +296,12 @@ def asin_keepa(
     if daily_latest is not None:
         kwargs["daily_latest"] = daily_latest.lower() == "true"
     _print_result(_call_tool("keepa_info", key, marketplace, **kwargs))
+
+
+@asin_app.command("sales-trend")
+def asin_sales_trend(asin: AsinArg, marketplace: MpOpt = "US", key: KeyOpt = None):
+    """ASIN 销量与销售额趋势"""
+    _print_result(_call_tool("asin_sales_trend", key, marketplace, asin=asin))
 
 
 # ── Product commands ──────────────────────────────────────────
@@ -809,6 +831,88 @@ def trend_review(
     _print_result(_call_tool("review", key, marketplace, **kwargs))
 
 
+# ── Trademark commands ────────────────────────────────────────
+
+@trademark_app.command("countries")
+def trademark_countries(key: KeyOpt = None):
+    """查询支持商标查询的国家/地区列表"""
+    _print_result(_call_tool("trademark_country_list", key, "US"))
+
+
+@trademark_app.command("detail")
+def trademark_detail(
+    brand_id: Annotated[str, typer.Argument(help="商标 ID")],
+    office: Annotated[str, typer.Option("--office", help="数据范围简码, 如 US")],
+    key: KeyOpt = None,
+):
+    """查询商标详细信息"""
+    _print_result(_call_tool("trademark_detail", key, "US", brand_id=brand_id, office=office))
+
+
+@trademark_app.command("list")
+def trademark_list(
+    text: Annotated[str, typer.Argument(help="查询文本/关键词")],
+    office: Annotated[Optional[str], typer.Option("--office", help="数据范围 (逗号分隔), 如 US,EU")] = None,
+    brand_name: Annotated[Optional[str], typer.Option("--brand-name", help="品牌名筛选 (逗号分隔)")] = None,
+    image_base64: Annotated[Optional[str], typer.Option("--image-base64", help="图片 Base64 字符串")] = None,
+    image_file: Annotated[Optional[str], typer.Option("--image-file", help="图片文件路径，将自动转为 Base64")] = None,
+    page: PageOpt = None,
+    size: SizeOpt = None,
+    order_field: OrderFieldOpt = None,
+    order_desc: OrderDescOpt = None,
+    extra: ExtraArg = None,
+    key: KeyOpt = None,
+):
+    """商标列表查询"""
+    if image_base64 and image_file:
+        console.print("[red]--image-base64 和 --image-file 不能同时使用[/red]")
+        raise typer.Exit(1)
+
+    kwargs = _parse_extra(extra)
+    kwargs["text"] = text
+    if office:
+        kwargs["office"] = [o.strip() for o in office.split(",")]
+    if brand_name:
+        kwargs["brand_name"] = [b.strip() for b in brand_name.split(",")]
+    if image_file:
+        kwargs["image_base64"] = _read_image_file(image_file)
+    elif image_base64:
+        kwargs["image_base64"] = image_base64
+    if page is not None:
+        kwargs["page"] = page
+    if size is not None:
+        kwargs["size"] = size
+    if order_field is not None:
+        kwargs["order_field"] = order_field
+    if order_desc is not None:
+        kwargs["order_desc"] = order_desc
+    _print_result(_call_tool("trademark_list", key, "US", **kwargs))
+
+
+@trademark_app.command("stats")
+def trademark_stats(
+    office: Annotated[str, typer.Option("--office", help="数据范围 (逗号分隔), 如 US,EU")],
+    text: Annotated[str, typer.Argument(help="查询文本/关键词")],
+    image_base64: Annotated[Optional[str], typer.Option("--image-base64", help="图片 Base64 字符串")] = None,
+    image_file: Annotated[Optional[str], typer.Option("--image-file", help="图片文件路径，将自动转为 Base64")] = None,
+    extra: ExtraArg = None,
+    key: KeyOpt = None,
+):
+    """商标统计分析"""
+    if image_base64 and image_file:
+        console.print("[red]--image-base64 和 --image-file 不能同时使用[/red]")
+        raise typer.Exit(1)
+
+    kwargs = _parse_extra(extra)
+    kwargs["office"] = [o.strip() for o in office.split(",")]
+    kwargs["text"] = text
+    if image_file:
+        kwargs["image_base64"] = _read_image_file(image_file)
+    elif image_base64:
+        kwargs["image_base64"] = image_base64
+    _print_result(_call_tool("trademark_stats", key, "US", **kwargs))
+
+
 # 工具特定的 size 默认值和上限（来自 API 文档）
 _SIZE_DEFAULTS = {
     "keyword_research": 15,
@@ -868,12 +972,17 @@ _TOOL_COMMANDS = {
     "aba_research_trend": "sellersprite trend aba-trend",
     "google_trend": "sellersprite trend google",
     "review": "sellersprite trend review",
+    "asin_sales_trend": "sellersprite asin sales-trend",
+    "trademark_country_list": "sellersprite trademark countries",
+    "trademark_detail": "sellersprite trademark detail",
+    "trademark_list": "sellersprite trademark list",
+    "trademark_stats": "sellersprite trademark stats",
 }
 
 
 @app.command("list")
 def list_tools():
-    """列出所有 38 个可用工具"""
+    """列出所有 43 个可用工具"""
     for domain, tools in DOMAIN_TOOLS.items():
         table = Table(title=DOMAINS.get(domain, domain), show_header=True,
                       header_style="bold cyan")

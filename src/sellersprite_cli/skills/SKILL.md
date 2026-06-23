@@ -1,6 +1,6 @@
 ---
 name: sellersprite-skills
-description: 卖家精灵 Amazon 选品 AI Skills 全集 —— 10 个综合分析工作流（/product-research、/market-analysis、/competitor-analysis 等）+ 17 个战术选品策略卡（新品爆发、ABA 高增长、低品牌垄断、变体拆解等），通过 38 个 MCP 数据工具完成从品类扫描到选品落地的全链路。适用于跨境电商卖家、Amazon 选品研究、运营优化与广告投放决策。
+description: 卖家精灵 Amazon 选品 AI Skills 全集 —— 10 个综合分析工作流（/product-research、/market-analysis、/competitor-analysis 等）+ 17 个战术选品策略卡（新品爆发、ABA 高增长、低品牌垄断、变体拆解等），通过 43 个 MCP 数据工具完成从品类扫描到选品落地的全链路。适用于跨境电商卖家、Amazon 选品研究、运营优化与广告投放决策。
 license: MIT-0
 version: 0.1.17
 ---
@@ -144,7 +144,7 @@ AI: [识别到"新品快速爆发"技能，按卡片参数执行筛选]
 skills/
   SKILL.md                          # 本文件：技能总览元数据
   README.md                         # Skill 索引（27 个 Skill 的详细列表）
-  agent-instructions.md             # 项目概述 + 38 个 MCP 工具清单，作为 AI 客户端的 CLAUDE.md/AGENTS.md 写入
+  agent-instructions.md             # 项目概述 + 43 个 MCP 工具清单，作为 AI 客户端的 CLAUDE.md/AGENTS.md 写入
   comprehensive/                    # 综合分析 Skills（10 个）
     product-research.md
     market-analysis.md

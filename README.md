@@ -2,7 +2,7 @@
 
 <p align="center">
   <b>卖家精灵开放平台 MCP 官方 CLI</b><br>
-  <sub>交互式终端工具 + Python MCP 客户端 + 27 个 AI Skills，通过 MCP 调用全部 38 个 Amazon 数据工具</sub><br>
+  <sub>交互式终端工具 + Python MCP 客户端 + 27 个 AI Skills，通过 MCP 调用全部 43 个 Amazon 数据工具</sub><br>
   <span style="color: #27ae60;"><b>CLI 完全免费</b></span> · <code>pip install</code> 即可使用
 </p>
 
@@ -10,7 +10,7 @@
 
 ## 🔥 MCP 服务限时特惠
 
-前往 [卖家精灵开放平台](https://open.sellersprite.com/pricing/mcp) 购买密钥，一价解锁 38 个 Amazon 数据工具：
+前往 [卖家精灵开放平台](https://open.sellersprite.com/pricing/mcp) 购买密钥，一价解锁 43 个 Amazon 数据工具：
 
 | 套餐 | 价格 | 速率 | 月额度 | 用户数 |
 |------|------|------|--------|--------|
@@ -114,7 +114,7 @@ SELLERSPRITE_KEY=你的API密钥
 sellersprite               # 无参数启动交互式菜单
 ```
 
-### 域命令（38 个工具）
+### 域命令（43 个工具）
 
 ```bash
 # ASIN 分析
@@ -122,6 +122,7 @@ sellersprite asin detail B0D6LQ5VZM
 sellersprite asin predict B0D6LQ5VZM
 sellersprite asin coupon B0D6LQ5VZM
 sellersprite asin keepa B0D6LQ5VZM --daily-latest true --start-timestamp 1722470400000 --end-timestamp 1754006400000
+sellersprite asin sales-trend B0D6LQ5VZM
 
 # 商品与竞品
 sellersprite product search --keyword "wireless earbuds" --min-price 10 --max-price 30
@@ -158,6 +159,24 @@ sellersprite trend aba-monthly --keyword-list earbuds
 sellersprite trend aba-trend earbuds
 sellersprite trend google --keyword earbuds
 sellersprite trend review B0D6LQ5VZM --star-list 4,5
+
+# 商标查询
+sellersprite trademark countries
+
+# --office 支持单个或多个（逗号分隔），trademark_detail 除外
+sellersprite trademark list ANKER --office US
+sellersprite trademark list ANKER --office US,EU
+
+# --brand-name 同样支持逗号分隔
+sellersprite trademark list ANKER --office US --brand-name ANKER
+sellersprite trademark list ANKER --office US --brand-name ANKER,EUFY
+
+# 图片搜索
+sellersprite trademark list ANKER --office US --image-file ./logo.png
+
+sellersprite trademark stats --office US ANKER
+sellersprite trademark stats --office US,EU ANKER
+sellersprite trademark detail BRAND_ID --office US
 ```
 
 ### 参数注意事项
@@ -170,11 +189,16 @@ sellersprite trend review B0D6LQ5VZM --star-list 4,5
 
 2. **`extra key=value` 传参必须用 snake_case**
 
-   `extra` 参数会经过 `_req()` 自动转 camelCase，但只对带下划线的 key 生效：
+   `extra` 参数会经过 `_req()` 自动转 camelCase，但只对带下划线的 key 生效。
+
+   如果某个字段是 List 类型（如 `status`、`nice_class`、`brand_name`），在 `extra` 中用逗号分隔即可：
 
    ```bash
-   # ✅ 正确
+   # ✅ 正确：单个值
    sellersprite product search --keyword earbuds extra="min_price=10 max_price=30"
+
+   # ✅ 正确：List 类型用逗号分隔
+   sellersprite trademark list ANKER --office US extra="status=Registered,Pending nice_class=9,11"
 
    # ❌ 错误，kebab-case 不会转换
    sellersprite product search --keyword earbuds extra="min-price=10"
@@ -223,12 +247,31 @@ sellersprite trend review B0D6LQ5VZM --star-list 4,5
    sellersprite trend aba-monthly --keyword-list earbuds --size 15 --page 1
    ```
 
+7. **列表型选项支持逗号分隔**
+
+   接受多个值的选项（如 `trademark list` 的 `--office`、`--brand-name`，以及 `--asin-list`、`--keyword-list`）均可用逗号分隔一次性传入。
+
+   注意：`trademark detail` 的 `--office` 为单字符串，不要传逗号分隔：
+
+   ```bash
+   sellersprite trademark list ANKER --office US,EU
+   sellersprite trademark list ANKER --office US --brand-name ANKER,EUFY
+   sellersprite traffic listing --asin-list B0XXX1,B0XXX2 --relations also_bought,also_viewed
+
+   # detail 的 office 是单字符串
+   sellersprite trademark detail BRAND_ID --office US
+   ```
+
 ### 其他命令
 
 ```bash
-sellersprite list                              # 列出所有 38 个工具
+sellersprite list                              # 列出所有 43 个工具
 sellersprite skill list                        # 列出 27 个 Skills
 sellersprite skill show --name product-research # 查看某个 Skill 内容
+
+# 查看接口参数文档
+sellersprite docs trademark_list               # 查看商标列表接口的参数表
+sellersprite docs product_research             # 查看选产品接口的参数表
 
 # 生成 AI 客户端配置
 sellersprite init claude-code --skills         # Claude Code
@@ -236,6 +279,22 @@ sellersprite init cursor --skills              # Cursor
 sellersprite init --all --skills               # 全部客户端
 sellersprite init --dry-run                    # 预览模式
 ```
+
+### 查看接口文档
+
+```bash
+sellersprite docs <工具名>
+```
+
+例如：
+
+```bash
+sellersprite docs asin_sales_trend
+sellersprite docs trademark_list
+sellersprite docs traffic_keyword
+```
+
+`docs` 命令会从 `src/sellersprite_cli/reference/` 或 `docs/mcp-api-source.md` 中读取接口文档，以表格形式展示请求参数。对于支持 `extra key=value` 传参的命令，可通过 `docs` 查看可用的字段名和类型。
 
 ### 全局参数
 
