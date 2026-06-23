@@ -1,8 +1,8 @@
 """SellerSprite MCP 客户端 — Python client for the SellerSprite MCP Server.
 
 Communicates via MCP Streamable HTTP (JSON-RPC 2.0 over HTTP with SSE support).
-Provides 36 methods covering ASIN analysis, product research, keywords,
-traffic, market analysis, ABA trends, and reviews.
+Provides 43 methods covering ASIN analysis, product research, keywords,
+traffic, market analysis, ABA trends, reviews, and trademark queries.
 """
 
 import json
@@ -158,6 +158,7 @@ class SellerSprite:
     _LIST_PARAMS = frozenset({
         "asinList", "asins", "relations", "keywordList",
         "nodeIdPaths", "starList", "typeList",
+        "office", "brandName", "status", "applicant", "niceClass", "applicationYear", "expiryYear",
     })
     _STR_PARAMS = frozenset({
         "includeKeywords", "excludeKeywords",
@@ -208,6 +209,9 @@ class SellerSprite:
         if daily_latest is not None:
             p["dailyLatest"] = daily_latest
         return self._call("keepa_info", p)
+
+    def asin_sales_trend(self, asin: str, marketplace: str | None = None) -> dict:
+        return self._call("asin_sales_trend", self._req(marketplace, asin=asin))
 
     # ── 商品与竞品 (3) ─────────────────────────────────────
 
@@ -343,3 +347,34 @@ class SellerSprite:
     def review(self, asin: str, marketplace: str | None = None, **kw) -> dict:
         return self._call("review", self._clean({
             "marketplace": marketplace or self.marketplace, "asin": asin, **kw}))
+
+    # ── 商标查询 (4) ───────────────────────────────────────
+
+    def trademark_country_list(self) -> list:
+        return self._call("trademark_country_list", {})
+
+    def trademark_detail(self, office: str, brand_id: str) -> dict:
+        return self._call("trademark_detail", {
+            "office": office,
+            "brandId": brand_id,
+        })
+
+    def trademark_list(self, text: str, **kw) -> dict:
+        request = {"text": text}
+        for k, v in kw.items():
+            key = self._to_camel(k) if "_" in k else k
+            if key in self._LIST_PARAMS and isinstance(v, str):
+                v = [v]
+            request[key] = v
+        return self._call("trademark_list", {"request": self._clean(request)})
+
+    def trademark_stats(self, office: list[str] | str, text: str, **kw) -> dict:
+        if isinstance(office, str):
+            office = [office]
+        request = {"office": office, "text": text}
+        for k, v in kw.items():
+            key = self._to_camel(k) if "_" in k else k
+            if key in self._LIST_PARAMS and isinstance(v, str):
+                v = [v]
+            request[key] = v
+        return self._call("trademark_stats", {"request": self._clean(request)})

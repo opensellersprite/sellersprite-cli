@@ -1,6 +1,6 @@
 # SellerSprite MCP API 文档
 
-> 卖家精灵开放平台 38 个 MCP 接口完整文档。来源：[https://open.sellersprite.com/api](https://open.sellersprite.com/api)
+> 卖家精灵开放平台 43 个 MCP 接口完整文档。来源：[https://open.sellersprite.com/api](https://open.sellersprite.com/api)
 
 ## 通用说明
 
@@ -13,12 +13,13 @@
 
 ## 目录
 
-### ASIN 分析 (5)
+### ASIN 分析 (6)
 - [3. ASIN 详情](#3-asin-详情) (`asin_detail`)
 - [27. ASIN 销量预测](#27-asin-销量预测) (`asin_prediction`)
 - [56. ASIN优惠趋势](#56-asin优惠趋势) (`asin_coupon_trend`)
 - [57. ASIN详情及优惠趋势](#57-asin详情及优惠趋势) (`asin_detail_with_coupon_trend`)
 - [22. 商品趋势详情(keepa)](#22-商品趋势详情keepa) (`keepa_info`)
+- [39. ASIN 销量趋势](#39-asin-销量趋势) (`asin_sales_trend`)
 
 ### 商品与竞品 (3)
 - [1. 查竞品](#1-查竞品) (`competitor_lookup`)
@@ -62,6 +63,12 @@
 - [60. ABA 数据选品-关键词趋势](#60-aba-数据选品-关键词趋势) (`aba_research_trend`)
 - [12. 谷歌趋势](#12-谷歌趋势) (`google_trend`)
 - [25. 查评论](#25-查评论) (`review`)
+
+### 商标查询 (4)
+- [40. 商标国家列表](#40-商标国家列表) (`trademark_country_list`)
+- [41. 商标详情](#41-商标详情) (`trademark_detail`)
+- [42. 商标列表](#42-商标列表) (`trademark_list`)
+- [43. 商标统计](#43-商标统计) (`trademark_stats`)
 
 ---
 
@@ -2513,6 +2520,388 @@ curl -X POST 'https://api.sellersprite.com/v1/aba/research/trends' \
 curl -X GET 'https://api.sellersprite.com/v1/google/trends' \
   -H 'secret-key: Your Secret' \
   -G -d 'marketplace=US'
+```
+
+---
+
+## 39. ASIN 销量趋势
+
+### 基本信息
+- **MCP Code**: `asin_sales_trend`
+- **Method**: `GET`
+- **URL**: `https://api.sellersprite.com/v1/asin/{marketplace}/{asin}/sales-trend`
+- **说明**: 查询 ASIN 的父体、子体的销量，销售额趋势数据
+
+### 请求参数
+
+| # | 参数 | 类型 | 必填 | 说明 |
+|---|------|------|------|------|
+| 1 | marketplace | String | ✓ | 市场，见表 1.2 |
+| 2 | asin | String | ✓ | asin，B08GHW4TBS |
+
+### 响应参数
+
+| # | 字段 | 类型 | 说明 | 示例 |
+|---|------|------|------|------|
+| 1 | asin | Object | Asin Object | |
+| 2 | └asin | String | asin，B08GHW4TBS | |
+| 3 | └asinUrl | String | asin url，https://www.amazon.com/dp/B08GHW4TBS | |
+| 4 | └availableDate | Long | 上架日期，1.60906E+12 | |
+| 5 | └badge | Badge | 标识，包括了下面 5 个标识 | |
+| 6 | └└bestSeller | String | Best Seller 标识，Y 或者 N | |
+| 7 | └└amazonChoice | String | amazon choice 标识，Y 或者 N | |
+| 8 | └└newRelease | String | release 标识，Y 或者 N | |
+| 9 | └└ebc | String | A+页面，Y 或者 N | |
+| 10 | └└video | String | 视频介绍，Y 或者 N | |
+| 11 | └brand | String | 品牌，mermaker | |
+| 12 | └brandUrl | String | 品牌 URL，/stores/Mermaker/page/984A6448-1C68-4CCA-AD5A-D574EA2D65D5?ref_=ast_bln | |
+| 13 | └bsrId | String | bsr id，home-garden | |
+| 14 | └bsrLabel | String | bsr 标签，Home & Kitchen | |
+| 15 | └bsrRank | Integer | bsr 排名，1006 | |
+| 16 | └createdTime | Long | 创建时间，1.60647E+12 | |
+| 17 | └dimensions | String | 尺寸，7 x 6 x 0.6 inches | |
+| 18 | └firstRatingDate | Long | 第一次评论时间，1.60906E+12 | |
+| 19 | └imageUrl | String | 图片链接，https://images-na.ssl-images-amazon.com/images/I/412616zl5YL .AC_US200.jpg | |
+| 20 | └lqs | Integer | Listing 页面质量得分，97 | |
+| 21 | └nodeId | String | 节点 id，1063280 | |
+| 22 | └nodeIdPath | String | 节点 id 串，1055398:1063252:1063280 | |
+| 23 | └nodeLabelPath | String | 类目名称串，Home & Kitchen:Bedding:Blankets & Throws | |
+| 24 | └nodeLabelPathLocale | String | 类目名称串中文，家居厨房用品:床上用品:毯子、盖毯 | |
+| 25 | └parent | String | 父 asin，B07V5GB9B5 | |
+| 26 | └price | Float | 价格，21.99 | |
+| 27 | └questions | Integer | 问题数量，5 | |
+| 28 | └rating | Float | 评分，4.8 | |
+| 29 | └ratings | Integer | 评分数，29229 | |
+| 30 | └reviews | Integer | 评论数，9229 | |
+| 31 | └variantRatings | Integer | 子体评分数，12454 | |
+| 32 | └variantReviews | Integer | 子体评论数，3211 | |
+| 33 | └sellerId | String | 卖家 id，A13AJ1GXFINAZ | |
+| 34 | └sellerName | String | 卖家名称，Mermaker | |
+| 35 | └fulfillment | String | 配送方式，FBA | |
+| 36 | └sellers | Integer | 卖家数，1 | |
+| 37 | └skuList | List | sku，["Color: Beige","Size: 47 inches"] | |
+| 38 | └marketplace | String | String，见表 1.2 | |
+| 39 | └title | String | 标题，mermaker Burritos Tortilla Blanket 2.0 Double Sided 47 inches for Adult and Kids,Giant Funny Realistic Food Throw Blanket,285 GSM Novelty Soft Flannel Taco Blanket (Yellow Blanket-Double Sided) | |
+| 40 | └features | List | 五点描述 | |
+| 41 | └overviews | String | 详情，json格式字符串 | |
+| 42 | └updatedTime | Long | 更新时间，1.60906E+12 | |
+| 43 | └variationList | List | 变体，[{"asin":"B07V5GB9B5","attribute":"Beige"},{"asin":"B08H86SSSF","attribute":"Cookie"}] | |
+| 44 | └variations | Integer | 变体数量，14 | |
+| 45 | └weight | String | 重量，15.2 ounces | |
+| 46 | └zoomImageUrl | String | 大图 URL，https://images-na.ssl-images-amazon.com/images/I/412616zl5YL .AC_US600.jpg | |
+| 47 | └subcategories | Object | 子类目信息 | |
+| 48 | └└rank | Integer | 子类目排名，1 | |
+| 49 | └└code | String | 子类目code，17874234011 | |
+| 50 | └└label | String | 子类目标签，Kids' Throw Blankets | |
+| 51 | └deliveryPrice | Float | 卖家运费,-1表示没有，4 | |
+| 52 | └primePrice | Float | prime价格，-1表示没有，42 | |
+| 53 | └coupon | String | 优惠卷，[save $20] | |
+| 54 | salesTrendPoints | List | ASIN sales Trend | |
+| 55 | └month | String | 月份 | |
+| 56 | └price | Float | 价格 | |
+| 57 | └averagePrice | Float | 平均价格 | |
+| 58 | └parentUnitSales | Integer | 父体 销量 | |
+| 59 | └childUnitSales | Integer | 子体销量 | |
+| 60 | └parentSalesRevenue | Float | 父体销售额 | |
+| 61 | └childSalesRevenue | Float | 子体销售额度 | |
+
+### 请求示例
+
+```bash
+curl -X GET 'https://api.sellersprite.com/v1/asin/US/B0DXTMS9NF/sales-trend' \
+  -H 'secret-key: Your Secret'
+```
+
+---
+
+## 40. 商标国家列表
+
+### 基本信息
+- **MCP Code**: `trademark_country_list`
+- **Method**: `GET`
+- **URL**: `https://api.sellersprite.com/v1/global/brand/range`
+- **说明**: 查询支持查询商标的国家数据
+
+### 请求参数
+
+（无）
+
+### 响应参数
+
+| # | 字段 | 类型 | 说明 | 示例 |
+|---|------|------|------|------|
+| 1 | office | String | 简码，AD | |
+| 2 | officeLabel | String | 中文名称，安道尔 | |
+
+### 请求示例
+
+```bash
+curl -X GET 'https://api.sellersprite.com/v1/global/brand/range' \
+  -H 'secret-key: Your Secret'
+```
+
+---
+
+## 41. 商标详情
+
+### 基本信息
+- **MCP Code**: `trademark_detail`
+- **Method**: `GET`
+- **URL**: `https://api.sellersprite.com/v1/global/brand/detail`
+- **说明**: 查询商标的详细信息
+
+### 请求参数
+
+| # | 参数 | 类型     | 必填 | 说明 |
+|---|------|--------|------|------|
+| 1 | office | String | ✓ | 数据范围，见上一个接口，US |
+| 2 | brandId | String | ✓ | id,见列表接口，US502022097612203 |
+
+### 响应参数
+
+| # | 字段 | 类型 | 说明 | 示例 |
+|---|------|------|------|------|
+| 1 | id | String | id，US502022097612203 | |
+| 2 | applicant | List | 申请人，ANKER INC | |
+| 3 | applicantCountryCode | Integer | 申请人国家，US | |
+| 4 | applicants | List | 申请人详情，格式同office,结构见下表 | |
+| 5 | applicationDate | String | 申请日期，2022-09-29 | |
+| 6 | applicationLanguageCode | String | 申请语言，en | |
+| 7 | applicationNumber | String | 申请编号，97612203 | |
+| 8 | registrationNumber | String | 注册号，4590785 | |
+| 9 | applicationRefNumber | List | 申请参考号 | |
+| 10 | brandName | List | 品牌名，[ "1ST AID"] | |
+| 11 | collection | String | 数据集，ustm | |
+| 12 | designatedCountries | List | 指定国家，["US"] | |
+| 13 | designation | List | 指定国家，["US"] | |
+| 14 | filingPlace | String | 申请地点 | |
+| 15 | kind | List | 商标类别，["Individual"] | |
+| 16 | logos | List | logo | |
+| 17 | └logo | String | logo | |
+| 18 | └logoUrl | String | logo url | |
+| 19 | markFeature | String | 商标种类，Combined | |
+| 20 | niceClass | List | 尼斯分类，[5] | |
+| 21 | office | String | 知识产权局，US | |
+| 22 | status | String | 状态，Pending | |
+| 23 | statusDate | String | 状态更新日期，2023-05-02 | |
+| 24 | type | String | 类型，TRADEMARK | |
+| 25 | appeals | List | 上诉信息 | |
+| 26 | └date | String | 日期 | |
+| 27 | └kind | String | 分类 | |
+| 28 | correspondence | AddressDto | 通信地址 | |
+| 29 | events | List | 事件 | |
+| 30 | └date | String | 日期 | |
+| 31 | └officeKind | String | 产权局分类 | |
+| 32 | └gbdKind | String | 品牌分析 | |
+| 33 | └doc | String | 文档 | |
+| 34 | └country | String | 国家 | |
+| 35 | expiryDate | String | 过期时间 | |
+| 36 | extra | String | 扩展信息 | |
+| 37 | gbdStatus | String | 品牌状态 | |
+| 38 | goodsServicesClassification | Object | 商品分类信息 | |
+| 39 | └kind | String | 类型 | |
+| 40 | └version | String | 版本 | |
+| 41 | └classification | String | 详情 | |
+| 42 | └└code | String | code码 | |
+| 43 | └└terms | Map | 说明 | |
+| 44 | goodsServicesUnclassified | Map | 商品未分类信息 | |
+| 45 | markDescriptionDetails | List | 商标描述细节 | |
+| 46 | └text | String | 描述，ANKER INC | |
+| 47 | └languageCode | String | 语言，en | |
+| 48 | markDisclaimerDetails | List | 商标免责声明 | |
+| 49 | └text | String | 描述，ANKER INC | |
+| 50 | └languageCode | String | 语言，en | |
+| 51 | markImageDetails | JSONArray | 商标图形分类 | |
+| 52 | nationalGoodsServicesClassification | Object | 国际商品分类信息 | |
+| 53 | └kind | String | 类型 | |
+| 54 | └version | String | 版本 | |
+| 55 | └classification | String | 详情 | |
+| 56 | └└code | String | code码 | |
+| 57 | └└terms | Map | 说明 | |
+| 58 | officeStatus | String | 办公状态 | |
+| 59 | priorities | List | 优先事项 | |
+| 60 | └severity | String | 级别 | |
+| 61 | └code | String | code码 | |
+| 62 | └field | String | 字段 | |
+| 63 | └type | String | 类型 | |
+| 64 | └message | String | 说明 | |
+| 65 | publicationDate | String | 发表日期 | |
+| 66 | publications | List | 发表详情 | |
+| 67 | └date | String | 日期 | |
+| 68 | └identifier | String | 标志 | |
+| 69 | └section | String | 内容 | |
+| 70 | qc | List | 审核意见 | |
+| 71 | └severity | String | 级别 | |
+| 72 | └code | String | code码 | |
+| 73 | └field | String | 字段 | |
+| 74 | └type | String | 类型 | |
+| 75 | └message | String | 说明 | |
+| 76 | reference | Object | 参考信息 | |
+| 77 | └office | String | 机构code | |
+| 78 | └application | Object | 申请信息 | |
+| 79 | └└date | String | 日期 | |
+| 80 | └└number | String | 编号 | |
+| 81 | └registration | Object | 注册信息 | |
+| 82 | └└date | String | 日期 | |
+| 83 | └└number | String | 编号 | |
+| 84 | refOffice | String | 参考办公室 | |
+| 85 | registrationDate | String | 注册日期 | |
+| 86 | registrationOfficeCode | String | 注册国家 | |
+| 87 | registrationRefNumber | List | 注册参考号 | |
+| 88 | representatives | List | 代表信息 | |
+| 89 | secondLanguageCode | String | 第二语言 | |
+| 90 | st13 | String | id | |
+| 91 | terminationDate | String | 终止日期 | |
+| 92 | wordMarkSpecification | Object | 文字商标说明 | |
+| 93 | └markTransliteration | String | markTransliteration | |
+| 94 | └markTranslation | Object | 商标翻译 | |
+| 95 | └└text | String | 内容 | |
+| 96 | └└languageCode | String | 语言类型 | |
+| 97 | └markVerbalElement | Object | markVerbalElement | |
+| 98 | └└text | String | 内容 | |
+| 99 | └└languageCode | String | 语言类型 | |
+| 100 | └markSignificantVerbalElement | Object | markSignificantVerbalElement | |
+| 101 | └└text | String | 内容，SONICARE | |
+| 102 | └└languageCode | String | 语言类型，en | |
+
+### 请求示例
+
+```bash
+curl -X GET 'https://api.sellersprite.com/v1/global/brand/detail' \
+  -H 'secret-key: Your Secret'
+```
+
+---
+
+## 42. 商标列表
+
+### 基本信息
+- **MCP Code**: `trademark_list`
+- **Method**: `POST`
+- **URL**: `https://api.sellersprite.com/v1/global/brand/list`
+- **说明**: 查询商标列表数据
+
+### 请求参数
+
+| # | 参数 | 类型 | 必填 | 说明 |
+|---|------|------|------|------|
+| 1 | office | List |  | 数据范围，见上一个接口，["US"] |
+| 2 | text | String | ✓ | 查询文本，CHINESE |
+| 3 | imageBase64 | String |  | base64字符串 |
+| 4 | imageFile | File |  | 上传的文件，C:\fakepath\人像.jpeg |
+| 5 | brandName | List |  | 品牌名，字段参数见统计接口，["ADVENTURE CLUB"] |
+| 6 | status | List |  | 状态，字段参数见统计接口，["Registered"] |
+| 7 | applicant | List |  | 申请人，字段参数见统计接口，["ANKER INC"] |
+| 8 | niceClass | List |  | 尼斯分类，字段参数见统计接口，[5] |
+| 9 | applicationYear | List |  | 申请年份，字段参数见统计接口，["1985"] |
+| 10 | expiryYear | List |  | 过期年份，字段参数见统计接口，["2026"] |
+| 11 | order.field | String |  | 排序字段，默认相关度，applicationDate申请日期 |
+| 12 | order.desc | Boolean |  | true降序，false升序，默认true |
+| 13 | page | Integer |  | 页码，1 |
+| 14 | size | Integer |  | 每页条数，最大100，20 |
+
+### 响应参数
+
+| # | 字段 | 类型 | 说明 | 示例 |
+|---|------|------|------|------|
+| 1 | id | String | id，US502022097612203 | |
+| 2 | applicant | List | 申请人，ANKER INC | |
+| 3 | applicantCountryCode | Integer | 申请人国家，US | |
+| 4 | applicants | List | 申请人详情，格式同office | |
+| 5 | └kind | String | 类型，Legal Entity | |
+| 6 | └identifier | String | 标识，33744042 | |
+| 7 | └countryCode | String | 国家编码，US | |
+| 8 | └contact | JSONObject | 联系方式 | |
+| 9 | └fullAddress | List | 完整地址 | |
+| 10 | └└text | String | 描述 | |
+| 11 | └└languageCode | String | 语言，en | |
+| 12 | └└imageUrl | String | 图片URL，https://o.sellersprite.com/w/brands/ustm/US502022097612203/ee45f.jpg | |
+| 13 | └fullName | List | 完整名称 | |
+| 14 | └└text | String | 描述，ANKER INC | |
+| 15 | └└languageCode | String | 语言，en | |
+| 16 | applicationDate | String | 申请日期，2022-09-29 | |
+| 17 | applicationLanguageCode | String | 申请语言，en | |
+| 18 | applicationNumber | String | 申请编号，97612203 | |
+| 19 | registrationNumber | String | 注册号，4590785 | |
+| 20 | applicationRefNumber | List | 申请参考号 | |
+| 21 | brandName | List | 品牌名，[ "1ST AID"] | |
+| 22 | collection | String | 数据集，ustm | |
+| 23 | designatedCountries | List | 指定国家，["US"] | |
+| 24 | designation | List | 指定国家，["US"] | |
+| 25 | filingPlace | String | 申请地点 | |
+| 26 | kind | List | 商标类别，["Individual"] | |
+| 27 | logos | List | logo | |
+| 28 | └logo | String | logo | |
+| 29 | └logoUrl | String | logo url | |
+| 30 | markFeature | String | 商标种类，Combined | |
+| 31 | niceClass | List | 尼斯分类，[5] | |
+| 32 | office | String | 知识产权局，US | |
+| 33 | status | String | 状态，Pending | |
+| 34 | statusDate | String | 状态更新日期，2023-05-02 | |
+| 35 | type | String | 类型，TRADEMARK | |
+
+### 请求示例
+
+```bash
+curl -X POST 'https://api.sellersprite.com/v1/global/brand/list' \
+  -H 'secret-key: Your Secret' \
+  -H 'Content-Type: application/json' \
+  -d '{}'
+```
+
+---
+
+## 43. 商标统计
+
+### 基本信息
+- **MCP Code**: `trademark_stats`
+- **Method**: `POST`
+- **URL**: `https://api.sellersprite.com/v1/global/brand/stats`
+- **说明**: 查询商标统计数据
+
+### 请求参数
+
+| # | 参数 | 类型 | 必填 | 说明 |
+|---|------|------|------|------|
+| 1 | office | List | ✓ | 数据范围，见上一个接口，["US"] |
+| 2 | text | String | ✓ | 查询文本，CHINESE |
+| 3 | imageBase64 | String |  | base64字符串 |
+| 4 | imageFile | File |  | 上传的文件，C:\fakepath\人像.jpeg |
+
+### 响应参数
+
+| # | 字段 | 类型 | 说明 | 示例 |
+|---|------|------|------|------|
+| 1 | office | List | 知识产权局，[{"key":"US","count":2}] | |
+| 2 | └key | String | 值，US | |
+| 3 | └count | Integer | 数量，2 | |
+| 4 | brandName | List | 品牌名，格式同office | |
+| 5 | └key | String | 值，ADVENTURE CLUB | |
+| 6 | └count | Integer | 数量，4 | |
+| 7 | status | List | 状态，格式同office | |
+| 8 | └key | String | 值，Registered | |
+| 9 | └count | Integer | 数量，12 | |
+| 10 | applicant | List | 申请人，格式同office | |
+| 11 | └key | String | 值，ANKER INC | |
+| 12 | └count | Integer | 数量，4 | |
+| 13 | niceClass | List | 尼斯分类，格式同office | |
+| 14 | └key | String | 值，5 | |
+| 15 | └count | Integer | 数量，2 | |
+| 16 | └label | String | 分类名称，医药用品 | |
+| 17 | applicationYear | List | 申请年份，格式同office | |
+| 18 | └key | String | 值，1985 | |
+| 19 | └count | Integer | 数量，5 | |
+| 20 | expiryYear | List | 过期年份，格式同office | |
+| 21 | └key | String | 值，2026 | |
+| 22 | └count | Integer | 数量，2 | |
+
+### 请求示例
+
+```bash
+curl -X POST 'https://api.sellersprite.com/v1/global/brand/stats' \
+  -H 'secret-key: Your Secret' \
+  -H 'Content-Type: application/json' \
+  -d '{}'
 ```
 
 ---

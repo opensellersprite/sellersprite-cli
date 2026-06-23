@@ -1,4 +1,4 @@
-"""Tool metadata registry — 38 MCP tools organized by business domain."""
+"""Tool metadata registry — 43 MCP tools organized by business domain."""
 
 from dataclasses import dataclass
 
@@ -6,21 +6,22 @@ from dataclasses import dataclass
 @dataclass
 class ToolMeta:
     name: str
-    domain: str           # asin, product, keyword, traffic, market, trend
+    domain: str           # asin, product, keyword, traffic, market, trend, trademark
     label: str            # Chinese short description
     required: list[str]   # snake_case param names
     list_params: set[str] # camelCase params accepting comma-separated values
-    style: str            # "asin", "request", "request_node", "traffic_stat", "bsr", "review"
+    style: str            # "asin", "request", "request_node", "traffic_stat", "bsr", "review", "flat"
     paginated: bool = True  # whether the tool supports pagination (page/size)
 
 
 TOOLS: dict[str, ToolMeta] = {
-    # ── ASIN 分析 (5) ──
+    # ── ASIN 分析 (6) ──
     "asin_detail": ToolMeta("asin_detail", "asin", "ASIN 完整详情", ["asin"], set(), "asin", paginated=False),
     "asin_prediction": ToolMeta("asin_prediction", "asin", "销量与销售额预测", ["asin"], set(), "asin", paginated=False),
     "asin_coupon_trend": ToolMeta("asin_coupon_trend", "asin", "优惠价格趋势", ["asin"], set(), "asin", paginated=False),
     "asin_detail_with_coupon_trend": ToolMeta("asin_detail_with_coupon_trend", "asin", "详情+优惠趋势", ["asin"], set(), "asin", paginated=False),
     "keepa_info": ToolMeta("keepa_info", "asin", "Keepa 历史趋势", ["asin"], set(), "asin", paginated=False),
+    "asin_sales_trend": ToolMeta("asin_sales_trend", "asin", "ASIN 销量趋势", ["asin"], set(), "asin", paginated=False),
 
     # ── 商品与竞品 (3) ──
     "product_research": ToolMeta("product_research", "product", "高级商品筛选", [], {"keywordList"}, "request"),
@@ -64,11 +65,18 @@ TOOLS: dict[str, ToolMeta] = {
     "aba_research_trend": ToolMeta("aba_research_trend", "trend", "ABA 趋势分析", ["keyword"], set(), "flat", paginated=False),
     "google_trend": ToolMeta("google_trend", "trend", "Google 搜索趋势", [], set(), "request", paginated=False),
     "review": ToolMeta("review", "trend", "买家评论查询", ["asin"], set(), "review", paginated=True),
+
+    # ── 商标查询 (4) ──
+    "trademark_country_list": ToolMeta("trademark_country_list", "trademark", "商标国家列表", [], set(), "flat", paginated=False),
+    "trademark_detail": ToolMeta("trademark_detail", "trademark", "商标详情", ["office", "brand_id"], set(), "flat", paginated=False),
+    "trademark_list": ToolMeta("trademark_list", "trademark", "商标列表", ["text"], {"office", "brandName", "status", "applicant", "niceClass", "applicationYear", "expiryYear"}, "request", paginated=True),
+    "trademark_stats": ToolMeta("trademark_stats", "trademark", "商标统计", ["office", "text"], {"office"}, "request", paginated=False),
 }
 
 ALL_LIST_PARAMS: set[str] = {
     "asinList", "asins", "relations", "keywordList",
     "nodeIdPaths", "excludeKeywords", "includeKeywords",
+    "office", "brandName", "status", "applicant", "niceClass", "applicationYear", "expiryYear",
 }
 
 # Domain -> display name mapping
@@ -79,6 +87,7 @@ DOMAINS: dict[str, str] = {
     "traffic": "流量",
     "market": "市场分析",
     "trend": "ABA / 趋势",
+    "trademark": "商标查询",
 }
 
 # Domain -> sorted tool names
