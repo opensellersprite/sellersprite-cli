@@ -224,6 +224,9 @@ class SellerSprite:
     def product_node(self, marketplace: str | None = None, **kw) -> list:
         return self._call("product_node", {"request": self._clean(self._req(marketplace, **kw))})
 
+    def asin_competitor(self, asin: str, marketplace: str | None = None, **kw) -> dict:
+        return self._call("asin_competitor", self._clean(self._req(marketplace, asin=asin, **kw)))
+
     # ── 关键词 (5) ─────────────────────────────────────────
 
     def keyword_miner(self, marketplace: str | None = None, **kw) -> dict:

@@ -13,13 +13,14 @@
 
 ## 目录
 
-### ASIN 分析 (6)
+### ASIN 分析 (7)
 - [3. ASIN 详情](#3-asin-详情) (`asin_detail`)
 - [27. ASIN 销量预测](#27-asin-销量预测) (`asin_prediction`)
 - [56. ASIN优惠趋势](#56-asin优惠趋势) (`asin_coupon_trend`)
 - [57. ASIN详情及优惠趋势](#57-asin详情及优惠趋势) (`asin_detail_with_coupon_trend`)
 - [22. 商品趋势详情(keepa)](#22-商品趋势详情keepa) (`keepa_info`)
 - [39. ASIN 销量趋势](#39-asin-销量趋势) (`asin_sales_trend`)
+- [62. 查询 ASIN 竞品数据](#62-查询-asin-竞品数据) (`asin_competitor`)
 
 ### 商品与竞品 (3)
 - [1. 查竞品](#1-查竞品) (`competitor_lookup`)
@@ -2902,6 +2903,92 @@ curl -X POST 'https://api.sellersprite.com/v1/global/brand/stats' \
   -H 'secret-key: Your Secret' \
   -H 'Content-Type: application/json' \
   -d '{}'
+```
+
+---
+
+## 62. 查询 ASIN 竞品数据
+
+### 基本信息
+- **MCP Code**: `asin_competitor`
+- **Method**: `GET`
+- **URL**: `https://api.sellersprite.com/v1/asin/competitor/{marketplace}/{asin}`
+- **说明**: 查询 ASIN 的竞品数据，用于竞品分析、产品调研与市场调研。MCP 工具可通过 `returnFields` 参数减少 token 消耗
+
+### 请求参数
+
+| # | 参数 | 类型 | 必填 | 说明 |
+|---|------|------|------|------|
+| 1 | marketplace | String | ✓ | 市场，见表 1.2 |
+| 2 | asin | String | ✓ | ASIN，B08GHW4TBS |
+| 3 | size | Integer |  | 返回结果数量，20 |
+
+### 响应参数
+
+| # | 字段 | 类型 | 说明 | 示例 |
+|---|------|------|------|------|
+| 1 | asin | String | ASIN | B078J8VPVW |
+| 2 | brand | String | 品牌 | Pampers |
+| 3 | brandUrl | String | 品牌 URL | https://www.amazon.com/s?k=HP |
+| 4 | imageUrl | String | 图片 URL | https://images-na.ssl-images-amazon.com/images/I/51axlzme6aL .AC_US200.jpg |
+| 5 | title | String | 商品标题 | Diapers Size …… |
+| 6 | parent | String | 父体 | B081RGNL17 |
+| 7 | nodeId | Long | 节点 id | 3741281 |
+| 8 | nodeIdPath | String | 节点 id 路径字符串 | 2619525011:3741271:3741281 |
+| 9 | nodeLabelPath | String | 类目 | Baby Products:Diapering:Disposable Diapers |
+| 10 | symbol | String | 是否畅销 | Y |
+| 11 | bsrId | String | BSR id | office-products |
+| 12 | bsr | Integer | BSR 排名 | 1 |
+| 13 | bsrCr | Float | BSR 增长率 | 926.67 |
+| 14 | bsrCv | Integer | BSR 增长数 | 10 |
+| 15 | units | Integer | 月销量(父体) | 26289 |
+| 16 | unitsGr | Float | 月销量增长率(父体) | -46.3 |
+| 17 | amzUnit | Integer | 子体近30日销量 | 4000 |
+| 18 | amzSales | Float | 销售额(子体) | 235000 |
+| 19 | amzUnitDate | Date | 子体销量更新日期 | 1702476590000 |
+| 20 | revenue | Float | 月销售额(父体) | 1693537.4 |
+| 21 | price | Float | 价格 | 64.42 |
+| 22 | primePrice | Float | prime价格，-1表示没有 | 56.6 |
+| 23 | profit | Float | 利润率 | 63.92 |
+| 24 | fba | Float | fba 运费 | 13.58 |
+| 25 | ratings | Integer | 评分数 | 32004 |
+| 26 | ratingsRate | Float | 留评率 | 40.57 |
+| 27 | rating | Float | 评分 | 4.8 |
+| 28 | ratingsCv | Integer | 月度增长数 | 10666 |
+| 29 | ratingDelta | Integer | 留评数：近 30 天新增评论数 | 0 |
+| 30 | lqs | Float | listing质量得分 |  |
+| 31 | availableDate | Long | 上架时间 | 1454083200000 |
+| 32 | fulfillment | String | 配送方式 | AMZ or FBA or FBM |
+| 33 | variations | Integer | 变体数 | 7 |
+| 34 | sellers | Integer | 卖家数 | 7 |
+| 35 | sellerId | String | BuyBox 卖家 id | A1Y8BVAASXO4R7 |
+| 36 | sellerName | String | BuyBox 卖家 | Amazon |
+| 37 | sellerNation | String | BuyBox 卖家国籍 | 见表 1.5 |
+| 38 | badge | Badge | 标识 | 包括了下面 5 个标识 |
+| 39 | └bestSeller | String | Best Seller 标识 | Y / N |
+| 40 | └amazonChoice | String | amazon choice 标识 | Y / N |
+| 41 | └newRelease | String | release 标识 | Y / N |
+| 42 | └ebc | String | A+页面 | Y / N |
+| 43 | └video | String | 视频介绍 | Y / N |
+| 44 | weight | String | 重量 | 8.88 pounds |
+| 45 | dimension | String | 尺寸 | 13.3 x 15.8 x 10.6 inches |
+| 46 | dimensionsType | String | 尺寸类型 | ST,0V |
+| 47 | pkgDimensions | String | 包装尺寸 | 14.3 x 16.8 x 12.6 inches |
+| 48 | pkgDimensionType | String | 包装尺寸类型 |  |
+| 49 | pkgWeight | String | 包装重量 | 18.88 pounds |
+| 50 | sku | String | sku | ["Color: Beige","Size: 47 inches"] |
+| 51 | subcategories | List | 子类目 |  |
+| 52 | └code | String | 类目code | 1063242 |
+| 53 | └rank | Integer | 排名 | 1 |
+| 54 | └label | String | 名称 | Bath Rugs |
+| 55 | deliveryPrice | Float | 卖家运费,-1表示没有 | 4 |
+| 56 | primePrice | Float | prime价格，-1表示没有 | 42 |
+
+### 请求示例
+
+```bash
+curl -X GET 'https://api.sellersprite.com/v1/asin/competitor/US/B07Z82895W' \
+  -H 'secret-key: Your Secret'
 ```
 
 ---

@@ -2,7 +2,7 @@
 
 <p align="center">
   <b>卖家精灵开放平台 MCP 官方 CLI</b><br>
-  <sub>交互式终端工具 + Python MCP 客户端 + 27 个 AI Skills，通过 MCP 调用全部 43 个 Amazon 数据工具</sub><br>
+  <sub>交互式终端工具 + Python MCP 客户端 + 27 个 AI Skills，通过 MCP 调用全部 44 个 Amazon 数据工具</sub><br>
   <span style="color: #27ae60;"><b>CLI 完全免费</b></span> · <code>pip install</code> 即可使用
 </p>
 
@@ -10,7 +10,7 @@
 
 ## 🔥 MCP 服务限时特惠
 
-前往 [卖家精灵开放平台](https://open.sellersprite.com/pricing/mcp) 购买密钥，一价解锁 43 个 Amazon 数据工具：
+前往 [卖家精灵开放平台](https://open.sellersprite.com/pricing/mcp) 购买密钥，一价解锁 44 个 Amazon 数据工具：
 
 | 周期     | 套餐  | 特惠价      | 原价        | 速率        | 月额度     | 用户数             |
 |----------|-------|-------------|-------------|-------------|------------|--------------------|
@@ -119,7 +119,7 @@ SELLERSPRITE_KEY=你的API密钥
 sellersprite               # 无参数启动交互式菜单
 ```
 
-### 域命令（43 个工具）
+### 域命令（44 个工具）
 
 ```bash
 # ASIN 分析
@@ -270,7 +270,7 @@ sellersprite trademark detail BRAND_ID --office US
 ### 其他命令
 
 ```bash
-sellersprite list                              # 列出所有 43 个工具
+sellersprite list                              # 列出所有 44 个工具
 sellersprite skill list                        # 列出 27 个 Skills
 sellersprite skill show --name product-research # 查看某个 Skill 内容
 

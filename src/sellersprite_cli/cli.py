@@ -224,7 +224,7 @@ def _run_tui():
 # ── Domain sub-apps ──────────────────────────────────────────
 
 asin_app = typer.Typer(help="ASIN 分析 (6 个工具)")
-product_app = typer.Typer(help="商品与竞品 (3 个工具)")
+product_app = typer.Typer(help="商品与竞品 (4 个工具)")
 keyword_app = typer.Typer(help="关键词 (5 个工具)")
 traffic_app = typer.Typer(help="流量 (6 个工具)")
 market_app = typer.Typer(help="市场分析 (14 个工具)")
@@ -402,6 +402,20 @@ def product_node(
     if month:
         kwargs["month"] = month
     _print_result(_call_tool("product_node", key, marketplace, **kwargs))
+
+
+@product_app.command("competitor-asin")
+def product_competitor_asin(
+    asin: AsinArg,
+    size: SizeOpt = None,
+    marketplace: MpOpt = "US",
+    key: KeyOpt = None,
+):
+    """ASIN 竞品查询"""
+    kwargs = {"asin": asin}
+    if size is not None:
+        kwargs["size"] = size
+    _print_result(_call_tool("asin_competitor", key, marketplace, **kwargs))
 
 
 # ── Keyword commands ──────────────────────────────────────────
@@ -942,6 +956,7 @@ _TOOL_COMMANDS = {
     "product_research": "sellersprite product search",
     "competitor_lookup": "sellersprite product competitor",
     "product_node": "sellersprite product node",
+    "asin_competitor": "sellersprite product competitor-asin",
     "keyword_miner": "sellersprite keyword mine",
     "keyword_research": "sellersprite keyword research",
     "keyword_order": "sellersprite keyword order",
@@ -982,7 +997,7 @@ _TOOL_COMMANDS = {
 
 @app.command("list")
 def list_tools():
-    """列出所有 43 个可用工具"""
+    """列出所有 44 个可用工具"""
     for domain, tools in DOMAIN_TOOLS.items():
         table = Table(title=DOMAINS.get(domain, domain), show_header=True,
                       header_style="bold cyan")
