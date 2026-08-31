@@ -1,4 +1,4 @@
-"""Tool metadata registry — 44 MCP tools organized by business domain."""
+"""Tool metadata registry — 45 MCP tools organized by business domain."""
 
 from dataclasses import dataclass
 
@@ -29,11 +29,12 @@ TOOLS: dict[str, ToolMeta] = {
     "product_node": ToolMeta("product_node", "product", "产品类目查询", [], set(), "request", paginated=False),
     "asin_competitor": ToolMeta("asin_competitor", "product", "ASIN 竞品查询", ["asin"], set(), "flat", paginated=False),
 
-    # ── 关键词 (5) ──
+    # ── 关键词 (6) ──
     "keyword_miner": ToolMeta("keyword_miner", "keyword", "关键词深度挖掘", [], {"keywordList"}, "request"),
     "keyword_research": ToolMeta("keyword_research", "keyword", "关键词市场选品", [], {"keywordList"}, "request"),
     "keyword_research_trends": ToolMeta("keyword_research_trends", "keyword", "关键词趋势分析", ["keyword"], set(), "flat", paginated=False),
     "keyword_order": ToolMeta("keyword_order", "keyword", "关键词反查（转化）", ["asins", "reverseType", "date"], {"asins"}, "request"),
+    "keyword_conversion": ToolMeta("keyword_conversion", "keyword", "关键字转化率", ["keyword"], {"includeKeywords", "excludeKeywords"}, "request"),
     "bsr_prediction": ToolMeta("bsr_prediction", "keyword", "BSR 销量预测", ["bsr", "category_id"], set(), "bsr", paginated=False),
 
     # ── 流量 (6) ──

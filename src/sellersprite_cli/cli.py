@@ -225,7 +225,7 @@ def _run_tui():
 
 asin_app = typer.Typer(help="ASIN 分析 (6 个工具)")
 product_app = typer.Typer(help="商品与竞品 (4 个工具)")
-keyword_app = typer.Typer(help="关键词 (5 个工具)")
+keyword_app = typer.Typer(help="关键词 (6 个工具)")
 traffic_app = typer.Typer(help="流量 (6 个工具)")
 market_app = typer.Typer(help="市场分析 (14 个工具)")
 trend_app = typer.Typer(help="ABA / 趋势 (5 个工具)")
@@ -503,6 +503,73 @@ def keyword_order(
     if size is not None:
         kwargs["size"] = size
     _print_result(_call_tool("keyword_order", key, marketplace, **kwargs))
+
+
+@keyword_app.command("conversion")
+def keyword_conversion(
+    keyword: Annotated[str, typer.Argument(help="关键词")],
+    time_type: Annotated[Optional[str], typer.Option("--time-type", help="时间类型: WEEK 或 90D")] = None,
+    min_searches: Annotated[Optional[int], typer.Option("--min-searches", help="最低搜索量")] = None,
+    max_searches: Annotated[Optional[int], typer.Option("--max-searches", help="最高搜索量")] = None,
+    min_clicks: Annotated[Optional[int], typer.Option("--min-clicks", help="最低点击量")] = None,
+    max_clicks: Annotated[Optional[int], typer.Option("--max-clicks", help="最高点击量")] = None,
+    min_purchases: Annotated[Optional[int], typer.Option("--min-purchases", help="最低购买量")] = None,
+    max_purchases: Annotated[Optional[int], typer.Option("--max-purchases", help="最高购买量")] = None,
+    min_search_conv_rate: Annotated[Optional[float], typer.Option("--min-search-conv-rate", help="最低搜索转化率")] = None,
+    max_search_conv_rate: Annotated[Optional[float], typer.Option("--max-search-conv-rate", help="最高搜索转化率")] = None,
+    min_click_conv_rate: Annotated[Optional[float], typer.Option("--min-click-conv-rate", help="最低点击转化率")] = None,
+    max_click_conv_rate: Annotated[Optional[float], typer.Option("--max-click-conv-rate", help="最高点击转化率")] = None,
+    match_type: Annotated[Optional[int], typer.Option("--match-type", help="匹配方式")] = None,
+    include_keywords: Annotated[Optional[str], typer.Option("--include-keywords", help="包含关键词 (逗号分隔)")] = None,
+    exclude_keywords: Annotated[Optional[str], typer.Option("--exclude-keywords", help="排除关键词 (逗号分隔)")] = None,
+    page: PageOpt = None,
+    size: SizeOpt = None,
+    order_field: OrderFieldOpt = None,
+    order_desc: OrderDescOpt = None,
+    extra: ExtraArg = None,
+    marketplace: MpOpt = "US",
+    key: KeyOpt = None,
+):
+    """关键字转化率分析"""
+    kwargs = _parse_extra(extra)
+    kwargs["keyword"] = keyword
+    if time_type is not None:
+        kwargs["timeType"] = time_type
+    if min_searches is not None:
+        kwargs["minSearches"] = min_searches
+    if max_searches is not None:
+        kwargs["maxSearches"] = max_searches
+    if min_clicks is not None:
+        kwargs["minClicks"] = min_clicks
+    if max_clicks is not None:
+        kwargs["maxClicks"] = max_clicks
+    if min_purchases is not None:
+        kwargs["minPurchases"] = min_purchases
+    if max_purchases is not None:
+        kwargs["maxPurchases"] = max_purchases
+    if min_search_conv_rate is not None:
+        kwargs["minSearchConvRate"] = min_search_conv_rate
+    if max_search_conv_rate is not None:
+        kwargs["maxSearchConvRate"] = max_search_conv_rate
+    if min_click_conv_rate is not None:
+        kwargs["minClickConvRate"] = min_click_conv_rate
+    if max_click_conv_rate is not None:
+        kwargs["maxClickConvRate"] = max_click_conv_rate
+    if match_type is not None:
+        kwargs["matchType"] = match_type
+    if include_keywords:
+        kwargs["includeKeywords"] = [k.strip() for k in include_keywords.split(",")]
+    if exclude_keywords:
+        kwargs["excludeKeywords"] = [k.strip() for k in exclude_keywords.split(",")]
+    if page is not None:
+        kwargs["page"] = page
+    if size is not None:
+        kwargs["size"] = size
+    if order_field is not None:
+        kwargs["order_field"] = order_field
+    if order_desc is not None:
+        kwargs["order_desc"] = order_desc
+    _print_result(_call_tool("keyword_conversion", key, marketplace, **kwargs))
 
 
 @keyword_app.command("bsr")
@@ -960,6 +1027,7 @@ _TOOL_COMMANDS = {
     "keyword_miner": "sellersprite keyword mine",
     "keyword_research": "sellersprite keyword research",
     "keyword_order": "sellersprite keyword order",
+    "keyword_conversion": "sellersprite keyword conversion",
     "keyword_research_trends": "sellersprite keyword trends",
     "bsr_prediction": "sellersprite keyword bsr",
     "traffic_keyword": "sellersprite traffic keyword",
@@ -997,7 +1065,7 @@ _TOOL_COMMANDS = {
 
 @app.command("list")
 def list_tools():
-    """列出所有 44 个可用工具"""
+    """列出所有 45 个可用工具"""
     for domain, tools in DOMAIN_TOOLS.items():
         table = Table(title=DOMAINS.get(domain, domain), show_header=True,
                       header_style="bold cyan")

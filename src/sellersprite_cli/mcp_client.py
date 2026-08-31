@@ -1,7 +1,7 @@
 """SellerSprite MCP 客户端 — Python client for the SellerSprite MCP Server.
 
 Communicates via MCP Streamable HTTP (JSON-RPC 2.0 over HTTP with SSE support).
-Provides 43 methods covering ASIN analysis, product research, keywords,
+Provides 44 methods covering ASIN analysis, product research, keywords,
 traffic, market analysis, ABA trends, reviews, and trademark queries.
 """
 
@@ -163,17 +163,25 @@ class SellerSprite:
     _STR_PARAMS = frozenset({
         "includeKeywords", "excludeKeywords",
     })
+    # Params that some endpoints (List type, e.g. keyword_conversion) require as
+    # JSON arrays rather than the comma-string form used by _STR_PARAMS tools.
+    _ARRAY_KEYWORD_PARAMS = frozenset({"includeKeywords", "excludeKeywords"})
 
     @staticmethod
     def _to_camel(name: str) -> str:
         parts = name.replace("-", "_").split("_")
         return parts[0] + "".join(p.capitalize() for p in parts[1:])
 
-    def _req(self, marketplace: str | None, **kw) -> dict:
+    def _req(self, marketplace: str | None, *, array_params: frozenset[str] = frozenset(), **kw) -> dict:
         body = {"marketplace": marketplace or self.marketplace}
         for k, v in kw.items():
             key = self._to_camel(k) if "_" in k else k
-            if key in self._LIST_PARAMS and isinstance(v, str):
+            if key in array_params:
+                # This tool expects a JSON array (List type) for this param, even
+                # though _STR_PARAMS would otherwise join it into a comma-string.
+                if isinstance(v, str):
+                    v = [s.strip() for s in v.split(",") if s.strip()]
+            elif key in self._LIST_PARAMS and isinstance(v, str):
                 v = [v]
             elif key in self._STR_PARAMS and isinstance(v, list):
                 v = ",".join(v)
@@ -227,7 +235,7 @@ class SellerSprite:
     def asin_competitor(self, asin: str, marketplace: str | None = None, **kw) -> dict:
         return self._call("asin_competitor", self._clean(self._req(marketplace, asin=asin, **kw)))
 
-    # ── 关键词 (5) ─────────────────────────────────────────
+    # ── 关键词 (6) ─────────────────────────────────────────
 
     def keyword_miner(self, marketplace: str | None = None, **kw) -> dict:
         return self._call("keyword_miner", {"request": self._clean(self._req(marketplace, **kw))})
@@ -241,6 +249,10 @@ class SellerSprite:
 
     def keyword_order(self, marketplace: str | None = None, **kw) -> dict:
         return self._call("keyword_order", {"request": self._clean(self._req(marketplace, **kw))})
+
+    def keyword_conversion(self, keyword: str, marketplace: str | None = None, **kw) -> dict:
+        return self._call("keyword_conversion", {"request": self._clean(
+            self._req(marketplace, keyword=keyword, array_params=self._ARRAY_KEYWORD_PARAMS, **kw))})
 
     def bsr_prediction(self, bsr: int, category_id: str, marketplace: str | None = None) -> dict:
         return self._call("bsr_prediction", {
