@@ -129,16 +129,17 @@ sellersprite asin coupon B0D6LQ5VZM
 sellersprite asin keepa B0D6LQ5VZM --daily-latest true --start-timestamp 1722470400000 --end-timestamp 1754006400000
 sellersprite asin sales-trend B0D6LQ5VZM
 
-# 商品与竞品
-sellersprite product search --keyword "wireless earbuds" --min-price 10 --max-price 30
-sellersprite product competitor --asins B0XXX1,B0XXX2
+# 商品与竞品（尾部 key=value 为 extra 额外筛选项，snake_case）
+sellersprite product search --keyword "wireless earbuds" --min-price 10 --max-price 30 min_ratings=100 min_rating=4
+sellersprite product competitor --asins B0XXX1,B0XXX2 match_type=1
 sellersprite product node --keyword earbuds
 
 # 关键词
-sellersprite keyword mine --keyword earbuds --size 20
-sellersprite keyword research --keywords earbuds
+sellersprite keyword mine --keyword earbuds --size 20 min_search=1000 min_supply_demand_ratio=5
+sellersprite keyword research --keywords earbuds min_searches=500 min_supply_demand_ratio=3
 sellersprite keyword order --reverse-type M --date 202501 --asins B0XXX1,B0XXX2
 sellersprite keyword conversion "lunch box" --time-type WEEK
+sellersprite keyword conversion "lunch box" min_searches=100 max_ppc=2.5 include_keywords=kids,box  # time-type 默认 WEEK；其余筛选项经 extra 传入
 sellersprite keyword bsr 10000 172282
 sellersprite keyword trends earbuds
 
@@ -148,10 +149,10 @@ sellersprite traffic keyword-stat B0XXX1 --month 202501
 sellersprite traffic source --month 202501 --asin B0XXX1
 sellersprite traffic source --month 202501 --asin B0XXX1 --size 50
 sellersprite traffic listing --asin-list B0XXX1 --relations also_bought
-sellersprite traffic extend --asin-list B0XXX1
+sellersprite traffic extend --asin-list B0XXX1 min_searches=100 min_supply_demand_ratio=5
 
 # 市场分析
-sellersprite market research --keyword earbuds
+sellersprite market research --keyword earbuds min_avg_price=20 max_avg_price=50 min_avg_revenue=10000
 sellersprite market stats --node-id-path "172282:24046923011"
 sellersprite market price --node-id-path "172282:24046923011"
 sellersprite market brand --node-id-path "172282:24046923011"
@@ -159,9 +160,9 @@ sellersprite market demand --node-id-path "172282:24046923011"
 # ... 共 14 个市场分析命令
 
 # ABA / 趋势
-sellersprite trend aba-weekly --keyword-list earbuds,buds
-sellersprite trend aba-monthly --keyword-list earbuds
-sellersprite trend aba-monthly --keyword-list earbuds
+sellersprite trend aba-weekly --keyword-list earbuds,buds min_search_rank=1 max_search_rank=1000
+sellersprite trend aba-monthly --keyword-list earbuds min_searches=50000
+sellersprite trend aba-monthly --keyword-list earbuds exclude_keywords=used,refurbished
 sellersprite trend aba-trend earbuds
 sellersprite trend google --keyword earbuds
 sellersprite trend review B0D6LQ5VZM --star-list 4,5
@@ -177,11 +178,14 @@ sellersprite trademark list ANKER --office US,EU
 sellersprite trademark list ANKER --office US --brand-name ANKER
 sellersprite trademark list ANKER --office US --brand-name ANKER,EUFY
 
+# extra 额外筛选（status / nice_class 等 List 类型用逗号分隔）
+sellersprite trademark list ANKER --office US status=Registered,Pending nice_class=9,11
+
 # 图片搜索
 sellersprite trademark list ANKER --office US --image-file ./logo.png
 
 sellersprite trademark stats --office US ANKER
-sellersprite trademark stats --office US,EU ANKER
+sellersprite trademark stats --office US,EU ANKER status=Registered nice_class=9,11  # extra 额外筛选
 sellersprite trademark detail BRAND_ID --office US
 ```
 
@@ -195,19 +199,20 @@ sellersprite trademark detail BRAND_ID --office US
 
 2. **`extra key=value` 传参必须用 snake_case**
 
-   `extra` 参数会经过 `_req()` 自动转 camelCase，但只对带下划线的 key 生效。
+   `extra` 为位置参数，直接以空格分隔的 `key=value` 追加在命令末尾即可（无需 `extra=` 前缀）。
+   key 会经 `_req()` 自动转 camelCase，但只对带下划线的 key 生效。
 
-   如果某个字段是 List 类型（如 `status`、`nice_class`、`brand_name`），在 `extra` 中用逗号分隔即可：
+   如果某个字段是 List 类型（如 `status`、`nice_class`、`brand_name`），在值里用逗号分隔即可：
 
    ```bash
    # ✅ 正确：单个值
-   sellersprite product search --keyword earbuds extra="min_price=10 max_price=30"
+   sellersprite product search --keyword earbuds min_price=10 max_price=30
 
    # ✅ 正确：List 类型用逗号分隔
-   sellersprite trademark list ANKER --office US extra="status=Registered,Pending nice_class=9,11"
+   sellersprite trademark list ANKER --office US status=Registered,Pending nice_class=9,11
 
    # ❌ 错误，kebab-case 不会转换
-   sellersprite product search --keyword earbuds extra="min-price=10"
+   sellersprite product search --keyword earbuds min-price=10
    ```
 
 3. **`--daily-latest` 接受 true/false 字符串**
