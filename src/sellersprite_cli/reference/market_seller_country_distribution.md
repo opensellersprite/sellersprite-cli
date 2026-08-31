@@ -40,6 +40,7 @@
 | 5 | revenue | Float | 销售额 | 47492.83 |
 | 6 | units | Integer | 销量 | 4107 |
 | 7 | unitsRatio | Float | 销量占比 | 0.7313 |
+| 8 | revenueRatio | Float | 销售额占比 | 0.7794 |
 
 ## 请求示例
 

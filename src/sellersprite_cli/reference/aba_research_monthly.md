@@ -88,15 +88,15 @@
 | 14 | impressions | BigInteger | 展示量 | 73560 |
 | 15 | titleDensityExact | Integer | 首页商品标题中包含该关键词的商品数(精确匹配) |  |
 | 16 | cprExact | Integer | 精确 CPR（8天内确保关键词上首页的销量数） |  |
-| 17 | w1SearchRank | Integer | 上周的排名 |  |
-| 18 | w1RankGrowthValue | Integer | 上周的排名变化值 |  |
-| 19 | w1RankGrowthRate | Double | 上周的排名变化率 |  |
-| 20 | w4SearchRank | Integer | 4周前的排名 |  |
-| 21 | w4RankGrowthValue | Integer | 4周前的排名变化值 |  |
-| 22 | w4RankGrowthRate | Double | 4周前的排名变化率 |  |
-| 23 | w12SearchRank | Integer | 12周前的排名 |  |
-| 24 | w12RankGrowthValue | Integer | 12周前的排名变化值 |  |
-| 25 | w12RankGrowthRate | Double | 12周前的排名变化率 |  |
+| 17 | w1SearchRank | Integer | 上月的排名 |  |
+| 18 | w1RankGrowthValue | Integer | 上月的排名变化值 |  |
+| 19 | w1RankGrowthRate | Double | 上月的排名变化率 |  |
+| 20 | w4SearchRank | Integer | 4月前的排名 |  |
+| 21 | w4RankGrowthValue | Integer | 4月前的排名变化值 |  |
+| 22 | w4RankGrowthRate | Double | 4月前的排名变化率 |  |
+| 23 | w12SearchRank | Integer | 12月前的排名 |  |
+| 24 | w12RankGrowthValue | Integer | 12月前的排名变化值 |  |
+| 25 | w12RankGrowthRate | Double | 12月前的排名变化率 |  |
 | 26 | top3Brands | List | 点击前三品牌 |  |
 | 27 | bid | Float | ppc竞价 |  |
 | 28 | bidMax | Float | 最大ppc竞价 |  |

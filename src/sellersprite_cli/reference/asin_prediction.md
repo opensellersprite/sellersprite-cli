@@ -43,13 +43,13 @@
 | 9 | └ratings | Integer | 评分数 | 32004 |
 | 10 | └rating | Float | 评分值 | 4.6 |
 | 11 | dailyItemList | List | 日销量预测明细 |  |
-| 12 | └date | String | 日期 | 45035 |
+| 12 | └date | String | 日期 | 2026-01-01 |
 | 13 | └bsr | Integer | bsr | 48614 |
 | 14 | └sales | Integer | 销量 | 14 |
 | 15 | └amount | Float | 销售额 | 200 |
 | 16 | └price | Float | 单价 | 20 |
 | 17 | monthItemList | List | 月销量预测明细 |  |
-| 18 | └date | String | 日期 | 45017 |
+| 18 | └date | String | 日期 | 2026-01 |
 | 19 | └sales | Integer | 销量 | 14 |
 | 20 | └amount | Float | 销售额 | 200 |
 | 21 | └price | Float | 单价 | 20 |

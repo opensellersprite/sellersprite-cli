@@ -78,7 +78,7 @@
 
 ### 基本信息
 - **MCP Code**: `competitor_lookup`
-- **Method**: `POST`
+- **Method**: POST
 - **URL**: `https://api.sellersprite.com/v1/product/competitor-lookup`
 
 ### 请求参数
@@ -172,13 +172,11 @@ curl -X POST 'https://api.sellersprite.com/v1/product/competitor-lookup' \
   -d '{"marketplace":"US","month":"202507","brand":"apple","variation":"N","page":1,"size":1}'
 ```
 
----
-
 ## 2. 选产品
 
 ### 基本信息
 - **MCP Code**: `product_research`
-- **Method**: `POST`
+- **Method**: POST
 - **URL**: `https://api.sellersprite.com/v1/product/research`
 
 ### 请求参数
@@ -321,13 +319,11 @@ curl -X POST 'https://api.sellersprite.com/v1/product/research' \
   -d '{"marketplace":"US","month":"202507","minPrice":100,"maxPrice":101,"variation":"N","page":1,"size":1}'
 ```
 
----
-
 ## 3. ASIN 详情
 
 ### 基本信息
 - **MCP Code**: `asin_detail`
-- **Method**: `GET`
+- **Method**: GET
 - **URL**: `https://api.sellersprite.com/v1/asin/{marketplace}/{asin}`
 
 ### 请求参数
@@ -402,8 +398,6 @@ curl -X GET 'https://api.sellersprite.com/v1/asin/{marketplace}/{asin}' \
   -H 'secret-key: Your Secret' \
   -G -d 'marketplace=US&asin=B08GHW4TBS'
 ```
-
----
 
 ## 6. 关键词挖掘
 
@@ -514,7 +508,7 @@ curl -X POST 'https://api.sellersprite.com/v1/keyword/miner' \
 
 ### 基本信息
 - **MCP Code**: `product_node`
-- **Method**: `GET`
+- **Method**: GET
 - **URL**: `https://api.sellersprite.com/v1/product/node`
 
 ### 请求参数
@@ -543,8 +537,6 @@ curl -X GET 'https://api.sellersprite.com/v1/product/node' \
   -H 'secret-key: Your Secret' \
   -G -d 'marketplace=US'
 ```
-
----
 
 ## 56. ASIN优惠趋势
 
@@ -579,8 +571,6 @@ curl -X GET 'https://api.sellersprite.com/v1/asin/{marketplace}/{asin}/coupon-tr
   -H 'secret-key: Your Secret' \
   -G -d 'marketplace=US&asin=B08GHW4TBS'
 ```
-
----
 
 ## 57. ASIN详情及优惠趋势
 
@@ -670,8 +660,6 @@ curl -X GET 'https://api.sellersprite.com/v1/asin/{marketplace}/{asin}/with-coup
   -G -d 'marketplace=US&asin=B08GHW4TBS'
 ```
 
----
-
 ## 27. ASIN 销量预测
 
 ### 基本信息
@@ -701,13 +689,13 @@ curl -X GET 'https://api.sellersprite.com/v1/asin/{marketplace}/{asin}/with-coup
 | 9 | └ratings | Integer | 评分数 | 32004 |
 | 10 | └rating | Float | 评分值 | 4.6 |
 | 11 | dailyItemList | List | 日销量预测明细 |  |
-| 12 | └date | String | 日期 | 45035 |
+| 12 | └date | String | 日期 | 2026-01-01 |
 | 13 | └bsr | Integer | bsr | 48614 |
 | 14 | └sales | Integer | 销量 | 14 |
 | 15 | └amount | Float | 销售额 | 200 |
 | 16 | └price | Float | 单价 | 20 |
 | 17 | monthItemList | List | 月销量预测明细 |  |
-| 18 | └date | String | 日期 | 45017 |
+| 18 | └date | String | 日期 | 2026-01 |
 | 19 | └sales | Integer | 销量 | 14 |
 | 20 | └amount | Float | 销售额 | 200 |
 | 21 | └price | Float | 单价 | 20 |
@@ -719,8 +707,6 @@ curl -X GET 'https://api.sellersprite.com/v1/sales/prediction/asin' \
   -H 'secret-key: Your Secret' \
   -G -d 'marketplace=US&asin=B08GHW4TBS'
 ```
-
----
 
 ## 26. BSR销量预测
 
@@ -758,8 +744,6 @@ curl -X GET 'https://api.sellersprite.com/v1/sales/prediction/bsr' \
   -H 'secret-key: Your Secret' \
   -G -d 'marketplace=US&bsr=2&categoryId='
 ```
-
----
 
 ## 14. 关键词反查(流量词列表)
 
@@ -853,8 +837,6 @@ curl -X POST 'https://api.sellersprite.com/v1/traffic/keyword' \
   -H 'Content-Type: application/json' \
   -d '{"marketplace":"US","month":"202507","asin":"B07Z82895W","page":1,"size":1}'
 ```
-
----
 
 ## 22. 商品趋势详情(keepa)
 
@@ -1048,8 +1030,6 @@ curl -X POST 'https://api.sellersprite.com/v1/keyword-research' \
   -d '{"marketplace":"US","month":"202507","keywords":"child","page":1,"size":1}'
 ```
 
----
-
 ## 11. 关键词选品-趋势数据
 
 ### 基本信息
@@ -1088,14 +1068,12 @@ curl -X POST 'https://api.sellersprite.com/v1/keyword-research/trends' \
   -d '{"marketplace": "US", "keyword": "test"}'
 ```
 
----
-
 ## 13. 流量词统计
 
 ### 基本信息
 - **MCP Code**: `traffic_keyword_stat`
-- **Method**: POST
-- **URL**: `https://api.sellersprite.com/v1/traffic/keyword-stat`
+- **Method**: GET
+- **URL**: `https://api.sellersprite.com/v1/traffic/keyword/stat/{marketplace}/{asin}`
 
 ### 请求参数
 
@@ -1141,8 +1119,6 @@ curl -X GET 'https://api.sellersprite.com/v1/traffic/keyword/stat/{marketplace}/
   -G -d 'marketplace=US&asin=B08GHW4TBS'
 ```
 
----
-
 ## 15. 关联流量统计
 
 ### 基本信息
@@ -1178,8 +1154,6 @@ curl -X GET 'https://api.sellersprite.com/v1/traffic/listing/stat/{marketplace}/
   -H 'secret-key: Your Secret' \
   -G -d 'marketplace=US'
 ```
-
----
 
 ## 16. 关联流量列表
 
@@ -1256,8 +1230,6 @@ curl -X POST 'https://api.sellersprite.com/v1/traffic/listing/page' \
   -d '{"marketplace":"US","asinList":["B07Z82895W"],"relations":["also_viewed"],"variations":false,"page":1,"size":50}'
 ```
 
----
-
 ## 17. 查流量来源(关键词流向)
 
 ### 基本信息
@@ -1316,8 +1288,6 @@ curl -X POST 'https://api.sellersprite.com/v1/traffic/source' \
   -H 'Content-Type: application/json' \
   -d '{"marketplace":"US","q":"B07Z82895W","month":"202604","page":1,"size":50}'
 ```
-
----
 
 ## 19. ABA 数据选品-按周
 
@@ -1415,8 +1385,6 @@ curl -X POST 'https://api.sellersprite.com/v1/aba/research/weekly' \
   -d '{"marketplace":"US","page":1,"size":40}'
 ```
 
----
-
 ## 20. ABA 数据选品-按月
 
 ### 基本信息
@@ -1481,15 +1449,15 @@ curl -X POST 'https://api.sellersprite.com/v1/aba/research/weekly' \
 | 14 | impressions | BigInteger | 展示量 | 73560 |
 | 15 | titleDensityExact | Integer | 首页商品标题中包含该关键词的商品数(精确匹配) |  |
 | 16 | cprExact | Integer | 精确 CPR（8天内确保关键词上首页的销量数） |  |
-| 17 | w1SearchRank | Integer | 上周的排名 |  |
-| 18 | w1RankGrowthValue | Integer | 上周的排名变化值 |  |
-| 19 | w1RankGrowthRate | Double | 上周的排名变化率 |  |
-| 20 | w4SearchRank | Integer | 4周前的排名 |  |
-| 21 | w4RankGrowthValue | Integer | 4周前的排名变化值 |  |
-| 22 | w4RankGrowthRate | Double | 4周前的排名变化率 |  |
-| 23 | w12SearchRank | Integer | 12周前的排名 |  |
-| 24 | w12RankGrowthValue | Integer | 12周前的排名变化值 |  |
-| 25 | w12RankGrowthRate | Double | 12周前的排名变化率 |  |
+| 17 | w1SearchRank | Integer | 上月的排名 |  |
+| 18 | w1RankGrowthValue | Integer | 上月的排名变化值 |  |
+| 19 | w1RankGrowthRate | Double | 上月的排名变化率 |  |
+| 20 | w4SearchRank | Integer | 4月前的排名 |  |
+| 21 | w4RankGrowthValue | Integer | 4月前的排名变化值 |  |
+| 22 | w4RankGrowthRate | Double | 4月前的排名变化率 |  |
+| 23 | w12SearchRank | Integer | 12月前的排名 |  |
+| 24 | w12RankGrowthValue | Integer | 12月前的排名变化值 |  |
+| 25 | w12RankGrowthRate | Double | 12月前的排名变化率 |  |
 | 26 | top3Brands | List | 点击前三品牌 |  |
 | 27 | bid | Float | ppc竞价 |  |
 | 28 | bidMax | Float | 最大ppc竞价 |  |
@@ -1510,8 +1478,6 @@ curl -X POST 'https://api.sellersprite.com/v1/aba/research/monthly' \
   -H 'Content-Type: application/json' \
   -d '{"marketplace":"US","page":1,"size":15}'
 ```
-
----
 
 ## 24. 出单词反查
 
@@ -1564,8 +1530,6 @@ curl -X POST 'https://api.sellersprite.com/v1/keyword-order' \
   -d '{"marketplace":"US","asins":["B07Z82895W"],"reverseType":"M","date":"202412","page":1,"size":50}'
 ```
 
----
-
 ## 25. 查评论
 
 ### 基本信息
@@ -1613,8 +1577,6 @@ curl -X POST 'https://api.sellersprite.com/v1/review' \
   -H 'Content-Type: application/json' \
   -d '{"marketplace": "US", "asin": "B08GHW4TBS"}'
 ```
-
----
 
 ## 29. 选市场列表
 
@@ -1718,7 +1680,7 @@ curl -X POST 'https://api.sellersprite.com/v1/review' \
 | 12 | brands | Integer | 品牌数量 | 34 |
 | 13 | sellers | Integer | 卖家数量 | 60 |
 | 14 | totalUnits | Integer | 月总销量 | 539009 |
-| 15 | totalRevenue | Float | 月总销售额 | 1.7995061038E8 |
+| 15 | totalRevenue | Float | 月总销售额 | 179950610.4 |
 | 16 | avgUnits | Integer | 月均销量 | 5390 |
 | 17 | avgRevenue | Float | 月均销售额 | 1799506 |
 | 18 | avgPrice | Float | 平均价格 | 296.11 |
@@ -1744,6 +1706,70 @@ curl -X POST 'https://api.sellersprite.com/v1/review' \
 | 38 | returnRatio | Float | 退货率 | 3.51 |
 | 39 | avgReturnRatio | Float | 退货率类目平均值 | 5.54 |
 | 40 | searchToPurchaseRatio | Float | 搜索购买比,千分比 | 0.94926 |
+| 41 | top3ProductSales | Integer | 头部Listing前3名产品总销量 |  |
+| 42 | top3BrandSales | Integer | 头部Listing前3名品牌总销量 |  |
+| 43 | top3SellerSales | Integer | 头部Listing前3名卖家总销量 |  |
+| 44 | top3ProductRevenue | Double | 头部Listing前3名产品总销售额 |  |
+| 45 | top3BrandRevenue | Double | 头部Listing前3名品牌总销售额 |  |
+| 46 | top3SellerRevenue | Double | 头部Listing前3名卖家总销售额 |  |
+| 47 | top3ProductCrn | Double | 头部Listing前3名商品集中度 |  |
+| 48 | top3BrandCrn | Double | 头部Listing前3名品牌集中度 |  |
+| 49 | top3SellerCrn | Double | 头部Listing前3名卖家集中度 |  |
+| 50 | top5ProductSales | Integer | 头部Listing前5名产品总销量 |  |
+| 51 | top5BrandSales | Integer | 头部Listing前5名品牌总销量 |  |
+| 52 | top5SellerSales | Integer | 头部Listing前5名卖家总销量 |  |
+| 53 | top5ProductRevenue | Double | 头部Listing前5名产品总销售额 |  |
+| 54 | top5BrandRevenue | Double | 头部Listing前5名品牌总销售额 |  |
+| 55 | top5SellerRevenue | Double | 头部Listing前5名卖家总销售额 |  |
+| 56 | top5ProductCrn | Double | 头部Listing前5名商品集中度 |  |
+| 57 | top5BrandCrn | Double | 头部Listing前5名品牌集中度 |  |
+| 58 | top5SellerCrn | Double | 头部Listing前5名卖家集中度 |  |
+| 59 | top10ProductSales | Integer | 头部Listing前10名产品总销量 |  |
+| 60 | top10BrandSales | Integer | 头部Listing前10名品牌总销量 |  |
+| 61 | top10SellerSales | Integer | 头部Listing前10名卖家总销量 |  |
+| 62 | top10ProductRevenue | Double | 头部Listing前10名产品总销售额 |  |
+| 63 | top10BrandRevenue | Double | 头部Listing前10名品牌总销售额 |  |
+| 64 | top10SellerRevenue | Double | 头部Listing前10名卖家总销售额 |  |
+| 65 | top10ProductCrn | Double | 头部Listing前10名商品集中度 |  |
+| 66 | top10BrandCrn | Double | 头部Listing前10名品牌集中度 |  |
+| 67 | top10SellerCrn | Double | 头部Listing前10名卖家集中度 |  |
+| 68 | top20ProductSales | Integer | 头部Listing前20名产品总销量 |  |
+| 69 | top20BrandSales | Integer | 头部Listing前20名品牌总销量 |  |
+| 70 | top20SellerSales | Integer | 头部Listing前20名卖家总销量 |  |
+| 71 | top20ProductRevenue | Double | 头部Listing前20名产品总销售额 |  |
+| 72 | top20BrandRevenue | Double | 头部Listing前20名品牌总销售额 |  |
+| 73 | top20SellerRevenue | Double | 头部Listing前20名卖家总销售额 |  |
+| 74 | top20ProductCrn | Double | 头部Listing前20名商品集中度 |  |
+| 75 | top20BrandCrn | Double | 头部Listing前20名品牌集中度 |  |
+| 76 | top20SellerCrn | Double | 头部Listing前20名卖家集中度 |  |
+| 77 | l1NewRatio | Double | 最近1个月新品数量占比 |  |
+| 78 | l1NewCount | Integer | 最近1个月新品数量 |  |
+| 79 | l1NewAvgPrice | Double | 最近1个月新品平均价格 |  |
+| 80 | l1NewAvgReviews | Integer | 最近1个月新品平均评论数 |  |
+| 81 | l1NewAvgRating | Double | 最近1个月新品平均星级 |  |
+| 82 | l1NewAvgSales | Integer | 最近1个月新品月均销量 |  |
+| 83 | l1NewAvgRevenue | Double | 最近1个月新品月均销售额 |  |
+| 84 | l3NewRatio | Double | 最近3个月新品数量占比 |  |
+| 85 | l3NewCount | Integer | 最近3个月新品数量 |  |
+| 86 | l3NewAvgPrice | Double | 最近3个月新品平均价格 |  |
+| 87 | l3NewAvgReviews | Integer | 最近3个月新品平均评论数 |  |
+| 88 | l3NewAvgRating | Double | 最近3个月新品平均星级 |  |
+| 89 | l3NewAvgSales | Integer | 最近3个月新品月均销量 |  |
+| 90 | l3NewAvgRevenue | Double | 最近3个月新品月均销售额 |  |
+| 91 | l6NewRatio | Double | 最近6个月新品数量占比 |  |
+| 92 | l6NewCount | Integer | 最近6个月新品数量 |  |
+| 93 | l6NewAvgPrice | Double | 最近6个月新品平均价格 |  |
+| 94 | l6NewAvgReviews | Integer | 最近6个月新品平均评论数 |  |
+| 95 | l6NewAvgRating | Double | 最近6个月新品平均星级 |  |
+| 96 | l6NewAvgSales | Integer | 最近6个月新品月均销量 |  |
+| 97 | l6NewAvgRevenue | Double | 最近6个月新品月均销售额 |  |
+| 98 | l12NewRatio | Double | 最近12个月新品数量占比 |  |
+| 99 | l12NewCount | Integer | 最近12个月新品数量 |  |
+| 100 | l12NewAvgPrice | Double | 最近12个月新品平均价格 |  |
+| 101 | l12NewAvgReviews | Integer | 最近12个月新品平均评论数 |  |
+| 102 | l12NewAvgRating | Double | 最近12个月新品平均星级 |  |
+| 103 | l12NewAvgSales | Integer | 最近12个月新品月均销量 |  |
+| 104 | l12NewAvgRevenue | Double | 最近12个月新品月均销售额 |  |
 
 ### 请求示例
 
@@ -1753,8 +1779,6 @@ curl -X POST 'https://api.sellersprite.com/v1/market/research' \
   -H 'Content-Type: application/json' \
   -d '{"marketplace":"US","nodeIdPath":"2619525011","page":1,"size":1}'
 ```
-
----
 
 ## 30. 选市场-统计
 
@@ -1829,8 +1853,6 @@ curl -X POST 'https://api.sellersprite.com/v1/market/statistics' \
   -d '{"marketplace": "US", "nodeIdPath": "2619525011"}'
 ```
 
----
-
 ## 31. 选市场-商品集中度
 
 ### 基本信息
@@ -1881,8 +1903,6 @@ curl -X POST 'https://api.sellersprite.com/v1/market/goods' \
   -d '{"marketplace": "US", "nodeIdPath": "2619525011"}'
 ```
 
----
-
 ## 32. 选市场-品牌集中度
 
 ### 基本信息
@@ -1930,8 +1950,6 @@ curl -X POST 'https://api.sellersprite.com/v1/market/brand' \
   -H 'Content-Type: application/json' \
   -d '{"marketplace": "US", "nodeIdPath": "2619525011"}'
 ```
-
----
 
 ## 33. 选市场-卖家集中度
 
@@ -1981,8 +1999,6 @@ curl -X POST 'https://api.sellersprite.com/v1/market/seller' \
   -d '{"marketplace": "US", "nodeIdPath": "2619525011"}'
 ```
 
----
-
 ## 34. 选市场-卖家类型分布
 
 ### 基本信息
@@ -2022,8 +2038,6 @@ curl -X POST 'https://api.sellersprite.com/v1/market/seller/type' \
   -d '{"marketplace": "US", "nodeIdPath": "2619525011"}'
 ```
 
----
-
 ## 35. 选市场-卖家所属地分布
 
 ### 基本信息
@@ -2052,6 +2066,7 @@ curl -X POST 'https://api.sellersprite.com/v1/market/seller/type' \
 | 5 | revenue | Float | 销售额 | 47492.83 |
 | 6 | units | Integer | 销量 | 4107 |
 | 7 | unitsRatio | Float | 销量占比 | 0.7313 |
+| 8 | revenueRatio | Float | 销售额占比 | 0.7794 |
 
 ### 请求示例
 
@@ -2061,8 +2076,6 @@ curl -X POST 'https://api.sellersprite.com/v1/market/seller/location' \
   -H 'Content-Type: application/json' \
   -d '{"marketplace": "US", "nodeIdPath": "2619525011"}'
 ```
-
----
 
 ## 36. 选市场-商品需求趋势
 
@@ -2141,8 +2154,6 @@ curl -X POST 'https://api.sellersprite.com/v1/market/shelf/time' \
   -d '{"marketplace": "US", "nodeIdPath": "2619525011"}'
 ```
 
----
-
 ## 38. 选市场-上架趋势分布
 
 ### 基本信息
@@ -2179,8 +2190,6 @@ curl -X POST 'https://api.sellersprite.com/v1/market/shelf/trend' \
   -H 'secret-key: Your Secret' \
   -H 'Content-Type: application/json' \
 ```
-
----
 
 ## 39. 选市场-评分数分布
 
@@ -2219,8 +2228,6 @@ curl -X POST 'https://api.sellersprite.com/v1/market/ratings' \
   -d '{"marketplace": "US", "nodeIdPath": "2619525011"}'
 ```
 
----
-
 ## 40. 选市场-评分值分布
 
 ### 基本信息
@@ -2257,8 +2264,6 @@ curl -X POST 'https://api.sellersprite.com/v1/market/rating' \
   -H 'Content-Type: application/json' \
   -d '{"marketplace": "US", "nodeIdPath": "2619525011"}'
 ```
-
----
 
 ## 41. 选市场-价格分布
 
@@ -2297,8 +2302,6 @@ curl -X POST 'https://api.sellersprite.com/v1/market/price' \
   -d '{"marketplace": "US", "nodeIdPath": "2619525011"}'
 ```
 
----
-
 ## 42. 选市场-A+视频分布
 
 ### 基本信息
@@ -2334,8 +2337,6 @@ curl -X POST 'https://api.sellersprite.com/v1/market/ebc' \
   -H 'Content-Type: application/json' \
   -d '{"marketplace": "US", "nodeIdPath": "2619525011"}'
 ```
-
----
 
 ## 46. 拓展流量词
 
@@ -2452,8 +2453,6 @@ curl -X POST 'https://api.sellersprite.com/v1/traffic/extend' \
   -d '{"marketplace":"US","asinList":["B07Z82895W"],"page":1,"size":50}'
 ```
 
----
-
 ## 60. ABA 数据选品-关键词趋势
 
 ### 基本信息
@@ -2486,8 +2485,6 @@ curl -X POST 'https://api.sellersprite.com/v1/aba/research/trends' \
   -H 'Content-Type: application/json' \
   -d '{"marketplace": "US", "keyword": "test", "timeGranularity":"M"}'
 ```
-
----
 
 ## 12. 谷歌趋势
 
@@ -2523,8 +2520,6 @@ curl -X GET 'https://api.sellersprite.com/v1/google/trends' \
   -H 'secret-key: Your Secret' \
   -G -d 'marketplace=US'
 ```
-
----
 
 ## 39. ASIN 销量趋势
 
@@ -2912,23 +2907,22 @@ curl -X POST 'https://api.sellersprite.com/v1/global/brand/stats' \
 
 ### 基本信息
 - **MCP Code**: `asin_competitor`
-- **Method**: `GET`
+- **Method**: GET
 - **URL**: `https://api.sellersprite.com/v1/asin/competitor/{marketplace}/{asin}`
-- **说明**: 查询 ASIN 的竞品数据，用于竞品分析、产品调研与市场调研。MCP 工具可通过 `returnFields` 参数减少 token 消耗
 
 ### 请求参数
 
 | # | 参数 | 类型 | 必填 | 说明 |
 |---|------|------|------|------|
 | 1 | marketplace | String | ✓ | 市场，见表 1.2 |
-| 2 | asin | String | ✓ | ASIN，B08GHW4TBS |
-| 3 | size | Integer |  | 返回结果数量，20 |
+| 2 | asin | String | ✓ | B08GHW4TBS |
+| 3 | size | Integer |  | 20 |
 
 ### 响应参数
 
 | # | 字段 | 类型 | 说明 | 示例 |
 |---|------|------|------|------|
-| 1 | asin | String | ASIN | B078J8VPVW |
+| 1 | asin | String | asin | B078J8VPVW |
 | 2 | brand | String | 品牌 | Pampers |
 | 3 | brandUrl | String | 品牌 URL | https://www.amazon.com/s?k=HP |
 | 4 | imageUrl | String | 图片 URL | https://images-na.ssl-images-amazon.com/images/I/51axlzme6aL .AC_US200.jpg |
@@ -2938,7 +2932,7 @@ curl -X POST 'https://api.sellersprite.com/v1/global/brand/stats' \
 | 8 | nodeIdPath | String | 节点 id 路径字符串 | 2619525011:3741271:3741281 |
 | 9 | nodeLabelPath | String | 类目 | Baby Products:Diapering:Disposable Diapers |
 | 10 | symbol | String | 是否畅销 | Y |
-| 11 | bsrId | String | BSR id | office-products |
+| 11 | bsrId | String | BSRid | office-products |
 | 12 | bsr | Integer | BSR 排名 | 1 |
 | 13 | bsrCr | Float | BSR 增长率 | 926.67 |
 | 14 | bsrCv | Integer | BSR 增长数 | 10 |
@@ -2946,7 +2940,7 @@ curl -X POST 'https://api.sellersprite.com/v1/global/brand/stats' \
 | 16 | unitsGr | Float | 月销量增长率(父体) | -46.3 |
 | 17 | amzUnit | Integer | 子体近30日销量 | 4000 |
 | 18 | amzSales | Float | 销售额(子体) | 235000 |
-| 19 | amzUnitDate | Date | 子体销量更新日期 | 1702476590000 |
+| 19 | amzUnitDate | Date | 子体销量更新日期 | 1.70248E+12 |
 | 20 | revenue | Float | 月销售额(父体) | 1693537.4 |
 | 21 | price | Float | 价格 | 64.42 |
 | 22 | primePrice | Float | prime价格，-1表示没有 | 56.6 |
@@ -2958,7 +2952,7 @@ curl -X POST 'https://api.sellersprite.com/v1/global/brand/stats' \
 | 28 | ratingsCv | Integer | 月度增长数 | 10666 |
 | 29 | ratingDelta | Integer | 留评数：近 30 天新增评论数 | 0 |
 | 30 | lqs | Float | listing质量得分 |  |
-| 31 | availableDate | Long | 上架时间 | 1454083200000 |
+| 31 | availableDate | Long | 上架时间 | 1.45408E+12 |
 | 32 | fulfillment | String | 配送方式 | AMZ or FBA or FBM |
 | 33 | variations | Integer | 变体数 | 7 |
 | 34 | sellers | Integer | 卖家数 | 7 |
@@ -2991,8 +2985,6 @@ curl -X POST 'https://api.sellersprite.com/v1/global/brand/stats' \
 curl -X GET 'https://api.sellersprite.com/v1/asin/competitor/US/B07Z82895W' \
   -H 'secret-key: Your Secret'
 ```
-
----
 
 ## 63. 关键字转化率
 

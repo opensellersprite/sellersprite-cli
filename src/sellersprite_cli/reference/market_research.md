@@ -123,7 +123,7 @@ Amazon 类目市场分析工具，用于从“类目维度”评估市场规模�
 | 12 | brands | Integer | 品牌数量 | 34 |
 | 13 | sellers | Integer | 卖家数量 | 60 |
 | 14 | totalUnits | Integer | 月总销量 | 539009 |
-| 15 | totalRevenue | Float | 月总销售额 | 1.7995061038E8 |
+| 15 | totalRevenue | Float | 月总销售额 | 179950610.4 |
 | 16 | avgUnits | Integer | 月均销量 | 5390 |
 | 17 | avgRevenue | Float | 月均销售额 | 1799506 |
 | 18 | avgPrice | Float | 平均价格 | 296.11 |
@@ -149,6 +149,70 @@ Amazon 类目市场分析工具，用于从“类目维度”评估市场规模�
 | 38 | returnRatio | Float | 退货率 | 3.51 |
 | 39 | avgReturnRatio | Float | 退货率类目平均值 | 5.54 |
 | 40 | searchToPurchaseRatio | Float | 搜索购买比,千分比 | 0.94926 |
+| 41 | top3ProductSales | Integer | 头部Listing前3名产品总销量 |  |
+| 42 | top3BrandSales | Integer | 头部Listing前3名品牌总销量 |  |
+| 43 | top3SellerSales | Integer | 头部Listing前3名卖家总销量 |  |
+| 44 | top3ProductRevenue | Double | 头部Listing前3名产品总销售额 |  |
+| 45 | top3BrandRevenue | Double | 头部Listing前3名品牌总销售额 |  |
+| 46 | top3SellerRevenue | Double | 头部Listing前3名卖家总销售额 |  |
+| 47 | top3ProductCrn | Double | 头部Listing前3名商品集中度 |  |
+| 48 | top3BrandCrn | Double | 头部Listing前3名品牌集中度 |  |
+| 49 | top3SellerCrn | Double | 头部Listing前3名卖家集中度 |  |
+| 50 | top5ProductSales | Integer | 头部Listing前5名产品总销量 |  |
+| 51 | top5BrandSales | Integer | 头部Listing前5名品牌总销量 |  |
+| 52 | top5SellerSales | Integer | 头部Listing前5名卖家总销量 |  |
+| 53 | top5ProductRevenue | Double | 头部Listing前5名产品总销售额 |  |
+| 54 | top5BrandRevenue | Double | 头部Listing前5名品牌总销售额 |  |
+| 55 | top5SellerRevenue | Double | 头部Listing前5名卖家总销售额 |  |
+| 56 | top5ProductCrn | Double | 头部Listing前5名商品集中度 |  |
+| 57 | top5BrandCrn | Double | 头部Listing前5名品牌集中度 |  |
+| 58 | top5SellerCrn | Double | 头部Listing前5名卖家集中度 |  |
+| 59 | top10ProductSales | Integer | 头部Listing前10名产品总销量 |  |
+| 60 | top10BrandSales | Integer | 头部Listing前10名品牌总销量 |  |
+| 61 | top10SellerSales | Integer | 头部Listing前10名卖家总销量 |  |
+| 62 | top10ProductRevenue | Double | 头部Listing前10名产品总销售额 |  |
+| 63 | top10BrandRevenue | Double | 头部Listing前10名品牌总销售额 |  |
+| 64 | top10SellerRevenue | Double | 头部Listing前10名卖家总销售额 |  |
+| 65 | top10ProductCrn | Double | 头部Listing前10名商品集中度 |  |
+| 66 | top10BrandCrn | Double | 头部Listing前10名品牌集中度 |  |
+| 67 | top10SellerCrn | Double | 头部Listing前10名卖家集中度 |  |
+| 68 | top20ProductSales | Integer | 头部Listing前20名产品总销量 |  |
+| 69 | top20BrandSales | Integer | 头部Listing前20名品牌总销量 |  |
+| 70 | top20SellerSales | Integer | 头部Listing前20名卖家总销量 |  |
+| 71 | top20ProductRevenue | Double | 头部Listing前20名产品总销售额 |  |
+| 72 | top20BrandRevenue | Double | 头部Listing前20名品牌总销售额 |  |
+| 73 | top20SellerRevenue | Double | 头部Listing前20名卖家总销售额 |  |
+| 74 | top20ProductCrn | Double | 头部Listing前20名商品集中度 |  |
+| 75 | top20BrandCrn | Double | 头部Listing前20名品牌集中度 |  |
+| 76 | top20SellerCrn | Double | 头部Listing前20名卖家集中度 |  |
+| 77 | l1NewRatio | Double | 最近1个月新品数量占比 |  |
+| 78 | l1NewCount | Integer | 最近1个月新品数量 |  |
+| 79 | l1NewAvgPrice | Double | 最近1个月新品平均价格 |  |
+| 80 | l1NewAvgReviews | Integer | 最近1个月新品平均评论数 |  |
+| 81 | l1NewAvgRating | Double | 最近1个月新品平均星级 |  |
+| 82 | l1NewAvgSales | Integer | 最近1个月新品月均销量 |  |
+| 83 | l1NewAvgRevenue | Double | 最近1个月新品月均销售额 |  |
+| 84 | l3NewRatio | Double | 最近3个月新品数量占比 |  |
+| 85 | l3NewCount | Integer | 最近3个月新品数量 |  |
+| 86 | l3NewAvgPrice | Double | 最近3个月新品平均价格 |  |
+| 87 | l3NewAvgReviews | Integer | 最近3个月新品平均评论数 |  |
+| 88 | l3NewAvgRating | Double | 最近3个月新品平均星级 |  |
+| 89 | l3NewAvgSales | Integer | 最近3个月新品月均销量 |  |
+| 90 | l3NewAvgRevenue | Double | 最近3个月新品月均销售额 |  |
+| 91 | l6NewRatio | Double | 最近6个月新品数量占比 |  |
+| 92 | l6NewCount | Integer | 最近6个月新品数量 |  |
+| 93 | l6NewAvgPrice | Double | 最近6个月新品平均价格 |  |
+| 94 | l6NewAvgReviews | Integer | 最近6个月新品平均评论数 |  |
+| 95 | l6NewAvgRating | Double | 最近6个月新品平均星级 |  |
+| 96 | l6NewAvgSales | Integer | 最近6个月新品月均销量 |  |
+| 97 | l6NewAvgRevenue | Double | 最近6个月新品月均销售额 |  |
+| 98 | l12NewRatio | Double | 最近12个月新品数量占比 |  |
+| 99 | l12NewCount | Integer | 最近12个月新品数量 |  |
+| 100 | l12NewAvgPrice | Double | 最近12个月新品平均价格 |  |
+| 101 | l12NewAvgReviews | Integer | 最近12个月新品平均评论数 |  |
+| 102 | l12NewAvgRating | Double | 最近12个月新品平均星级 |  |
+| 103 | l12NewAvgSales | Integer | 最近12个月新品月均销量 |  |
+| 104 | l12NewAvgRevenue | Double | 最近12个月新品月均销售额 |  |
 
 ## 请求示例
 
